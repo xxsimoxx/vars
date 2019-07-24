@@ -9,11 +9,9 @@
 * Author: Gieffe edizioni srl
 * Author URI: https://www.gieffeedizioni.it
 */
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 if (!defined('ABSPATH')) die('-1');
 
 // Admin section
@@ -72,7 +70,7 @@ function cpvars_scripts() { ?>
 		});
 		
 		jQuery('.cpvars-add').click(function(){
-			jQuery(".form-table").append('<tr valign="top" class="cpvars-keyvalue"><td><input type="text" class="cpvars-key" value="name" /></td><td><input type="text" class="cpvars-value" value="content" /></td><td><span class="dashicons dashicons-trash cpvars-delete"></span></td></tr>');
+			jQuery(".form-table").append('<tr valign="top" class="cpvars-keyvalue"><td><input type="text" size="20" class="cpvars-key" value="name" /></td><td><input type="text" size="100" class="cpvars-value" value="content" /></td><td><span class="dashicons dashicons-trash cpvars-delete"></span></td></tr>');
 			jQuery("#cpvars-submit").prop("disabled", false);
 			jQuery("#cpvars-submit").val('Save');
 		});
@@ -85,12 +83,17 @@ function cpvars_scripts() { ?>
 
 <form method="POST" id="cpvars-form"  >
 <input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";}; ?> >Do shortcodes anywhere.</input>
+<style>
+.form-table {
+  width: auto !important;
+}
+</style>
     <table class="form-table">
     
 <?php
 	foreach ( $testvars as $key => $value ){
-		echo '<tr valign="top" class="cpvars-keyvalue"><td><input type="text" class="cpvars-key" value="' . $key . '" /></td>';
-		echo '<td><input type="text" class="cpvars-value" value="' . htmlspecialchars( $value ) . '" /></td><td><span class="dashicons dashicons-trash cpvars-delete"></span></td></tr>'; 
+		echo '<tr valign="top" class="cpvars-keyvalue"><td ><input type="text" size="20" class="cpvars-key" value="' . $key . '" /></td>';
+		echo '<td ><input type="text" size="100" class="cpvars-value" value="' . htmlspecialchars( $value ) . '" /></td><td><span class="dashicons dashicons-trash cpvars-delete"></span></td></tr>'; 
 	}
 ?>
     </table>
