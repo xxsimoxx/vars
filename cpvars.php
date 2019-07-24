@@ -9,15 +9,15 @@
 * Author: Gieffe edizioni srl
 * Author URI: https://www.gieffeedizioni.it
 */
+
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);
+
 if (!defined('ABSPATH')) die('-1');
 
 // Admin section
-
 add_action('admin_menu', 'cpvars_create_menu');
-
 function cpvars_create_menu() {
 	add_menu_page('CPvars settings', 'CPvars settings', 'administrator', __FILE__, 'cpvars_settings_page' ,'dashicons-editor-textcolor' );
 }
@@ -28,7 +28,7 @@ if ( !current_user_can('manage_options') ) {
    exit;
 }
 
-if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) ){
+if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) ){
 	check_admin_referer( 'cpvars-admin' );
 	parse_str( $_POST["allvars"], $testvars );
 	update_option( 'cpvars-vars', $_POST["allvars"] );
@@ -37,7 +37,11 @@ if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) ){
 	} else {
 		update_option( 'cpvars-doeverywhere', 0 );
 	};
-
+	if ( isset( $_POST["cleanup"] ) ){
+		update_option( 'cpvars-cleanup', 1 );
+	} else {
+		update_option( 'cpvars-cleanup', 0 );
+	};
 } else {
 	$coded_options = get_option( 'cpvars-vars' );
 	parse_str( $coded_options, $testvars );
@@ -48,7 +52,7 @@ add_action( 'admin_footer', 'cpvars_scripts' );
 
 function cpvars_scripts() { ?>
 	<script type="text/javascript" >
-		jQuery(".cpvars-key, .cpvars-value, .doeverywhere").change(function() {
+		jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .cleanup").change(function() {
 		    jQuery("#cpvars-submit").prop("disabled", false);
 		    jQuery("#cpvars-submit").val('Save');
 		});
@@ -83,6 +87,7 @@ function cpvars_scripts() { ?>
 
 <form method="POST" id="cpvars-form"  >
 <input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";}; ?> >Do shortcodes anywhere.</input>
+<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >Delete plugin data at uninstall.</input>
 <style>
 .form-table {
   width: auto !important;
@@ -108,7 +113,6 @@ function cpvars_scripts() { ?>
 <?php } 
 
 // shortcode section
-
 add_shortcode('cpv', 'cpv');
 function cpv( $atts, $content = null ) {
 	$coded_options = get_option( 'cpvars-vars' );
@@ -138,4 +142,16 @@ if ( 1 == get_option( 'cpvars-doeverywhere' ) ){
 		add_filter( $tag, 'do_shortcode', $cpvars_shortcodeseverywhere_pryority );
 	}
 }
+
+// uninstall section
+register_uninstall_hook( __FILE__ , 'cpvars_cleanup' );
+function cpvars_cleanup (){
+	if ( 1 == get_option( 'cpvars-cleanup' ) ){
+		delete_option( 'cpvars-cleanup' );
+		delete_option( 'cpvars-doeverywhere' );
+		delete_option( 'cpvars-vars' );
+	}
+}
+
+
 ?>
