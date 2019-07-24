@@ -33,6 +33,7 @@ if ( !current_user_can('manage_options') ) {
    exit;
 }
 
+// Directly manage options
 if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) ){
 	check_admin_referer( 'cpvars-admin' );
 	parse_str( $_POST["allvars"], $testvars );
@@ -54,7 +55,6 @@ if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_P
 
 
 add_action( 'admin_footer', 'cpvars_scripts' );
-
 function cpvars_scripts() { ?>
 	<script type="text/javascript" >
 		jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .cleanup").change(function() {
@@ -82,6 +82,11 @@ function cpvars_scripts() { ?>
 			jQuery(".form-table").append('<tr valign="top" class="cpvars-keyvalue"><td><input type="text" size="20" class="cpvars-key" value="name" /></td><td><input type="text" size="100" class="cpvars-value" value="content" /></td><td><span class="dashicons dashicons-trash cpvars-delete"></span></td></tr>');
 			jQuery("#cpvars-submit").prop("disabled", false);
 			jQuery("#cpvars-submit").val('<?php _e( 'Save', 'cpvars' ) ?>');
+			jQuery('.cpvars-delete').click(function(){
+				jQuery(this).closest("tr").remove();
+				jQuery("#cpvars-submit").prop("disabled", false);
+				jQuery("#cpvars-submit").val('<?php _e( 'Save', 'cpvars' ) ?>');
+			});
 		});
 
 	</script> <?php
@@ -98,18 +103,21 @@ function cpvars_scripts() { ?>
 <style>
 .form-table {
   width: auto !important;
+  padding:100px;
+}
+.cpvars-add {
+  width: 100px;
 }
 </style>
     <table class="form-table">
-    
 <?php
 	foreach ( $testvars as $key => $value ){
 		echo '<tr valign="top" class="cpvars-keyvalue"><td ><input type="text" size="20" class="cpvars-key" value="' . $key . '" /></td>';
 		echo '<td ><input type="text" size="100" class="cpvars-value" value="' . htmlspecialchars( $value ) . '" /></td><td><span class="dashicons dashicons-trash cpvars-delete"></span></td></tr>'; 
 	}
 ?>
-    </table>
-    <span class="dashicons dashicons-plus-alt cpvars-add"></span>
+	</table>
+<button type="button" class="button button-large dashicons dashicons-plus-alt cpvars-add"></button>
     <?php wp_nonce_field( 'cpvars-admin' ); ?>
     <input type="submit" value="<?php _e( 'Saved', 'cpvars' ) ?>" id="cpvars-submit" class="button button-primary button-large" disabled>
 </form>
@@ -118,8 +126,9 @@ function cpvars_scripts() { ?>
 </div>
 
 <?php } 
-
-// shortcode section
+/**
+* shortcode section
+*/
 add_shortcode('cpv', 'cpv');
 function cpv( $atts, $content = null ) {
 	$coded_options = get_option( 'cpvars-vars' );
@@ -134,7 +143,9 @@ function cpv( $atts, $content = null ) {
 	}
 }
 
-// do shortcodes everywhere section
+/**
+* do shortcodes everywhere section
+*/
 if ( 1 == get_option( 'cpvars-doeverywhere' ) ){
 	$cpvars_shortcodeseverywhere_pryority = 10;
 	$tags = [
@@ -150,7 +161,59 @@ if ( 1 == get_option( 'cpvars-doeverywhere' ) ){
 	}
 }
 
-// uninstall section
+/**
+* Add a menu to mce
+*/
+foreach ( array('post.php','post-new.php') as $hook ) {
+	add_action( "admin_head-$hook", 'cpvars_admin_head' );
+}
+
+function cpvars_admin_head() {
+	$coded_options = get_option( 'cpvars-vars' );
+	parse_str( $coded_options, $testvars );
+	foreach ( $testvars as $var => $value){
+		if ( strlen( $value ) <= 10 ){
+			$example_data = $value;
+		} else {
+			$example_data = substr( $value, 0, 7) . "..." ;
+		};
+		$example_data = ' (' . $example_data . ')';
+		$cpvars_dynamic_mce .= 
+			'{text: "' . $var . $example_data . '",onclick: function() {tinymce.activeEditor.insertContent("[cpv]' . $var . '[/cpv]"); }},';
+	};
+	$cpvars_dynamic_mce = '$cpvars_dynmenu=[' . $cpvars_dynamic_mce . ']';
+	?>
+	<script type='text/javascript'>
+		<?php echo $cpvars_dynamic_mce ?>
+	</script>
+	<?php
+}                 
+
+function cpvars_add_mce_menu() {
+            if ( !current_user_can( 'edit_posts' ) &&  !current_user_can( 'edit_pages' ) ) {
+                       return;
+               }
+           if ( 'true' == get_user_option( 'rich_editing' ) ) {
+               add_filter( 'mce_external_plugins', 'cpvars_add_tinymce_plugin' );
+               add_filter( 'mce_buttons', 'cpvars_register_mce_menu' );
+               }
+}
+add_action('admin_head', 'cpvars_add_mce_menu');
+
+
+function cpvars_register_mce_menu( $buttons ) {
+            array_push( $buttons, 'cpvars_mce_menu' );
+            return $buttons;
+}
+
+function cpvars_add_tinymce_plugin( $plugin_array ) {
+          $plugin_array['cpvars_mce_menu'] = plugins_url( 'js/cpvars-mce-menu.js', __FILE__ );
+          return $plugin_array;
+}
+
+/**
+* uninstall hook
+*/
 register_uninstall_hook( __FILE__ , 'cpvars_cleanup' );
 function cpvars_cleanup (){
 	if ( 1 == get_option( 'cpvars-cleanup' ) ){
