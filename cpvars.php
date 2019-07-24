@@ -8,6 +8,7 @@
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * Author: Gieffe edizioni srl
 * Author URI: https://www.gieffeedizioni.it
+* Text Domain: cpvars
 */
 
 //ini_set('display_errors', 1);
@@ -16,10 +17,14 @@
 
 if (!defined('ABSPATH')) die('-1');
 
+// Load text domain
+load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' );
+
+
 // Admin section
 add_action('admin_menu', 'cpvars_create_menu');
 function cpvars_create_menu() {
-	add_menu_page('CPvars settings', 'CPvars settings', 'administrator', __FILE__, 'cpvars_settings_page' ,'dashicons-editor-textcolor' );
+	add_menu_page('CPvars', 'CPvars', 'administrator', __FILE__, 'cpvars_settings_page' ,'dashicons-editor-textcolor' );
 }
 
 function cpvars_settings_page() {
@@ -54,7 +59,7 @@ function cpvars_scripts() { ?>
 	<script type="text/javascript" >
 		jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .cleanup").change(function() {
 		    jQuery("#cpvars-submit").prop("disabled", false);
-		    jQuery("#cpvars-submit").val('Save');
+		    jQuery("#cpvars-submit").val('<?php _e( 'Save', 'cpvars' ) ?>');
 		});
 		
 		jQuery("#cpvars-form").submit( function(eventObj) {
@@ -70,13 +75,13 @@ function cpvars_scripts() { ?>
 		jQuery('.cpvars-delete').click(function(){
 			jQuery(this).closest("tr").remove();
 		    jQuery("#cpvars-submit").prop("disabled", false);
-		    jQuery("#cpvars-submit").val('Save');
+		    jQuery("#cpvars-submit").val('<?php _e( 'Save', 'cpvars' ) ?>');
 		});
 		
 		jQuery('.cpvars-add').click(function(){
 			jQuery(".form-table").append('<tr valign="top" class="cpvars-keyvalue"><td><input type="text" size="20" class="cpvars-key" value="name" /></td><td><input type="text" size="100" class="cpvars-value" value="content" /></td><td><span class="dashicons dashicons-trash cpvars-delete"></span></td></tr>');
 			jQuery("#cpvars-submit").prop("disabled", false);
-			jQuery("#cpvars-submit").val('Save');
+			jQuery("#cpvars-submit").val('<?php _e( 'Save', 'cpvars' ) ?>');
 		});
 
 	</script> <?php
@@ -86,8 +91,10 @@ function cpvars_scripts() { ?>
 <div class="wrap">
 
 <form method="POST" id="cpvars-form"  >
-<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";}; ?> >Do shortcodes anywhere.</input>
-<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >Delete plugin data at uninstall.</input>
+<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";};?>> 
+<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input>
+<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
+<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input>
 <style>
 .form-table {
   width: auto !important;
@@ -104,7 +111,7 @@ function cpvars_scripts() { ?>
     </table>
     <span class="dashicons dashicons-plus-alt cpvars-add"></span>
     <?php wp_nonce_field( 'cpvars-admin' ); ?>
-    <input type="submit" value="Saved" id="cpvars-submit" class="button button-primary button-large" disabled>
+    <input type="submit" value="<?php _e( 'Saved', 'cpvars' ) ?>" id="cpvars-submit" class="button button-primary button-large" disabled>
 </form>
 
 
