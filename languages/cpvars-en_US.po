@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2019-07-25T10:56:30+02:00\n"
-"PO-Revision-Date: 2019-07-25 11:09+0200\n"
+"PO-Revision-Date: 2019-07-25 11:02+0200\n"
 "X-Generator: WP-CLI 2.2.0\n"
 "X-Domain: cpvars\n"
 "Language: it\n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #. Description of the plugin
 msgid "Vars in shortcodes"
-msgstr "Shortcodes con variabili"
+msgstr ""
 
 #. Author of the plugin
 msgid "Gieffe edizioni srl"
@@ -35,32 +35,32 @@ msgstr ""
 
 #: cpvars.php:31
 msgid "Save"
-msgstr "Salva"
+msgstr ""
 
 #: cpvars.php:32
 msgid "name"
-msgstr "nome"
+msgstr ""
 
 #: cpvars.php:33
 msgid "content"
-msgstr "contenuto"
+msgstr ""
 
 #: cpvars.php:70
 msgid "HEADERTEXT"
-msgstr "<h2>CPvars</h2><h3>CPvars ti permette di definire associazioni nome-contenuto</h3><p>Crea qui i campi con le associazioni (il contenuto può anche essere HTML). Poi, nelle tue pagine o articoli puoi inserire shortcode del tipo <span class='code'>[cpvars]nome[/cpvars]</span> che mostreranno il contenuto.</p> <p>Utile se avete dei valori che possono cambiare (un numero di telefono, il numero di dipendenti) in molte pagine, così da cambiarli una sola volta da questa pagina</p><p>C'è anche un opzione per poter utilizzare gli shortcode anche in aree in cui normalmente non vengono interpretati</p><p>Si integra con TinyMCE che avrà un menu apposito.</p>"
+msgstr "<h2>CPvars</h2><h3>With cpvars you can define name-content associations from the admin.</h3><p>Create here fields with name-content associations (contents can held html). Then, in your post or page you can insert <span class='code'>[cpvars]name[/cpvars]</span> and get content displayed.</p> <p>Useful if you have a value (a phone number, number of employees) in several pages that can change, so you can change this once from the admin.</p><p>There is also an option (that affects every shortcode in your site) to display shortcodes in areas where normally they are not.</p><p>It integrates also into TinyMCE by adding a menu.</p>"
 
 #: cpvars.php:87
 msgid "Do shortcodes anywhere."
-msgstr "Attiva shortcodes ovunque"
+msgstr ""
 
 #: cpvars.php:89
 msgid "Delete plugin data at uninstall."
-msgstr "Cancella i dati se il plugin viene disinstallato."
+msgstr ""
 
 #: cpvars.php:102
 msgid "Add"
-msgstr "Aggiungi"
+msgstr ""
 
 #: cpvars.php:104
 msgid "Saved"
-msgstr "Salvato"
+msgstr ""
