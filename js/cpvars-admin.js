@@ -20,7 +20,7 @@ jQuery('.cpvars-delete').click(function(){
 });
 
 jQuery('.cpvars-add').click(function(){
-	$('<tr valign="top" class="cpvars-keyvalue"><td><input type="text" size="20" class="cpvars-key" placeholder="'+objectL10n.name+'" /></td><td><input type="text" size="100" class="cpvars-value" placeholder="'+objectL10n.content+'" /></td><td><a class="dashicons dashicons-trash cpvars-delete"></a></td></tr>'
+	jQuery('<tr valign="top" class="cpvars-keyvalue"><td><input type="text" size="20" class="cpvars-key" placeholder="'+objectL10n.name+'" /></td><td><input type="text" size="100" class="cpvars-value" placeholder="'+objectL10n.content+'" /></td><td><a class="dashicons dashicons-trash cpvars-delete"></a></td></tr>'
 	).hide().appendTo(".form-table").show("slow");
 	jQuery("#cpvars-submit").prop("disabled", false);
 	jQuery("#cpvars-submit").val(objectL10n.save);

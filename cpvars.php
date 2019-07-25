@@ -68,7 +68,6 @@ if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_P
 };
 
 $header = __("HEADERTEXT" , 'cpvars' );
-echo get_locale();
 ?>
 <style>
 .form-table {
@@ -153,6 +152,7 @@ foreach ( array('post.php','post-new.php') as $hook ) {
 function cpvars_admin_head() {
 	$coded_options = get_option( 'cpvars-vars' );
 	parse_str( $coded_options, $testvars );
+	$cpvars_dynamic_mce = "";
 	foreach ( $testvars as $var => $value){
 		if ( strlen( $value ) <= 10 ){
 			$example_data = $value;
