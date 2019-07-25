@@ -17,15 +17,20 @@ error_reporting(E_ALL);
 
 if (!defined('ABSPATH')) die('-1');
 
+// leave empty to use normal JS
+$useminified=".min";
+
 // Load text domain
 load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
-// Admin section
+/*
+* Admin section
+*/
 add_action( 'admin_footer', 'cpvars_admin_script' );
 function cpvars_admin_script( ) {
 	$screen = get_current_screen(); 
 	if ( 'tools_page_cpvars' == $screen->id ){
-		wp_enqueue_script( 'cpvars_admin', plugins_url( 'js/cpvars-admin.js', __FILE__ ), array(), '1.0' );
+		wp_enqueue_script( 'cpvars_admin', plugins_url( 'js/cpvars-admin.'. $useminified .'js', __FILE__ ), array(), '1.0' );
 		wp_localize_script( 'cpvars_admin', 'objectL10n', 
 			array( 
 				'save'     => __( 'Save', 'cpvars' ),
@@ -87,9 +92,6 @@ $header = __("HEADERTEXT" , 'cpvars' );
 <input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
 <?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input>
 <hr>
-
-
-
     <table class="form-table">
 <?php
 	foreach ( $testvars as $key => $value ){
@@ -117,7 +119,7 @@ function cpv( $atts, $content = null ) {
 	if ( isset( $testvars[$content] ) ){
 		return $testvars[$content];
 	} elseif ( current_user_can('manage_options') ) {
-		$url = admin_url( 'admin.php?page=cpvars%2Fcpvars.php' );
+		$url = admin_url( 'tools.php?page=cpvars' );
 		return "$content is not defined. Define it <a href='$url'>here</a>. (only admin see this)";
 	} else {
 		return "";
@@ -189,7 +191,7 @@ function cpvars_register_mce_menu( $buttons ) {
 }
 
 function cpvars_add_tinymce_plugin( $plugin_array ) {
-          $plugin_array['cpvars_mce_menu'] = plugins_url( 'js/cpvars-mce-menu.js', __FILE__ );
+          $plugin_array['cpvars_mce_menu'] = plugins_url( 'js/cpvars-mce-menu' . $useminified. '.js', __FILE__ );
           return $plugin_array;
 }
 
