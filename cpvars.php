@@ -1,13 +1,13 @@
 <?php
 /*
 * Plugin Name: CPvars
-* Plugin URI: https://www.gieffeedizioni.it/ClassicPress
+* Plugin URI: https://www.gieffeedizioni.it/classicpress
 * Description: Vars in shortcodes 
 * Version: 0.2
 * License: GPL2
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * Author: Gieffe edizioni srl
-* Author URI: https://www.gieffeedizioni.it/ClassicPress
+* Author URI: https://www.gieffeedizioni.it/classicpress
 * Text Domain: cpvars
 */
 
@@ -135,7 +135,7 @@ function cpv( $atts, $content = null ) {
 		return $testvars[$content];
 	} elseif ( current_user_can('manage_options') ) {
 		$url = admin_url( 'tools.php?page=cpvars' );
-		return "$content is not defined. Define it <a href='$url'>here</a>. (only admin see this)";
+		return sprintf ( __('%1$s is not defined. Define it <a href="%2$s">here</a>. (only administrators see this)', 'cpvars'), $content, $url );
 	} else {
 		return "";
 	}

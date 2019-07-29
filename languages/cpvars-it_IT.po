@@ -4,63 +4,79 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CPvars 0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cpvars\n"
+"POT-Creation-Date: 2019-07-29T09:05:34+02:00\n"
+"PO-Revision-Date: 2019-07-25 11:09+0200\n"
 "Last-Translator: root <info@gieffeedizioni.it>\n"
 "Language-Team: Italian\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-07-25T10:56:30+02:00\n"
-"PO-Revision-Date: 2019-07-25 11:09+0200\n"
 "X-Generator: WP-CLI 2.2.0\n"
 "X-Domain: cpvars\n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cpvars.php:138
+msgid ""
+"%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only admin see "
+"this)"
+msgstr "%1$s non è definito. Definiscilo <a href=\"%2$s\">qui</a>."
+" (solo gli amministratori vedono questo messaggio)"
+
+#: cpvars.php:117
+msgid "Add"
+msgstr "Aggiungi"
 
 #. Plugin Name of the plugin
 msgid "CPvars"
 msgstr ""
 
-#. Plugin URI of the plugin
-#. Author URI of the plugin
-msgid "https://www.gieffeedizioni.it/ClassicPress"
-msgstr ""
+#: cpvars.php:107
+msgid "Delete plugin data at uninstall."
+msgstr "Cancella i dati se il plugin viene disinstallato."
 
-#. Description of the plugin
-msgid "Vars in shortcodes"
-msgstr "Shortcodes con variabili"
+#: cpvars.php:105
+msgid "Do shortcodes anywhere."
+msgstr "Attiva shortcodes ovunque"
 
 #. Author of the plugin
 msgid "Gieffe edizioni srl"
 msgstr ""
 
-#: cpvars.php:31
+#: cpvars.php:81
+msgid "HEADERTEXT"
+msgstr ""
+"<h2>CPvars</h2><h3>CPvars ti permette di definire associazioni nome-"
+"contenuto</h3><p>Crea qui i campi con le associazioni (il contenuto può "
+"anche essere HTML). Poi, nelle tue pagine o articoli puoi inserire shortcode "
+"del tipo <span class='code'>[cpvars]nome[/cpvars]</span> che mostreranno il "
+"contenuto.</p> <p>Utile se avete dei valori che possono cambiare (un numero "
+"di telefono, il numero di dipendenti) in molte pagine, così da cambiarli una "
+"sola volta da questa pagina</p><p>C'è anche un opzione per poter utilizzare "
+"gli shortcode anche in aree in cui normalmente non vengono interpretati</"
+"p><p>Si integra con TinyMCE che avrà un menu apposito.</p>"
+
+#: cpvars.php:42
 msgid "Save"
 msgstr "Salva"
 
-#: cpvars.php:32
-msgid "name"
-msgstr "nome"
+#: cpvars.php:119
+msgid "Saved"
+msgstr "Salvato"
 
-#: cpvars.php:33
+#. Description of the plugin
+msgid "Vars in shortcodes"
+msgstr "Shortcodes con variabili"
+
+#: cpvars.php:44
 msgid "content"
 msgstr "contenuto"
 
-#: cpvars.php:70
-msgid "HEADERTEXT"
-msgstr "<h2>CPvars</h2><h3>CPvars ti permette di definire associazioni nome-contenuto</h3><p>Crea qui i campi con le associazioni (il contenuto può anche essere HTML). Poi, nelle tue pagine o articoli puoi inserire shortcode del tipo <span class='code'>[cpvars]nome[/cpvars]</span> che mostreranno il contenuto.</p> <p>Utile se avete dei valori che possono cambiare (un numero di telefono, il numero di dipendenti) in molte pagine, così da cambiarli una sola volta da questa pagina</p><p>C'è anche un opzione per poter utilizzare gli shortcode anche in aree in cui normalmente non vengono interpretati</p><p>Si integra con TinyMCE che avrà un menu apposito.</p>"
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://www.gieffeedizioni.it/classicpress"
+msgstr ""
 
-#: cpvars.php:87
-msgid "Do shortcodes anywhere."
-msgstr "Attiva shortcodes ovunque"
-
-#: cpvars.php:89
-msgid "Delete plugin data at uninstall."
-msgstr "Cancella i dati se il plugin viene disinstallato."
-
-#: cpvars.php:102
-msgid "Add"
-msgstr "Aggiungi"
-
-#: cpvars.php:104
-msgid "Saved"
-msgstr "Salvato"
+#: cpvars.php:43
+msgid "name"
+msgstr "nome"
