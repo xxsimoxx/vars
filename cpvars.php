@@ -36,7 +36,7 @@ function cpvars_admin_script( ) {
 	global $useminified;
 	$screen = get_current_screen(); 
 	if ( 'tools_page_cpvars' == $screen->id ){
-		wp_enqueue_script( 'cpvars_admin', plugins_url( 'js/cpvars-admin.'. $useminified .'js', __FILE__ ), array(), '1.0' );
+		wp_enqueue_script( 'cpvars_admin', plugins_url( 'js/cpvars-admin.'. $useminified .'js', __FILE__ ), array('jquery'), '1.0' );
 		wp_localize_script( 'cpvars_admin', 'objectL10n', 
 			array( 
 				'save'     => __( 'Save', 'cpvars' ),
