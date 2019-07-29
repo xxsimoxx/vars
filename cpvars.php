@@ -3,7 +3,7 @@
 * Plugin Name: CPvars
 * Plugin URI: https://www.gieffeedizioni.it/classicpress
 * Description: Vars in shortcodes 
-* Version: 0.2
+* Version: 1.0.0
 * License: GPL2
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * Author: Gieffe edizioni srl
@@ -24,12 +24,12 @@ if ( "00c8329eb691a97f75c896c5562825e0" == md5( $_SERVER['REMOTE_ADDR'] ) ){
 	$useminified="";
 };
 
-
 // Load text domain
 load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 /*
 * Admin section
+* add a sumbenu to the tools menu
 */
 add_action( 'admin_footer', 'cpvars_admin_script' );
 function cpvars_admin_script( ) {
@@ -53,11 +53,9 @@ function cpvars_create_menu() {
 }
 
 function cpvars_settings_page() {
-
 	if ( !current_user_can('manage_options') ) {
 	   exit;
 	}
-
 	// Directly manage options
 	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) ){
 		check_admin_referer( 'cpvars-admin' );
@@ -78,6 +76,7 @@ function cpvars_settings_page() {
 		parse_str( $coded_options, $testvars );
 	};
 
+	// text about plugin usage I prefer storing in the translations
 	$header = __("HEADERTEXT" , 'cpvars' );
 
 	// enable debug information from my IP
@@ -86,7 +85,6 @@ function cpvars_settings_page() {
 		// debug messages here
 		// echo '</div>';
 	}
-
 	?>
 	<style>
 		.form-table {
@@ -124,6 +122,7 @@ function cpvars_settings_page() {
 
 	<?php 
 } 
+
 /**
 * shortcode section
 */
@@ -162,10 +161,10 @@ if ( 1 == get_option( 'cpvars-doeverywhere' ) ){
 /**
 * Add a menu to mce
 */
+//Handle dynamic menu generation
 foreach ( array('post.php','post-new.php') as $hook ) {
 	add_action( "admin_head-$hook", 'cpvars_admin_head' );
 }
-
 function cpvars_admin_head() {
 	$coded_options = get_option( 'cpvars-vars' );
 	parse_str( $coded_options, $testvars );
@@ -188,6 +187,7 @@ function cpvars_admin_head() {
 	<?php
 }                 
 
+add_action('admin_head', 'cpvars_add_mce_menu');
 function cpvars_add_mce_menu() {
 	if ( !current_user_can( 'edit_posts' ) &&  !current_user_can( 'edit_pages' ) ) {
 		return;
@@ -197,8 +197,6 @@ function cpvars_add_mce_menu() {
 		add_filter( 'mce_buttons', 'cpvars_register_mce_menu' );
 	}
 }
-add_action('admin_head', 'cpvars_add_mce_menu');
-
 
 function cpvars_register_mce_menu( $buttons ) {
 	array_push( $buttons, 'cpvars_mce_menu' );
