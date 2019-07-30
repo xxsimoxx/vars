@@ -1,4 +1,4 @@
-jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .cleanup").change(function() {
+jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .cleanup, .doeval").change(function() {
 	jQuery("#cpvars-submit").prop("disabled", false);
 	jQuery("#cpvars-submit").val(objectL10n.save);
 });

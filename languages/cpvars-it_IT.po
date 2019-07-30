@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CPvars 0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cpvars\n"
-"POT-Creation-Date: 2019-07-29T09:05:34+02:00\n"
+"POT-Creation-Date: 2019-07-30T13:54:53+02:00\n"
 "PO-Revision-Date: 2019-07-25 11:09+0200\n"
 "Last-Translator: root <info@gieffeedizioni.it>\n"
 "Language-Team: Italian\n"
@@ -16,14 +16,16 @@ msgstr ""
 "X-Domain: cpvars\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: cpvars.php:138
+#: cpvars.php:146
+#, fuzzy
 msgid ""
-"%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only admin see "
-"this)"
-msgstr "%1$s non è definito. Definiscilo <a href=\"%2$s\">qui</a>."
-" (solo gli amministratori vedono questo messaggio)"
+"%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only "
+"administrators see this)"
+msgstr ""
+"%1$s non è definito. Definiscilo <a href=\"%2$s\">qui</a>. (solo gli "
+"amministratori vedono questo messaggio)"
 
-#: cpvars.php:117
+#: cpvars.php:116
 msgid "Add"
 msgstr "Aggiungi"
 
@@ -31,19 +33,23 @@ msgstr "Aggiungi"
 msgid "CPvars"
 msgstr ""
 
-#: cpvars.php:107
+#: cpvars.php:102
 msgid "Delete plugin data at uninstall."
 msgstr "Cancella i dati se il plugin viene disinstallato."
 
-#: cpvars.php:105
+#: cpvars.php:100
 msgid "Do shortcodes anywhere."
 msgstr "Attiva shortcodes ovunque"
+
+#: cpvars.php:105
+msgid "Eval PHP code (code must be inside <?php .... ?>)"
+msgstr "Esegui il codice PHP (il codice deve essere contenuto tra <?php .... ?>)"
 
 #. Author of the plugin
 msgid "Gieffe edizioni srl"
 msgstr ""
 
-#: cpvars.php:81
+#: cpvars.php:77
 msgid "HEADERTEXT"
 msgstr ""
 "<h2>CPvars</h2><h3>CPvars ti permette di definire associazioni nome-"
@@ -56,11 +62,11 @@ msgstr ""
 "gli shortcode anche in aree in cui normalmente non vengono interpretati</"
 "p><p>Si integra con TinyMCE che avrà un menu apposito.</p>"
 
-#: cpvars.php:42
+#: cpvars.php:34
 msgid "Save"
 msgstr "Salva"
 
-#: cpvars.php:119
+#: cpvars.php:118
 msgid "Saved"
 msgstr "Salvato"
 
@@ -68,7 +74,7 @@ msgstr "Salvato"
 msgid "Vars in shortcodes"
 msgstr "Shortcodes con variabili"
 
-#: cpvars.php:44
+#: cpvars.php:36
 msgid "content"
 msgstr "contenuto"
 
@@ -77,6 +83,6 @@ msgstr "contenuto"
 msgid "https://www.gieffeedizioni.it/classicpress"
 msgstr ""
 
-#: cpvars.php:43
+#: cpvars.php:35
 msgid "name"
 msgstr "nome"

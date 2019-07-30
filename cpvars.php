@@ -3,7 +3,7 @@
 * Plugin Name: CPvars
 * Plugin URI: https://www.gieffeedizioni.it/classicpress
 * Description: Vars in shortcodes 
-* Version: 1.0.0
+* Version: 1.0.1
 * License: GPL2
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * Author: Gieffe edizioni srl
@@ -13,19 +13,11 @@
 
 if (!defined('ABSPATH')) die('-1');
 
-// leave empty to use normal JS
-$useminified=".min";
-
-// enable debug information from my IP
-if ( "00c8329eb691a97f75c896c5562825e0" == md5( $_SERVER['REMOTE_ADDR'] ) ){
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-	error_reporting(E_ALL);
-	$useminified="";
-};
-
 // Load text domain
-load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' );
+add_action( 'plugins_loaded', 'cpvars_load_textdomain' );
+function cpvars_load_textdomain() {
+	load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
+}
 
 /*
 * Admin section
@@ -36,7 +28,7 @@ function cpvars_admin_script( ) {
 	global $useminified;
 	$screen = get_current_screen(); 
 	if ( 'tools_page_cpvars' == $screen->id ){
-		wp_enqueue_script( 'cpvars_admin', plugins_url( 'js/cpvars-admin.'. $useminified .'js', __FILE__ ), array('jquery'), '1.0' );
+		wp_enqueue_script( 'cpvars_admin', plugins_url( 'js/cpvars-admin.js', __FILE__ ), array('jquery'), '1.0' );
 		wp_localize_script( 'cpvars_admin', 'objectL10n', 
 			array( 
 				'save'     => __( 'Save', 'cpvars' ),
@@ -57,7 +49,7 @@ function cpvars_settings_page() {
 	   exit;
 	}
 	// Directly manage options
-	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) ){
+	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["doeval"] ) ){
 		check_admin_referer( 'cpvars-admin' );
 		parse_str( $_POST["allvars"], $testvars );
 		update_option( 'cpvars-vars', $_POST["allvars"] );
@@ -71,6 +63,11 @@ function cpvars_settings_page() {
 		} else {
 			update_option( 'cpvars-cleanup', 0 );
 		};
+		if ( isset( $_POST["doeval"] ) ){
+			update_option( 'cpvars-doeval', 1 );
+		} else {
+			update_option( 'cpvars-doeval', 0 );
+		};
 	} else {
 		$coded_options = get_option( 'cpvars-vars' );
 		parse_str( $coded_options, $testvars );
@@ -78,13 +75,6 @@ function cpvars_settings_page() {
 
 	// text about plugin usage I prefer storing in the translations
 	$header = __("HEADERTEXT" , 'cpvars' );
-
-	// enable debug information from my IP
-	if ( "00c8329eb691a97f75c896c5562825e0" == md5( $_SERVER['REMOTE_ADDR'] ) ){
-		// echo '<div class="notice notice-success is-dismissible">';
-		// debug messages here
-		// echo '</div>';
-	}
 	?>
 	<style>
 		.form-table {
@@ -102,7 +92,11 @@ function cpvars_settings_page() {
 	<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";};?>> 
 	<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
 	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
-	<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input>
+	<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input><br>
+	<?php if ( ! ( 1 === CPVARS_NOPHP ) ): ?>
+	<input type="checkbox" name="doeval" class="doeval" <?php if ( 1 == get_option( 'cpvars-doeval' ) ){echo "checked='checked'";}; ?> >
+	<?php esc_html_e( 'Eval PHP code (code must be inside <?php .... ?>)', 'cpvars' )?></input>
+	<?php endif; ?>
 	<hr>
 		<table class="form-table">
 	<?php
@@ -131,7 +125,15 @@ function cpv( $atts, $content = null ) {
 	$coded_options = get_option( 'cpvars-vars' );
 	parse_str( $coded_options, $testvars );
 	if ( isset( $testvars[$content] ) ){
-		return $testvars[$content];
+		if ( ! ( 1 === CPVARS_NOPHP ) && 1 == get_option( 'cpvars-doeval' ) ){
+			ob_start();	
+			eval( "?>" . $testvars[$content] ."<?php" );
+			$evalContent = ob_get_contents();
+			ob_end_clean();
+			return $evalContent;
+		} else {
+			return $testvars[$content];
+		};
 	} elseif ( current_user_can('manage_options') ) {
 		$url = admin_url( 'tools.php?page=cpvars' );
 		return sprintf ( __('%1$s is not defined. Define it <a href="%2$s">here</a>. (only administrators see this)', 'cpvars'), $content, $url );
@@ -205,7 +207,7 @@ function cpvars_register_mce_menu( $buttons ) {
 
 function cpvars_add_tinymce_plugin( $plugin_array ) {
 	global $useminified;
-	$plugin_array['cpvars_mce_menu'] = plugins_url( 'js/cpvars-mce-menu' . $useminified. '.js', __FILE__ );
+	$plugin_array['cpvars_mce_menu'] = plugins_url( 'js/cpvars-mce-menu.js', __FILE__ );
 	return $plugin_array;
 }
 
@@ -218,6 +220,7 @@ function cpvars_cleanup (){
 		delete_option( 'cpvars-cleanup' );
 		delete_option( 'cpvars-doeverywhere' );
 		delete_option( 'cpvars-vars' );
+		delete_option( 'cpvars-doeval' );
 	}
 }
 
