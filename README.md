@@ -21,11 +21,3 @@ There is also an option (that affects every shortcode in your site) to display s
 
 It integrates into TinyMCE by adding a menu.
 
-## Changelog
-### [1.0.1] - 2019-07-30 v. 1.0.1
-#### Added
-- Option to exec PHP code.
-
-#### Removed
-- Old debug code
-
