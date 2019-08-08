@@ -1,6 +1,11 @@
-jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .cleanup, .doeval").change(function() {
-	jQuery("#cpvars-submit").prop("disabled", false);
-	jQuery("#cpvars-submit").val(objectL10n.save);
+function enableSave (){
+	var savebutton = jQuery("#cpvars-submit");
+	savebutton.prop("disabled", false);
+	savebutton.val(objectL10n.save);
+}
+
+jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .cleanup, .doeval").on('change textInput input',function() {
+	enableSave ();
 });
 
 jQuery("#cpvars-form").submit( function(eventObj) {
@@ -15,18 +20,15 @@ jQuery("#cpvars-form").submit( function(eventObj) {
 
 jQuery('.cpvars-delete').click(function(){
 	jQuery(this).closest("tr").hide('slow', function(){ jQuery(this).closest("tr").remove(); });
-	jQuery("#cpvars-submit").prop("disabled", false);
-	jQuery("#cpvars-submit").val(objectL10n.save);
+	enableSave ();
 });
 
 jQuery('.cpvars-add').click(function(){
 	jQuery('<tr valign="top" class="cpvars-keyvalue"><td><input type="text" size="20" class="cpvars-key" placeholder="'+objectL10n.name+'" /></td><td><input type="text" size="100" class="cpvars-value" placeholder="'+objectL10n.content+'" /></td><td><a class="dashicons dashicons-trash cpvars-delete"></a></td></tr>'
 	).hide().appendTo(".form-table").show("slow");
-	jQuery("#cpvars-submit").prop("disabled", false);
-	jQuery("#cpvars-submit").val(objectL10n.save);
+	enableSave ();
 	jQuery('.cpvars-delete').click(function(){
 		jQuery(this).closest("tr").hide('slow', function(){ jQuery(this).closest("tr").remove(); });
-		jQuery("#cpvars-submit").prop("disabled", false);
-		jQuery("#cpvars-submit").val(objectL10n.save);
+		enableSave ();
 	});
 });
