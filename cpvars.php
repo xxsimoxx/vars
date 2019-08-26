@@ -3,7 +3,7 @@
 * Plugin Name: CPvars
 * Plugin URI: https://www.gieffeedizioni.it/classicpress
 * Description: Vars in shortcodes 
-* Version: 1.0.1
+* Version: 1.1.0
 * License: GPL2
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * Author: Gieffe edizioni srl
@@ -12,6 +12,10 @@
 */
 
 if (!defined('ABSPATH')) die('-1');
+
+//ini_set('display_startup_errors', true);
+//error_reporting(E_ALL);
+//ini_set('display_errors', true);
 
 // Load text domain
 add_action( 'plugins_loaded', 'cpvars_load_textdomain' );
@@ -49,7 +53,7 @@ function cpvars_settings_page() {
 	   exit;
 	}
 	// Directly manage options
-	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["doeval"] ) ){
+	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) ){
 		check_admin_referer( 'cpvars-admin' );
 		parse_str( $_POST["allvars"], $testvars );
 		update_option( 'cpvars-vars', $_POST["allvars"] );
@@ -62,11 +66,6 @@ function cpvars_settings_page() {
 			update_option( 'cpvars-cleanup', 1 );
 		} else {
 			update_option( 'cpvars-cleanup', 0 );
-		};
-		if ( isset( $_POST["doeval"] ) ){
-			update_option( 'cpvars-doeval', 1 );
-		} else {
-			update_option( 'cpvars-doeval', 0 );
 		};
 	} else {
 		$coded_options = get_option( 'cpvars-vars' );
@@ -93,10 +92,6 @@ function cpvars_settings_page() {
 	<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
 	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
 	<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input><br>
-	<?php if ( ! ( 1 === CPVARS_NOPHP ) ): ?>
-	<input type="checkbox" name="doeval" class="doeval" <?php if ( 1 == get_option( 'cpvars-doeval' ) ){echo "checked='checked'";}; ?> >
-	<?php esc_html_e( 'Eval PHP code (code must be inside <?php .... ?>)', 'cpvars' )?></input>
-	<?php endif; ?>
 	<hr>
 		<table class="form-table">
 	<?php
@@ -125,15 +120,9 @@ function cpv( $atts, $content = null ) {
 	$coded_options = get_option( 'cpvars-vars' );
 	parse_str( $coded_options, $testvars );
 	if ( isset( $testvars[$content] ) ){
-		if ( ! ( 1 === CPVARS_NOPHP ) && 1 == get_option( 'cpvars-doeval' ) ){
-			ob_start();	
-			eval( "?>" . $testvars[$content] ."<?php" );
-			$evalContent = ob_get_contents();
-			ob_end_clean();
-			return $evalContent;
-		} else {
-			return $testvars[$content];
-		};
+		$prefilter_retval = $testvars[$content];
+		$filtered_retval = apply_filters( 'cpvars_output', $prefilter_retval );
+		return $filtered_retval;
 	} elseif ( current_user_can('manage_options') ) {
 		$url = admin_url( 'tools.php?page=cpvars' );
 		return sprintf ( __('%1$s is not defined. Define it <a href="%2$s">here</a>. (only administrators see this)', 'cpvars'), $content, $url );
@@ -141,6 +130,10 @@ function cpv( $atts, $content = null ) {
 		return "";
 	}
 }
+
+function cpv_do ( $var ){
+	return cpv( '', $var );
+};
 
 /**
 * do shortcodes everywhere section
@@ -220,8 +213,13 @@ function cpvars_cleanup (){
 		delete_option( 'cpvars-cleanup' );
 		delete_option( 'cpvars-doeverywhere' );
 		delete_option( 'cpvars-vars' );
-		delete_option( 'cpvars-doeval' );
 	}
+}
+
+register_activation_hook( __FILE__, 'cpvars_activate' );
+function cpvars_activate() {
+	// remove old option
+    delete_option( 'cpvars-doeval' );
 }
 
 ?>

@@ -1,6 +1,6 @@
 # cpvars
 
-With cpvars you can define name-value associations from the admin.
+## With cpvars you can define name-value associations from the admin.
 
 Then, in your content you can insert
 `[cpvars]name[/cpvars]`
@@ -8,16 +8,45 @@ and get _value_ displayed.
 
 Useful if you have a value (a phone number, number of employees) in several pages that can change, so you can change this once from the admin.
 
-There's an option to exec PHP code.
-If you don't like this add `define( 'CPVARS_NOPHP', 1 );` to your wp-config.php.
+It **integrates into TinyMCE** by adding a menu.
 
-There is also an option (that affects every shortcode in your site) to display shortcodes in areas where normally they are not.
-- single_post_title
-- the_title
-- widget_text
-- widget_title
+## Shortcodes everywhere
+There is also an option (that affects every shortcode in your site) to **display shortcodes in areas where normally they are not**.
+
+- single\_post\_title
+- the\_title
+- widget\_text
+- widget\_title
 - bloginfo
-- get_post_metadata
+- get\_post\_metadata
 
-It integrates into TinyMCE by adding a menu.
+## Integration
+### Functions
+If you would like to **use in your theme/plugin**
+`cpv_do(name)`
+and get _value_ displayed.
+### Filters
+There is a **filter** called *cpvars_output*
+
+An example to capitalize the output.
+```php
+function cpvars_output_upper( $string ) {
+    return strtoupper( $string );
+}
+add_filter( 'cpvars_output', 'cpvars_output_upper' );
+```
+An example to use it to **exec PHP code**. **Dangerous**, don't do it.
+You have to open and close php tags in your string.
+```php
+function cpvars_output_exec_php( $string ) {
+    ob_start();
+    eval( "?>" . $string ."<?php" );
+    $evalContent = ob_get_contents();
+    ob_end_clean();
+    return $evalContent;
+}
+add_filter( 'cpvars_output', 'cpvars_output_exec_php' );
+```
+
+
 
