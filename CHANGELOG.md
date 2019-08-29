@@ -1,14 +1,21 @@
 # Changelog
+## [1.1.1] - 2019-08-29 v. 1.1.1
+### Added
+- Settings in plugin page
+
+### Fixed
+- Code and translations cleaning
+
 ## [1.1.0] - 2019-08-26 v. 1.1.0
 ### Added
 - Filters to output
-- cpv_do() function
+- Fpv_do() function
 
 ### Removed
-- ability to exec PHP
+- Ability to exec PHP
 
 ### Other
-- started using SEMVer
+- Started using SEMVer
 
 ## [1.0.1] - 2019-07-30 v. 1.0.1
 ### Added

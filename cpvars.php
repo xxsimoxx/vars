@@ -3,7 +3,7 @@
 * Plugin Name: CPvars
 * Plugin URI: https://www.gieffeedizioni.it/classicpress
 * Description: Vars in shortcodes 
-* Version: 1.1.0
+* Version: 1.1.1
 * License: GPL2
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * Author: Gieffe edizioni srl
@@ -13,15 +13,29 @@
 
 if (!defined('ABSPATH')) die('-1');
 
-//ini_set('display_startup_errors', true);
-//error_reporting(E_ALL);
-//ini_set('display_errors', true);
+ini_set('display_startup_errors', true);
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 
 // Load text domain
 add_action( 'plugins_loaded', 'cpvars_load_textdomain' );
 function cpvars_load_textdomain() {
 	load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
+
+/*
+* Admin section
+* add a settings link in plugins page
+*/
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'cpvars_pal' );
+function cpvars_pal( $links ) {
+	if ( current_user_can( 'manage_options' ) ) {
+		$link = '<a href="' . admin_url( 'tools.php?page=cpvars' ) . '">' . __( 'Settings', 'cpvars' ) . '</a>';
+		array_unshift( $links, $link );
+		return $links;
+	}
+}
+
 
 /*
 * Admin section
