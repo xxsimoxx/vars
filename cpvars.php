@@ -139,6 +139,7 @@ function cpv( $atts, $content = null ) {
 		return $filtered_retval;
 	} elseif ( current_user_can('manage_options') ) {
 		$url = admin_url( 'tools.php?page=cpvars' );
+		/* translators: 1 is the var not defined. 2 is the url of the admin page */
 		return sprintf ( __('%1$s is not defined. Define it <a href="%2$s">here</a>. (only administrators see this)', 'cpvars'), $content, $url );
 	} else {
 		return "";

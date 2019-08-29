@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CPvars 0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cpvars\n"
-"POT-Creation-Date: 2019-07-30T13:54:53+02:00\n"
+"POT-Creation-Date: 2019-08-29T17:29:14+02:00\n"
 "PO-Revision-Date: 2019-07-25 11:02+0200\n"
 "Last-Translator: root <info@gieffeedizioni.it>\n"
 "Language-Team: Italian\n"
@@ -16,13 +16,14 @@ msgstr ""
 "X-Domain: cpvars\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: cpvars.php:146
+#. translators: 1 is the var not defined. 2 is the url of the admin page
+#: cpvars.php:143
 msgid ""
 "%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only "
 "administrators see this)"
 msgstr ""
 
-#: cpvars.php:116
+#: cpvars.php:118
 msgid "Add"
 msgstr ""
 
@@ -30,23 +31,19 @@ msgstr ""
 msgid "CPvars"
 msgstr ""
 
-#: cpvars.php:102
+#: cpvars.php:108
 msgid "Delete plugin data at uninstall."
 msgstr ""
 
-#: cpvars.php:100
+#: cpvars.php:106
 msgid "Do shortcodes anywhere."
-msgstr ""
-
-#: cpvars.php:105
-msgid "Eval PHP code (code must be inside <?php .... ?>)"
 msgstr ""
 
 #. Author of the plugin
 msgid "Gieffe edizioni srl"
 msgstr ""
 
-#: cpvars.php:77
+#: cpvars.php:90
 msgid "HEADERTEXT"
 msgstr ""
 "<h2>CPvars</h2><h3>With cpvars you can define name-content associations from "
@@ -59,19 +56,23 @@ msgstr ""
 "display shortcodes in areas where normally they are not.</p><p>It integrates "
 "also into TinyMCE by adding a menu.</p>"
 
-#: cpvars.php:34
+#: cpvars.php:52
 msgid "Save"
 msgstr ""
 
-#: cpvars.php:118
+#: cpvars.php:120
 msgid "Saved"
+msgstr ""
+
+#: cpvars.php:33
+msgid "Settings"
 msgstr ""
 
 #. Description of the plugin
 msgid "Vars in shortcodes"
 msgstr ""
 
-#: cpvars.php:36
+#: cpvars.php:54
 msgid "content"
 msgstr ""
 
@@ -80,6 +81,6 @@ msgstr ""
 msgid "https://www.gieffeedizioni.it/classicpress"
 msgstr ""
 
-#: cpvars.php:35
+#: cpvars.php:53
 msgid "name"
 msgstr ""
