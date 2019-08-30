@@ -1,4 +1,8 @@
 # Changelog
+## [1.1.2] - 2019-08-30 v. 1.1.2
+### Fixed
+- Fixed a warn in certain conditions
+
 ## [1.1.1] - 2019-08-29 v. 1.1.1
 ### Added
 - Settings in plugin page

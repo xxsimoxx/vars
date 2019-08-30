@@ -3,7 +3,7 @@
 * Plugin Name: CPvars
 * Plugin URI: https://www.gieffeedizioni.it/classicpress
 * Description: Vars in shortcodes 
-* Version: 1.1.1
+* Version: 1.1.2
 * License: GPL2
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * Author: Gieffe edizioni srl
@@ -12,10 +12,6 @@
 */
 
 if (!defined('ABSPATH')) die('-1');
-
-ini_set('display_startup_errors', true);
-error_reporting(E_ALL);
-ini_set('display_errors', true);
 
 // Load text domain
 add_action( 'plugins_loaded', 'cpvars_load_textdomain' );
