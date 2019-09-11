@@ -2,6 +2,8 @@
 
 ## With cpvars you can define name-value associations from the admin.
 
+![version compatibility](https://img.shields.io/endpoint?url=https://www.gieffeedizioni.it/.cpup.json)
+
 Then, in your content you can insert
 `[cpvars]name[/cpvars]`
 and get _value_ displayed.
