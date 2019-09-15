@@ -1,4 +1,8 @@
 # Changelog
+## [1.1.3] - 2019-09-15 v. 1.1.3 WORK IN PROGRESS
+### Changed
+- Links in plugins page now have just an icon
+
 ## [1.1.2] - 2019-08-30 v. 1.1.2
 ### Fixed
 - Fixed a warn in certain conditions
@@ -13,10 +17,10 @@
 ## [1.1.0] - 2019-08-26 v. 1.1.0
 ### Added
 - Filters to output
-- Fpv_do() function
+- cpv_do() function
 
 ### Removed
-- Ability to exec PHP
+- Option to exec PHP code.
 
 ### Other
 - Started using SEMVer

@@ -26,12 +26,26 @@ function cpvars_load_textdomain() {
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'cpvars_pal' );
 function cpvars_pal( $links ) {
 	if ( current_user_can( 'manage_options' ) ) {
-		$link = '<a href="' . admin_url( 'tools.php?page=cpvars' ) . '">' . __( 'Settings', 'cpvars' ) . '</a>';
+		$link = '<a href="' . admin_url( 'tools.php?page=cpvars' ) . '" title="' . __( 'Settings', 'cpvars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
 		array_unshift( $links, $link );
 		return $links;
 	}
 }
 
+/*
+*
+* To be checked in v. 1.1.0 where PR #484 should have adder the right styling
+* for the icon in the admin page.
+*
+*/
+add_action('admin_enqueue_scripts', 'cpvars_admin_style');
+function cpvars_admin_style( $hook ){
+	if ( ! function_exists( 'classicpress_version' ) || version_compare( '1.1.0', classicpress_version() , '>' )  ){
+	if ( 'plugins.php' == $hook ){
+			wp_enqueue_style( 'cpvars_compatibility_css', plugins_url( 'css/cpvars-compatibility.css', __FILE__ ) );
+		}
+	}
+}
 
 /*
 * Admin section
