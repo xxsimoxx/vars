@@ -19,18 +19,6 @@ function cpvars_load_textdomain() {
 	load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 
-function wcmo_get_current_user_roles() {
- if( is_user_logged_in() ) {
- $user = wp_get_current_user();
- $roles = ( array ) $user->roles;
- return $roles; // This returns an array
- // Use this to return a single value
- // return $roles[0];
- } else {
- return array();
- }
-}
-
 /*
 * Admin section
 * add a settings link in plugins page
@@ -135,24 +123,6 @@ function cpvars_settings_page() {
 
 	// text about plugin usage I prefer storing in the translations
 	$header = __("HEADERTEXT" , 'cpvars' );
-
-// Let's MOVE this in security page
-	echo "<pre>";
-	$users = get_users( array( 'fields' => array( 'ID' ) ) );
-	$count = 0;
-	$userlist = "";
-	foreach($users as $user_id) {
-		$meta = get_user_meta ( $user_id->ID );
-		if ( user_can( $user_id->ID, get_option( 'cpvars-whocanedit' ) ) ) {
-			$count++;
-			$userlist .= $meta['nickname'][0] . ", ";
-		};
-	}
-/* translators: 1 is the number of user. 2 is the list of users */
-	printf(_n('%1$d user can change vars: %2$s.', '%1$d users can change vars: %2$s.', $count), $count, rtrim( $userlist, ', ' ));
-	echo "</pre>";
-// END: Let's MOVE this in security page
-
 	?>
 	<style>
 		.form-table {
@@ -175,7 +145,24 @@ function cpvars_settings_page() {
 		<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input><br>
 		<?php _e( 'User capability requested to edit vars:', 'cpvars' )?>
 		<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'cpvars-whocanedit' ) ; ?>">
-		<?php  echo $xsx_cap_error ?>
+		<?php  
+			echo $xsx_cap_error;
+			// let's see who can change the vars
+			$users = get_users( array( 'fields' => array( 'ID' ) ) );
+			$count = 0;
+			$userlist = "";
+			foreach($users as $user_id) {
+				$meta = get_user_meta ( $user_id->ID );
+				if ( user_can( $user_id->ID, get_option( 'cpvars-whocanedit' ) ) ) {
+					$count++;
+					$userlist .= $meta['nickname'][0] . ", ";
+				};
+			}
+			/* translators: 1 is the number of user. 2 is the list of users */
+			echo "<p>";
+			printf(_n('%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count), $count, rtrim( $userlist, ', ' ), get_option( 'cpvars-whocanedit' ) );
+			echo "</p>";
+		?>
 		<hr>
 	<?php endif; ?>
 		<table class="form-table">
