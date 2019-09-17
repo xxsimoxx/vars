@@ -1,5 +1,8 @@
 # Changelog
 ## [1.1.3] - 2019-09-15 v. 1.1.3 WORK IN PROGRESS
+### Added
+- Now admin can choose who can add/change vars based on capability
+
 ### Changed
 - Links in plugins page now have just an icon
 

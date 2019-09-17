@@ -4,7 +4,7 @@ function enableSave (){
 	savebutton.val(objectL10n.save);
 }
 
-jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .cleanup").on('change textInput input',function() {
+jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .whocanedit, .cleanup").on('change textInput input',function() {
 	enableSave ();
 });
 
