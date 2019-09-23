@@ -2,8 +2,6 @@
 
 ## With cpvars you can define name-value associations from the admin.
 
-![version compatibility](https://img.shields.io/endpoint?url=https://www.gieffeedizioni.it/.cpup.json)
-
 Then, in your content you can insert
 `[cpvars]name[/cpvars]`
 and get _value_ displayed.
@@ -11,6 +9,8 @@ and get _value_ displayed.
 Useful if you have a value (a phone number, number of employees) in several pages that can change, so you can change this once from the admin.
 
 It **integrates into TinyMCE** by adding a menu.
+
+You can choose which users can manage vars.
 
 ## Shortcodes everywhere
 There is also an option (that affects every shortcode in your site) to **display shortcodes in areas where normally they are not**.

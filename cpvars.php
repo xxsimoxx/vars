@@ -29,8 +29,8 @@ function xsx_log( $string, $echo = false ){
 	};
 }
 
-
 function xsx_update_link(){
+	// be careful to change text domain in other plugins
 	$slug = dirname( plugin_basename( __FILE__ ) );
 	$plugin_info = get_plugin_data(__FILE__);
 	$plugin_installed_version = $plugin_info['Version'];
