@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the CPvars plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: CPvars 1.1.1\n"
+"Project-Id-Version: CPvars 1.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cpvars\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-08-29T17:29:14+02:00\n"
+"POT-Creation-Date: 2019-09-23T10:15:56+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.3.0\n"
 "X-Domain: cpvars\n"
@@ -31,43 +31,57 @@ msgstr ""
 msgid "Gieffe edizioni srl"
 msgstr ""
 
-#: cpvars.php:33
+#. Translators: %s is the new version available
+#: cpvars.php:54
+msgid "NEW v%s"
+msgstr ""
+
+#: cpvars.php:71
 msgid "Settings"
 msgstr ""
 
-#: cpvars.php:52
+#: cpvars.php:118
 msgid "Save"
 msgstr ""
 
-#: cpvars.php:53
+#: cpvars.php:119
 msgid "name"
 msgstr ""
 
-#: cpvars.php:54
+#: cpvars.php:120
 msgid "content"
 msgstr ""
 
-#: cpvars.php:90
+#. Translators: %s is the capability
+#: cpvars.php:161
+msgid "You don't have <b>%s</b> capability."
+msgstr ""
+
+#: cpvars.php:172
 msgid "HEADERTEXT"
 msgstr ""
 
-#: cpvars.php:106
+#: cpvars.php:190
 msgid "Do shortcodes anywhere."
 msgstr ""
 
-#: cpvars.php:108
+#: cpvars.php:192
 msgid "Delete plugin data at uninstall."
 msgstr ""
 
-#: cpvars.php:118
+#: cpvars.php:193
+msgid "User capability requested to edit vars:"
+msgstr ""
+
+#: cpvars.php:223
 msgid "Add"
 msgstr ""
 
-#: cpvars.php:120
+#: cpvars.php:225
 msgid "Saved"
 msgstr ""
 
 #. translators: 1 is the var not defined. 2 is the url of the admin page
-#: cpvars.php:143
-msgid "%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only administrators see this)"
+#: cpvars.php:245
+msgid "%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only you can see this message)"
 msgstr ""

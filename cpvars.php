@@ -9,6 +9,7 @@
 * Author: Gieffe edizioni srl
 * Author URI: https://www.gieffeedizioni.it/classicpress
 * Text Domain: cpvars
+* Custom Field:accc
 */
 
 if (!defined('ABSPATH')) die('-1');
@@ -19,23 +20,68 @@ function cpvars_load_textdomain() {
 	load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 
+function xsx_log( $string, $echo = false ){
+	$message = '<script>console.log("' . $string . '")</script>';
+	if ( $echo ) {
+		echo $message;
+	} else {
+		return $message;
+	};
+}
+
+
+function xsx_update_link(){
+	$slug = dirname( plugin_basename( __FILE__ ) );
+	$plugin_info = get_plugin_data(__FILE__);
+	$plugin_installed_version = $plugin_info['Version'];
+	$git_repo = "xxsimoxx/" . $slug;
+	if ( false === ( $plugin_current_version = get_transient( $slug . 'lastversion' ) ) ) {
+		$response = wp_remote_get( 'https://api.github.com/repos/' . $git_repo . '/releases/latest' , array( 'redirection' => 5 ) );
+		if ( 200 === $response['response']['code'] ){
+			$git_data = json_decode ( $response['body'], true );
+			$plugin_current_version = ltrim ( $git_data['tag_name'], 'v');
+		} else
+		{
+			$plugin_current_version = null;
+		};
+		if ( ! is_null( $plugin_current_version ) ) {
+			set_transient( $slug . 'lastversion', $plugin_current_version, DAY_IN_SECONDS );
+		};
+	};
+	if ( version_compare( $plugin_current_version, $plugin_installed_version , '>' ) ){
+		/*Translators: %s is the new version available */
+		$messagestring =  sprintf( __( "NEW v%s", "cpvars" ), $plugin_current_version );
+		return '<a target="_blank" href="https://www.github.com/' . $git_repo . '/releases/latest">' . $messagestring . '</a>';
+	} else {
+		return false;
+	}
+};
+
+
+
 /*
 * Admin section
 * add a settings link in plugins page
+* and an update available notice
 */
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'cpvars_pal' );
 function cpvars_pal( $links ) {
 	if ( current_user_can( get_option( 'cpvars-whocanedit' ) ) ) {
 		$link = '<a href="' . admin_url( 'tools.php?page=cpvars' ) . '" title="' . __( 'Settings', 'cpvars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
 		array_unshift( $links, $link );
+		// add an update link if available
+		$update_link = xsx_update_link();
+		if ( $update_link ){
+			array_push( $links, $update_link );
+		};
 		return $links;
 	}
 }
 
 /*
 *
-* To be checked in v. 1.1.0 where PR #484 should have adder the right styling
-* for the icon in the admin page.
+* PR #484 added this CSS in v. 1.1.0
+* This is for backward compatibility.
 *
 */
 add_action('admin_enqueue_scripts', 'cpvars_admin_style');
@@ -55,7 +101,6 @@ function cpvars_admin_style( $hook ){
 /*
 - traduzioni
 - aggiungere pagina a security
-- vedi linea 138 lista utenti che possono modificare
 */
 
 /*
@@ -111,6 +156,7 @@ function cpvars_settings_page() {
 				if ( current_user_can( $_POST["whocanedit"] ) ) {
 					update_option( 'cpvars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST["whocanedit"] ) );
 				} else {
+				/*Translators: %s is the capability */
 					$xsx_cap_error = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'cpvars' ), $_POST["whocanedit"] ) . '</span>';
 				}; 
 			};
