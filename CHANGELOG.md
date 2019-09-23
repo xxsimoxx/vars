@@ -1,8 +1,9 @@
 # Changelog
-## [1.1.3] - 2019-09-15 v. 1.1.3 WORK IN PROGRESS
+## [1.2.0] - 2019-09-23 v. 1.1.3
 ### Added
 - Now admin can choose who can add/change vars based on capability
 - Added a check for new version in GitHub
+- Security menu page
 
 ### Changed
 - Links in plugins page now have just an icon
