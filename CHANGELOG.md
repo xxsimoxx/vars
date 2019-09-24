@@ -1,5 +1,12 @@
 # Changelog
-## [1.2.0] - 2019-09-23 v. 1.1.3
+## [1.2.1] - 2019-09-XX v. 1.2.1
+### Added
+- Support for GitHub Updater (https://github.com/afragen/github-updater)
+
+### Changed
+- Links in plugins page now have just an icon
+
+## [1.2.0] - 2019-09-23 v. 1.2.0
 ### Added
 - Now admin can choose who can add/change vars based on capability
 - Added a check for new version in GitHub

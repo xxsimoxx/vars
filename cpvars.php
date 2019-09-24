@@ -1,14 +1,15 @@
 <?php
-/*
-* Plugin Name: CPvars
-* Plugin URI: https://www.gieffeedizioni.it/classicpress
-* Description: Vars in shortcodes 
-* Version: 1.2.0
-* License: GPL2
-* License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Author: Gieffe edizioni srl
-* Author URI: https://www.gieffeedizioni.it/classicpress
-* Text Domain: cpvars
+/**
+ * Plugin Name: CPvars
+ * Plugin URI: https://www.gieffeedizioni.it/classicpress
+ * Description: Vars in shortcodes 
+ * Version: 1.2.1
+ * License: GPL2
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Author: Gieffe edizioni srl
+ * Author URI: https://www.gieffeedizioni.it/classicpress
+ * Text Domain: cpvars
+ * GitHub Plugin URI: xxsimoxx/cpvars
 */
 
 if (!defined('ABSPATH')) die('-1');
