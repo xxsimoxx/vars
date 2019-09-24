@@ -1,7 +1,8 @@
 # Changelog
-## [1.2.1] - 2019-09-XX v. 1.2.1
+## [1.2.1] - 2019-09-24 v. 1.2.1
 ### Added
 - Support for GitHub Updater (https://github.com/afragen/github-updater)
+- Self-checking for new releases
 
 ### Changed
 - Links in plugins page now have just an icon

@@ -37,11 +37,16 @@ function xsx_log( $string, $echo = false ){
 *
 */
 function xsx_update_link(){
+	if ( is_plugin_active("github-updater/github-updater.php") ){
+		return false;
+		// let's github-updater handle this for us!
+	};
 	// be careful to change text domain in other plugins
 	$slug = dirname( plugin_basename( __FILE__ ) );
 	$plugin_info = get_plugin_data(__FILE__);
 	$plugin_installed_version = $plugin_info['Version'];
 	$git_repo = "xxsimoxx/" . $slug;
+	delete_transient( $slug . 'lastversion' );
 	if ( false === ( $plugin_current_version = get_transient( $slug . 'lastversion' ) ) ) {
 		$response = wp_remote_get( 'https://api.github.com/repos/' . $git_repo . '/releases/latest' , array( 'redirection' => 5 ) );
 		if ( 200 === $response['response']['code'] ){
