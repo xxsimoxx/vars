@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CPvars
- * Plugin URI: https://www.gieffeedizioni.it/classicpress
+ * Plugin URI: https://github.com/xxsimoxx/cpvars
  * Description: Vars in shortcodes 
  * Version: 1.2.1
  * License: GPL2
