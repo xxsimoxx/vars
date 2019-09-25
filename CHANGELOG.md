@@ -1,5 +1,9 @@
 # Changelog
-## [1.2.1] - 2019-09-24 v. 1.2.1
+## [1.2.2] - WORK IN PROGRESS v. 1.2.2
+### Bugfix
+- Transient for updates
+
+## [1.2.1] - 2019-09-25 v. 1.2.1
 ### Added
 - Support for GitHub Updater (https://github.com/afragen/github-updater)
 - Self-checking for new releases

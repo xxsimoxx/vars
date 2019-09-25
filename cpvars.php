@@ -3,7 +3,7 @@
  * Plugin Name: CPvars
  * Plugin URI: https://github.com/xxsimoxx/cpvars
  * Description: Vars in shortcodes 
- * Version: 1.2.1
+ * Version: 1.2.2
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -46,7 +46,6 @@ function xsx_update_link(){
 	$plugin_info = get_plugin_data(__FILE__);
 	$plugin_installed_version = $plugin_info['Version'];
 	$git_repo = "xxsimoxx/" . $slug;
-	delete_transient( $slug . 'lastversion' );
 	if ( false === ( $plugin_current_version = get_transient( $slug . 'lastversion' ) ) ) {
 		$response = wp_remote_get( 'https://api.github.com/repos/' . $git_repo . '/releases/latest' , array( 'redirection' => 5 ) );
 		if ( 200 === $response['response']['code'] ){
