@@ -244,7 +244,7 @@ function cpvars_create_security_menu(){
 		add_security_page(
 			'CPvars',
 			'CPvars',
-			'cpvars',
+			dirname( plugin_basename( __FILE__ ) ),
 			'cpvars_security_page'
 		);
 	};

@@ -2,6 +2,7 @@
 ## [1.2.2] - WORK IN PROGRESS v. 1.2.2
 ### Bugfix
 - Transient for updates
+- Correct the slug for security menu
 
 ## [1.2.1] - 2019-09-25 v. 1.2.1
 ### Added
