@@ -8,7 +8,7 @@ jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .whocanedit, .cleanup").on('c
 	enableSave ();
 });
 
-jQuery("#cpvars-form").submit( function(eventObj) {
+jQuery("#cpvars-form").submit( function( ) {
 	var vars = new Object();
 	jQuery(".cpvars-keyvalue").each(function(){
 		var key = jQuery(this).find('.cpvars-key').val();
