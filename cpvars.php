@@ -136,7 +136,7 @@ function cpvars_save_security_settings( $admin_referer ){
 	return $error_string;
 };
 
-function cpvars_render_security_settings( ){ ?>
+function cpvars_render_security_settings( $errors ){ ?>
 	<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";};?>> 
 	<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
 	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
@@ -144,7 +144,7 @@ function cpvars_render_security_settings( ){ ?>
 	<?php _e( 'User capability requested to edit vars:', 'cpvars' )?>
 	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'cpvars-whocanedit' ) ; ?>">
 	<?php  
-		echo $cap_error;
+		echo $errors;
 		// let's see who can change the vars
 		$users = get_users( array( 'fields' => array( 'ID' ) ) );
 		$count = 0;
@@ -220,7 +220,7 @@ function cpvars_settings_page() {
 	
 	<?php 
 		if ( current_user_can('manage_options') && ! function_exists( '\add_security_page' ) ){
-			cpvars_render_security_settings( );
+			cpvars_render_security_settings( $cap_error );
 		};
 		
 	if ( current_user_can('manage_options') && function_exists( '\add_security_page' ) ) {
@@ -276,32 +276,9 @@ function cpvars_security_page() {
 	<h3><?php _e( 'Security settings.', 'cpvars' ); ?></h3>
 	<hr>
 	<form method="POST" id="cpvars-security"  >
-		<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";};?>> 
-		<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
-		<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
-		<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input><br>
-		<?php _e( 'User capability requested to edit vars:', 'cpvars' )?>
-		<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'cpvars-whocanedit' ) ; ?>">
-		<?php  
-			echo $cap_error;
-			// let's see who can change the vars
-			$users = get_users( array( 'fields' => array( 'ID' ) ) );
-			$count = 0;
-			$userlist = "";
-			foreach($users as $user_id) {
-				$meta = get_user_meta ( $user_id->ID );
-				if ( user_can( $user_id->ID, get_option( 'cpvars-whocanedit' ) ) ) {
-					$count++;
-					$userlist .= $meta['nickname'][0] . ", ";
-				};
-			}
-			/* translators: 1 is the number of user. 2 is the list of users */
-			echo "<p>";
-			printf(_n('%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'cpvars'), $count, rtrim( $userlist, ', ' ), get_option( 'cpvars-whocanedit' ) );
-			echo "</p>";
-		?>
-		<hr>
-		<?php wp_nonce_field( 'cpvars-security' ); ?>
+	<?php
+		cpvars_render_security_settings( $cap_error );
+		wp_nonce_field( 'cpvars-security' ); ?>
 		<input type="submit" value="<?php _e( 'Save', 'cpvars' ) ?>" >
 	</form>
 	</div>
