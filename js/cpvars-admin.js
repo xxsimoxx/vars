@@ -1,16 +1,16 @@
 function enableSave (){
-	var savebutton = jQuery("#cpvars-submit");
+	var savebutton = jQuery('#cpvars-submit');
 	savebutton.prop("disabled", false);
 	savebutton.val(objectL10n.save);
 }
 
-jQuery(".cpvars-key, .cpvars-value, .doeverywhere, .whocanedit, .cleanup").on('change textInput input',function() {
+jQuery('.cpvars-key, .cpvars-value, .doeverywhere, .whocanedit, .cleanup').on('change textInput input',function() {
 	enableSave ();
 });
 
-jQuery("#cpvars-form").submit( function( ) {
+jQuery('#cpvars-form').submit( function( ) {
 	var vars = new Object();
-	jQuery(".cpvars-keyvalue").each(function(){
+	jQuery('.cpvars-keyvalue').each(function(){
 		var key = jQuery(this).find('.cpvars-key').val();
 		var value = jQuery(this).find('.cpvars-value').val();
 		vars[key] = value;

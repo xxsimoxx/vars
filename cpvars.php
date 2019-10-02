@@ -12,7 +12,9 @@
  * GitHub Plugin URI: xxsimoxx/cpvars
 */
 
-if (!defined('ABSPATH')) die('-1');
+if (!defined('ABSPATH')){
+	die('-1');
+};
 
 // Load text domain
 add_action( 'plugins_loaded', 'cpvars_load_textdomain' );
@@ -30,16 +32,17 @@ function xsx_log( $string, $echo = false ){
 	};
 }
 
-/*
-*
-* Return false if this version is the latest Release
-* otherwise a link to GitHub latest.
-*
-*/
+/**
+ *
+ * xsx_update_link()
+ * Return false if this version is the latest Release
+ * otherwise a link to GitHub latest.
+ *
+ */
 function xsx_update_link(){
 	if ( is_plugin_active("github-updater/github-updater.php") ){
-		return false;
 		// let's github-updater handle this for us!
+		return false;
 	};
 	// be careful to change text domain in other plugins
 	$slug = dirname( plugin_basename( __FILE__ ) );
@@ -71,9 +74,11 @@ function xsx_update_link(){
 
 
 /*
-* Add a settings link in plugins page
-* And an update available notice
-*/
+ *
+ * Add a settings link in plugins page
+ * And an update available notice
+ *
+ */
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'cpvars_pal' );
 function cpvars_pal( $links ) {
 	if ( current_user_can( get_option( 'cpvars-whocanedit' ) ) ) {
@@ -89,11 +94,11 @@ function cpvars_pal( $links ) {
 }
 
 /*
-*
-* PR #484 added this CSS in v. 1.1.0
-* This is for backward compatibility.
-*
-*/
+ *
+ * ClassicPress PR #484 added this CSS in v. 1.1.0
+ * This is for backward compatibility.
+ *
+ */
 add_action('admin_enqueue_scripts', 'cpvars_admin_style');
 function cpvars_admin_style( $hook ){
 	if ( ! function_exists( 'classicpress_version' ) || version_compare( '1.1.0', classicpress_version() , '>' )  ){
@@ -104,13 +109,12 @@ function cpvars_admin_style( $hook ){
 }
 
 /*
-* Admin section
-* add a sumbenu to the tools menu
-*/
-
+ *
+ * Functions to handle and render options
+ * 
+ */
 function cpvars_save_security_settings( $admin_referer ){
 	$error_string = "";
-	// Directly manage options
 	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( $admin_referer );
 		if ( isset( $_POST["doeverywhere"] )  ){
@@ -128,7 +132,7 @@ function cpvars_save_security_settings( $admin_referer ){
 				update_option( 'cpvars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST["whocanedit"] ) );
 			
 			} else {
-			/*Translators: %s is the capability */
+				/*Translators: %s is the capability */
 				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'cpvars' ), $_POST["whocanedit"] ) . '</span>';
 			}; 
 		};
@@ -162,6 +166,11 @@ function cpvars_render_security_settings( $errors ){ ?>
 		echo "</p><hr>";
 };
 
+/*
+ *
+ * Admin section: add a sumbenu to the tools menu
+ * 
+ */
 add_action( 'admin_footer', 'cpvars_admin_script' );
 function cpvars_admin_script( ) {
 	$screen = get_current_screen(); 
@@ -188,7 +197,6 @@ function cpvars_settings_page() {
 	if ( ! current_user_can( get_option( 'cpvars-whocanedit' ) ) || false ) {
 		exit;
 	}
-
 	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( 'cpvars-admin' );
 		parse_str( $_POST["allvars"], $testvars );
@@ -200,7 +208,6 @@ function cpvars_settings_page() {
 		$coded_options = get_option( 'cpvars-vars' );
 		parse_str( $coded_options, $testvars );
 	};
-
 	// text about plugin usage I prefer storing in the translations
 	$header = __("HEADERTEXT" , 'cpvars' );
 	?>
@@ -217,19 +224,15 @@ function cpvars_settings_page() {
 	<?php echo $header ?>
 	<hr>
 	<form method="POST" id="cpvars-form"  >
-	
 	<?php 
 		if ( current_user_can('manage_options') && ! function_exists( '\add_security_page' ) ){
 			cpvars_render_security_settings( $cap_error );
 		};
-		
 	if ( current_user_can('manage_options') && function_exists( '\add_security_page' ) ) {
 		$security_link = '<a href="' . admin_url( 'security.php?page=cpvars' ) . '" title="' . __( 'Security settings', 'cpvars' ) . '"><i class="dashicons-before dashicons-shield">';
 		echo $security_link . __( "Edit security settings",'cpvars') . '</i></a><hr>';
 	};
-	
 	?>
-	
 		<table class="form-table">
 	<?php
 	foreach ( $testvars as $key => $value ){
@@ -247,10 +250,10 @@ function cpvars_settings_page() {
 } 
 
 /**
-*
-* Add security page
-*
-*/
+ *
+ * Admin section: add security page
+ *
+ */
 add_action( 'admin_menu', 'cpvars_create_security_menu' );
 function cpvars_create_security_menu(){
 	if ( function_exists( '\add_security_page' ) ) {
@@ -264,7 +267,6 @@ function cpvars_create_security_menu(){
 };
 
 function cpvars_security_page() {
-	// Directly manage options
 	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( 'cpvars-security' );
 		$cap_error = cpvars_save_security_settings( 'cpvars-security' );		
@@ -286,8 +288,10 @@ function cpvars_security_page() {
 } 
 
 /**
-* shortcode section
-*/
+ *
+ * shortcode section
+ *
+ */
 add_shortcode('cpv', 'cpv');
 function cpv( $atts, $content = null ) {
 	$coded_options = get_option( 'cpvars-vars' );
@@ -310,8 +314,10 @@ function cpv_do ( $var ){
 };
 
 /**
-* do shortcodes everywhere section
-*/
+ *
+ * do shortcodes everywhere section
+ *
+ */
 if ( 1 == get_option( 'cpvars-doeverywhere' ) ){
 	$cpvars_shortcodeseverywhere_pryority = 10;
 	$tags = [
@@ -328,12 +334,14 @@ if ( 1 == get_option( 'cpvars-doeverywhere' ) ){
 }
 
 /**
-* Add a menu to mce
-*/
-//Handle dynamic menu generation
+ *
+ * Add a menu to mce
+ *
+ */
 foreach ( array('post.php','post-new.php') as $hook ) {
 	add_action( "admin_head-$hook", 'cpvars_admin_head' );
 }
+
 function cpvars_admin_head() {
 	$coded_options = get_option( 'cpvars-vars' );
 	parse_str( $coded_options, $testvars );
@@ -379,8 +387,10 @@ function cpvars_add_tinymce_plugin( $plugin_array ) {
 }
 
 /**
-* uninstall hook
-*/
+ *
+ * activation and uninstall hooks
+ *
+ */
 register_uninstall_hook( __FILE__ , 'cpvars_cleanup' );
 function cpvars_cleanup (){
 	if ( 1 == get_option( 'cpvars-cleanup' ) ){
@@ -392,9 +402,8 @@ function cpvars_cleanup (){
 }
 
 register_activation_hook( __FILE__, 'cpvars_activate' );
+
 function cpvars_activate() {
-	// remove old option
-    delete_option( 'cpvars-doeval' );
     if ( !get_option( 'cpvars-whocanedit' ) || true){
     	update_option ( 'cpvars-whocanedit', 'manage_options');
     };
