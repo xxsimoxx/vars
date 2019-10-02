@@ -107,6 +107,61 @@ function cpvars_admin_style( $hook ){
 * Admin section
 * add a sumbenu to the tools menu
 */
+
+function cpvars_save_security_settings( $admin_referer ){
+	$error_string = "";
+	// Directly manage options
+	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
+		check_admin_referer( $admin_referer );
+		if ( isset( $_POST["doeverywhere"] )  ){
+			update_option( 'cpvars-doeverywhere', 1 );
+		} else {
+			update_option( 'cpvars-doeverywhere', 0 );
+		};
+		if ( isset( $_POST["cleanup"] )  ){
+			update_option( 'cpvars-cleanup', 1 );
+		} else {
+			update_option( 'cpvars-cleanup', 0 );
+		};
+		if ( isset( $_POST["whocanedit"] )  ){
+			if ( current_user_can( $_POST["whocanedit"] ) ) {
+				update_option( 'cpvars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST["whocanedit"] ) );
+			
+			} else {
+			/*Translators: %s is the capability */
+				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'cpvars' ), $_POST["whocanedit"] ) . '</span>';
+			}; 
+		};
+	};
+	return $error_string;
+};
+
+function cpvars_render_security_settings( ){ ?>
+	<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";};?>> 
+	<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
+	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
+	<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input><br>
+	<?php _e( 'User capability requested to edit vars:', 'cpvars' )?>
+	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'cpvars-whocanedit' ) ; ?>">
+	<?php  
+		echo $cap_error;
+		// let's see who can change the vars
+		$users = get_users( array( 'fields' => array( 'ID' ) ) );
+		$count = 0;
+		$userlist = "";
+		foreach($users as $user_id) {
+			$meta = get_user_meta ( $user_id->ID );
+			if ( user_can( $user_id->ID, get_option( 'cpvars-whocanedit' ) ) ) {
+				$count++;
+				$userlist .= $meta['nickname'][0] . ", ";
+			};
+		}
+		echo "<p>";
+		/* translators: 1 is the number of user. 2 is the list of users */
+		printf(_n('%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'cpvars'), $count, rtrim( $userlist, ', ' ), get_option( 'cpvars-whocanedit' ) );
+		echo "</p><hr>";
+};
+
 add_action( 'admin_footer', 'cpvars_admin_script' );
 function cpvars_admin_script( ) {
 	$screen = get_current_screen(); 
@@ -133,34 +188,14 @@ function cpvars_settings_page() {
 	if ( ! current_user_can( get_option( 'cpvars-whocanedit' ) ) || false ) {
 		exit;
 	}
-	$xsx_cap_error = "";
-	// Directly manage options
+
 	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( 'cpvars-admin' );
 		parse_str( $_POST["allvars"], $testvars );
 		update_option( 'cpvars-vars', $_POST["allvars"] );
-		
 		if ( current_user_can('manage_options') ) {
-			if ( isset( $_POST["doeverywhere"] )  ){
-				update_option( 'cpvars-doeverywhere', 1 );
-			} else {
-				update_option( 'cpvars-doeverywhere', 0 );
-			};
-			if ( isset( $_POST["cleanup"] )  ){
-				update_option( 'cpvars-cleanup', 1 );
-			} else {
-				update_option( 'cpvars-cleanup', 0 );
-			};
-			if ( isset( $_POST["whocanedit"] )  ){
-				if ( current_user_can( $_POST["whocanedit"] ) ) {
-					update_option( 'cpvars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST["whocanedit"] ) );
-				} else {
-				/*Translators: %s is the capability */
-					$xsx_cap_error = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'cpvars' ), $_POST["whocanedit"] ) . '</span>';
-				}; 
-			};
-		}
-		
+			$cap_error = cpvars_save_security_settings( 'cpvars-admin' );
+		};
 	} else {
 		$coded_options = get_option( 'cpvars-vars' );
 		parse_str( $coded_options, $testvars );
@@ -183,33 +218,11 @@ function cpvars_settings_page() {
 	<hr>
 	<form method="POST" id="cpvars-form"  >
 	
-	<?php if ( current_user_can('manage_options') && ! function_exists( '\add_security_page' ) ): ?>
-		<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";};?>> 
-		<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
-		<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
-		<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input><br>
-		<?php _e( 'User capability requested to edit vars:', 'cpvars' )?>
-		<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'cpvars-whocanedit' ) ; ?>">
-		<?php  
-			echo $xsx_cap_error;
-			// let's see who can change the vars
-			$users = get_users( array( 'fields' => array( 'ID' ) ) );
-			$count = 0;
-			$userlist = "";
-			foreach($users as $user_id) {
-				$meta = get_user_meta ( $user_id->ID );
-				if ( user_can( $user_id->ID, get_option( 'cpvars-whocanedit' ) ) ) {
-					$count++;
-					$userlist .= $meta['nickname'][0] . ", ";
-				};
-			}
-			echo "<p>";
-			/* translators: 1 is the number of user. 2 is the list of users */
-			printf(_n('%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'cpvars'), $count, rtrim( $userlist, ', ' ), get_option( 'cpvars-whocanedit' ) );
-			echo "</p>";
-		?>
-		<hr>
-	<?php endif; 
+	<?php 
+		if ( current_user_can('manage_options') && ! function_exists( '\add_security_page' ) ){
+			cpvars_render_security_settings( );
+		};
+		
 	if ( current_user_can('manage_options') && function_exists( '\add_security_page' ) ) {
 		$security_link = '<a href="' . admin_url( 'security.php?page=cpvars' ) . '" title="' . __( 'Security settings', 'cpvars' ) . '"><i class="dashicons-before dashicons-shield">';
 		echo $security_link . __( "Edit security settings",'cpvars') . '</i></a><hr>';
@@ -251,30 +264,10 @@ function cpvars_create_security_menu(){
 };
 
 function cpvars_security_page() {
-	$xsx_cap_error = "";
 	// Directly manage options
 	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( 'cpvars-security' );
-		if ( isset( $_POST["doeverywhere"] )  ){
-			update_option( 'cpvars-doeverywhere', 1 );
-		} else {
-			update_option( 'cpvars-doeverywhere', 0 );
-		};
-		if ( isset( $_POST["cleanup"] )  ){
-			update_option( 'cpvars-cleanup', 1 );
-		} else {
-			update_option( 'cpvars-cleanup', 0 );
-		};
-		if ( isset( $_POST["whocanedit"] )  ){
-			if ( current_user_can( $_POST["whocanedit"] ) ) {
-				update_option( 'cpvars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST["whocanedit"] ) );
-			
-			} else {
-			/*Translators: %s is the capability */
-				$xsx_cap_error = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'cpvars' ), $_POST["whocanedit"] ) . '</span>';
-			}; 
-		};
-		
+		$cap_error = cpvars_save_security_settings( 'cpvars-security' );		
 	};
 
 	?>
@@ -290,7 +283,7 @@ function cpvars_security_page() {
 		<?php _e( 'User capability requested to edit vars:', 'cpvars' )?>
 		<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'cpvars-whocanedit' ) ; ?>">
 		<?php  
-			echo $xsx_cap_error;
+			echo $cap_error;
 			// let's see who can change the vars
 			$users = get_users( array( 'fields' => array( 'ID' ) ) );
 			$count = 0;
