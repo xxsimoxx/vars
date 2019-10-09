@@ -271,6 +271,7 @@ function cpvars_create_security_menu(){
 };
 
 function cpvars_security_page() {
+	$cap_error = "";
 	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( 'cpvars-security' );
 		$cap_error = cpvars_save_security_settings( 'cpvars-security' );		
@@ -288,7 +289,7 @@ function cpvars_security_page() {
 		<input type="submit" value="<?php _e( 'Save', 'cpvars' ) ?>" >
 	</form>
 	</div>
-	<?php 
+	<?php
 } 
 
 /**
@@ -385,7 +386,6 @@ function cpvars_register_mce_menu( $buttons ) {
 }
 
 function cpvars_add_tinymce_plugin( $plugin_array ) {
-	global $useminified;
 	$plugin_array['cpvars_mce_menu'] = plugins_url( 'js/cpvars-mce-menu.js', __FILE__ );
 	return $plugin_array;
 }
