@@ -71,8 +71,6 @@ function xsx_update_link(){
 	}
 };
 
-
-
 /*
  *
  * Add a settings link in plugins page
@@ -271,11 +269,11 @@ function cpvars_create_security_menu(){
 };
 
 function cpvars_security_page() {
+	$cap_error = "";
 	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( 'cpvars-security' );
 		$cap_error = cpvars_save_security_settings( 'cpvars-security' );		
 	};
-
 	?>
 	<div class="wrap">
 	<h2>CPvars</h2>
@@ -288,7 +286,7 @@ function cpvars_security_page() {
 		<input type="submit" value="<?php _e( 'Save', 'cpvars' ) ?>" >
 	</form>
 	</div>
-	<?php 
+	<?php
 } 
 
 /**
@@ -385,7 +383,6 @@ function cpvars_register_mce_menu( $buttons ) {
 }
 
 function cpvars_add_tinymce_plugin( $plugin_array ) {
-	global $useminified;
 	$plugin_array['cpvars_mce_menu'] = plugins_url( 'js/cpvars-mce-menu.js', __FILE__ );
 	return $plugin_array;
 }
@@ -395,7 +392,7 @@ function cpvars_add_tinymce_plugin( $plugin_array ) {
  * activation and uninstall hooks
  *
  */
-register_uninstall_hook( __FILE__ , 'cpvars_cleanup' );
+register_uninstall_hook( __FILE__, 'cpvars_cleanup' );
 function cpvars_cleanup (){
 	if ( 1 == get_option( 'cpvars-cleanup' ) ){
 		delete_option( 'cpvars-cleanup' );
@@ -406,7 +403,6 @@ function cpvars_cleanup (){
 }
 
 register_activation_hook( __FILE__, 'cpvars_activate' );
-
 function cpvars_activate() {
     if ( !get_option( 'cpvars-whocanedit' ) || true){
     	update_option ( 'cpvars-whocanedit', 'manage_options');
