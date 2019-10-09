@@ -1,5 +1,7 @@
 # Changelog
 ## [1.2.2] - WORK IN PROGRESS v. 1.2.2
+### Added
+- Icon on TinyMCE menu and setting page
 ### Bugfix
 - Transient for updates
 - Correct the slug for security menu

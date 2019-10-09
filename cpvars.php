@@ -219,9 +219,13 @@ function cpvars_settings_page() {
 		.code {
 			font-family: "Courier New", Courier, mono;
 		}
+		h2::before {
+			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ )  ; ?>");
+			padding: 0 5px 0 0;
+		}
 	</style>
 	<div class="wrap">
-	<?php echo $header ?>
+	<?php echo $header ; ?>
 	<hr>
 	<form method="POST" id="cpvars-form"  >
 	<?php 
