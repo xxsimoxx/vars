@@ -1,5 +1,5 @@
 # Changelog
-## [1.2.2] - WORK IN PROGRESS v. 1.2.2
+## [1.2.2] - 2019-10-11 v. 1.2.2
 ### Added
 - Icon on TinyMCE menu and setting page
 ### Bugfix
