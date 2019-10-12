@@ -1,21 +1,21 @@
 # Copyright (C) 2019 Gieffe edizioni srl
-# This file is distributed under the same license as the CPvars plugin.
+# This file is distributed under the same license as the cpvars plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: CPvars 1.2.2-dev\n"
+"Project-Id-Version: cpvars 1.2.3-dev\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cpvars\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-10-02T13:50:33+02:00\n"
+"POT-Creation-Date: 2019-10-12T14:05:22+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.3.0\n"
 "X-Domain: cpvars\n"
 
 #. Plugin Name of the plugin
-msgid "CPvars"
+msgid "cpvars"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -35,80 +35,92 @@ msgid "https://www.gieffeedizioni.it/classicpress"
 msgstr ""
 
 #. Translators: %s is the new version available
-#: cpvars.php:64
+#: cpvars.php:57
 msgid "NEW v%s"
 msgstr ""
 
-#: cpvars.php:80
+#: cpvars.php:73
 msgid "Settings"
 msgstr ""
 
 #. Translators: %s is the capability
-#: cpvars.php:132
+#: cpvars.php:124
 msgid "You don't have <b>%s</b> capability."
 msgstr ""
 
-#: cpvars.php:141
-#: cpvars.php:280
+#: cpvars.php:133
 msgid "Do shortcodes anywhere."
 msgstr ""
 
-#: cpvars.php:143
-#: cpvars.php:282
+#: cpvars.php:135
 msgid "Delete plugin data at uninstall."
 msgstr ""
 
-#: cpvars.php:144
-#: cpvars.php:283
+#: cpvars.php:136
 msgid "User capability requested to edit vars:"
 msgstr ""
 
 #. translators: 1 is the number of user. 2 is the list of users
-#: cpvars.php:161
-#: cpvars.php:300
+#: cpvars.php:153
 msgid "%1$d user has <i>%3$s</i> capability and so can change vars: %2$s."
 msgid_plural "%1$d users have <i>%3$s</i> capability and so can change vars: %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: cpvars.php:172
-#: cpvars.php:305
+#: cpvars.php:169
+#: cpvars.php:291
 msgid "Save"
 msgstr ""
 
-#: cpvars.php:173
+#: cpvars.php:170
 msgid "name"
 msgstr ""
 
-#: cpvars.php:174
+#: cpvars.php:171
 msgid "content"
 msgstr ""
 
-#: cpvars.php:205
+#: cpvars.php:182
+msgid "SETTINGS_PAGE_TITLE"
+msgstr ""
+
+#: cpvars.php:183
+msgid "SETTINGS_PAGE_NAME"
+msgstr ""
+
+#: cpvars.php:207
 msgid "HEADERTEXT"
 msgstr ""
 
-#: cpvars.php:227
+#: cpvars.php:231
 msgid "Security settings"
 msgstr ""
 
-#: cpvars.php:228
+#: cpvars.php:232
 msgid "Edit security settings"
 msgstr ""
 
-#: cpvars.php:241
+#: cpvars.php:243
 msgid "Add"
 msgstr ""
 
-#: cpvars.php:243
+#: cpvars.php:245
 msgid "Saved"
 msgstr ""
 
-#: cpvars.php:276
+#: cpvars.php:260
+msgid "SECURITY_SETTINGS_PAGE_TITLE"
+msgstr ""
+
+#: cpvars.php:262
+msgid "SECURITY_SETTINGS_PAGE_NAME"
+msgstr ""
+
+#: cpvars.php:285
 msgid "Security settings."
 msgstr ""
 
 #. translators: 1 is the var not defined. 2 is the url of the admin page
-#: cpvars.php:325
+#: cpvars.php:313
 msgid "%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only you can see this message)"
 msgstr ""

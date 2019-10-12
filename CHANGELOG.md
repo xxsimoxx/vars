@@ -1,7 +1,12 @@
 # Changelog
+## [1.2.3] - ???
+### Fixes
+- All occurrencies of CPvars replaced with cpvars
+
 ## [1.2.2] - 2019-10-11 v. 1.2.2
 ### Added
 - Icon on TinyMCE menu and setting page
+
 ### Bugfix
 - Transient for updates
 - Correct the slug for security menu

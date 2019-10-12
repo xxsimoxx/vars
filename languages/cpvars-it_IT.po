@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CPvars 0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cpvars\n"
-"POT-Creation-Date: 2019-10-02T13:50:33+02:00\n"
+"POT-Creation-Date: 2019-10-12T14:05:22+02:00\n"
 "PO-Revision-Date: 2019-07-25 11:09+0200\n"
 "Last-Translator: root <info@gieffeedizioni.it>\n"
 "Language-Team: Italian\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. translators: 1 is the number of user. 2 is the list of users
-#: cpvars.php:161 cpvars.php:300
+#: cpvars.php:153
 msgid "%1$d user has <i>%3$s</i> capability and so can change vars: %2$s."
 msgid_plural ""
 "%1$d users have <i>%3$s</i> capability and so can change vars: %2$s."
@@ -29,7 +29,7 @@ msgstr[1] ""
 "le variabili: %2$s."
 
 #. translators: 1 is the var not defined. 2 is the url of the admin page
-#: cpvars.php:325
+#: cpvars.php:313
 msgid ""
 "%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only you can see "
 "this message)"
@@ -37,23 +37,19 @@ msgstr ""
 "%1$s non &egrave; definito. Definiscilo <a href=\"%2$s\">qui</a>. (solo gli "
 "amministratori vedono questo messaggio)"
 
-#: cpvars.php:241
+#: cpvars.php:243
 msgid "Add"
 msgstr "Aggiungi"
 
-#. Plugin Name of the plugin
-msgid "CPvars"
-msgstr ""
-
-#: cpvars.php:143 cpvars.php:282
+#: cpvars.php:135
 msgid "Delete plugin data at uninstall."
 msgstr "Cancella i dati se il plugin viene disinstallato."
 
-#: cpvars.php:141 cpvars.php:280
+#: cpvars.php:133
 msgid "Do shortcodes anywhere."
 msgstr "Attiva shortcodes ovunque"
 
-#: cpvars.php:228
+#: cpvars.php:232
 msgid "Edit security settings"
 msgstr "Impostazioni di sicurezza"
 
@@ -61,10 +57,10 @@ msgstr "Impostazioni di sicurezza"
 msgid "Gieffe edizioni srl"
 msgstr ""
 
-#: cpvars.php:205
+#: cpvars.php:207
 msgid "HEADERTEXT"
 msgstr ""
-"<h2>CPvars</h2><h3>CPvars ti permette di definire associazioni nome-"
+"<h2>cpvars</h2><h3>Con cpvars definisci associazioni nome-"
 "contenuto</h3><p>Crea qui i campi con le associazioni (il contenuto può "
 "anche essere HTML). Poi, nelle tue pagine o articoli puoi inserire shortcode "
 "del tipo <span class='code'>[cpvars]nome[/cpvars]</span> che mostreranno il "
@@ -75,31 +71,47 @@ msgstr ""
 "p><p>Si integra con TinyMCE che avrà un menu apposito.</p>"
 
 #. Translators: %s is the new version available
-#: cpvars.php:64
+#: cpvars.php:57
 msgid "NEW v%s"
 msgstr "NUOVA v%s"
 
-#: cpvars.php:172 cpvars.php:305
+#: cpvars.php:262
+msgid "SECURITY_SETTINGS_PAGE_NAME"
+msgstr "cpvars"
+
+#: cpvars.php:260
+msgid "SECURITY_SETTINGS_PAGE_TITLE"
+msgstr "cpvars - impostazioni di sicurezza"
+
+#: cpvars.php:183
+msgid "SETTINGS_PAGE_NAME"
+msgstr "cpvars"
+
+#: cpvars.php:182
+msgid "SETTINGS_PAGE_TITLE"
+msgstr "cpvars - impostazioni"
+
+#: cpvars.php:169 cpvars.php:291
 msgid "Save"
 msgstr "Salva"
 
-#: cpvars.php:243
+#: cpvars.php:245
 msgid "Saved"
 msgstr "Salvato"
 
-#: cpvars.php:227
+#: cpvars.php:231
 msgid "Security settings"
 msgstr "Impostazioni di sicurezza"
 
-#: cpvars.php:276
+#: cpvars.php:285
 msgid "Security settings."
 msgstr "Impostazioni di sicurezza."
 
-#: cpvars.php:80
+#: cpvars.php:73
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: cpvars.php:144 cpvars.php:283
+#: cpvars.php:136
 msgid "User capability requested to edit vars:"
 msgstr "Capacit&agrave; richiesta per modificare le variabili:"
 
@@ -108,13 +120,17 @@ msgid "Vars in shortcodes"
 msgstr "Shortcodes con variabili"
 
 #. Translators: %s is the capability
-#: cpvars.php:132
+#: cpvars.php:124
 msgid "You don't have <b>%s</b> capability."
 msgstr "Non hai la capacit&agrave; <b>%s</b>."
 
-#: cpvars.php:174
+#: cpvars.php:171
 msgid "content"
 msgstr "contenuto"
+
+#. Plugin Name of the plugin
+msgid "cpvars"
+msgstr ""
 
 #. Plugin URI of the plugin
 msgid "https://github.com/xxsimoxx/cpvars"
@@ -124,6 +140,6 @@ msgstr ""
 msgid "https://www.gieffeedizioni.it/classicpress"
 msgstr ""
 
-#: cpvars.php:173
+#: cpvars.php:170
 msgid "name"
 msgstr "nome"

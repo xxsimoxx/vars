@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: CPvars
+ * Plugin Name: cpvars
  * Plugin URI: https://github.com/xxsimoxx/cpvars
  * Description: Vars in shortcodes 
- * Version: 1.2.2
+ * Version: 1.2.3-dev
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -20,16 +20,6 @@ if (!defined('ABSPATH')){
 add_action( 'plugins_loaded', 'cpvars_load_textdomain' );
 function cpvars_load_textdomain() {
 	load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
-}
-
-//helper function to log to console
-function xsx_log( $string, $echo = false ){
-	$message = '<script>console.log("' . $string . '")</script>';
-	if ( $echo ) {
-		echo $message;
-	} else {
-		return $message;
-	};
 }
 
 /**
@@ -187,7 +177,14 @@ function cpvars_admin_script( ) {
 add_action( 'admin_menu', 'cpvars_create_menu' );
 function cpvars_create_menu() {
 	if ( current_user_can( get_option( 'cpvars-whocanedit' ) ) ) {
-	   	$page=add_submenu_page( 'tools.php', 'CPvars', 'CPvars', get_option( 'cpvars-whocanedit' ),'cpvars', 'cpvars_settings_page' );
+	   	$page=add_submenu_page( 
+	   		'tools.php', 
+	   		__('SETTINGS_PAGE_TITLE', 'cpvars'), 
+	   		__('SETTINGS_PAGE_NAME', 'cpvars'), 
+	   		get_option( 'cpvars-whocanedit' ),
+	   		'cpvars',
+	   		'cpvars_settings_page'
+	   	);
 	}
 }
 
@@ -260,8 +257,9 @@ add_action( 'admin_menu', 'cpvars_create_security_menu' );
 function cpvars_create_security_menu(){
 	if ( function_exists( '\add_security_page' ) ) {
 		add_security_page(
-			'CPvars',
-			'CPvars',
+			__('SECURITY_SETTINGS_PAGE_TITLE', 'cpvars'),
+
+			__('SECURITY_SETTINGS_PAGE_NAME', 'cpvars'), 
 			dirname( plugin_basename( __FILE__ ) ),
 			'cpvars_security_page'
 		);
@@ -276,7 +274,14 @@ function cpvars_security_page() {
 	};
 	?>
 	<div class="wrap">
-	<h2>CPvars</h2>
+	<h2>cpvars</h2>
+	
+	<style>
+		h2::before {
+			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ )  ; ?>");
+			padding: 0 5px 0 0;
+		}
+	</style>
 	<h3><?php _e( 'Security settings.', 'cpvars' ); ?></h3>
 	<hr>
 	<form method="POST" id="cpvars-security"  >
