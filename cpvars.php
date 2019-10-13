@@ -3,7 +3,7 @@
  * Plugin Name: cpvars
  * Plugin URI: https://github.com/xxsimoxx/cpvars
  * Description: Vars in shortcodes 
- * Version: 1.2.3-dev
+ * Version: 1.2.3
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl

@@ -1,7 +1,8 @@
 # Changelog
-## [1.2.3] - ???
+## [1.2.3] - 2019-10-13 v. 1.2.3
 ### Fixes
 - All occurrencies of CPvars replaced with cpvars
+- PHP 7.4 compatibility
 
 ## [1.2.2] - 2019-10-11 v. 1.2.2
 ### Added
