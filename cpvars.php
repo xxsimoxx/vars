@@ -356,7 +356,7 @@ function cpvars_admin_head() {
 		if ( strlen( $value ) <= 10 ){
 			$example_data = $value;
 		} else {
-			$example_data = substr( $value, 0, 7) . "..." ;
+			$example_data = substr( $value, 0, 12) . "..." ;
 		};
 		$example_data = ' (' . $example_data . ')';
 		$cpvars_dynamic_mce .= 
