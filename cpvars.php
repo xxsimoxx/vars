@@ -162,7 +162,7 @@ function cpvars_render_security_settings( $errors ){ ?>
 add_action( 'admin_footer', 'cpvars_admin_script' );
 function cpvars_admin_script( ) {
 	$screen = get_current_screen(); 
-	if ( 'tools_page_cpvars' == $screen->id ){
+	if ( 'tools_page_cpvars-options' == $screen->id ){
 		wp_enqueue_script( 'cpvars_admin', plugins_url( 'js/cpvars-admin.js', __FILE__ ), array('jquery'), '1.0' );
 		wp_localize_script( 'cpvars_admin', 'objectL10n', 
 			array( 
@@ -182,9 +182,9 @@ function cpvars_create_menu() {
 	   		__('SETTINGS_PAGE_TITLE', 'cpvars'), 
 	   		__('SETTINGS_PAGE_NAME', 'cpvars'), 
 	   		get_option( 'cpvars-whocanedit' ),
-	   		'cpvars',
+	   		'cpvars-options',
 	   		'cpvars_settings_page'
-	   	);
+	   	);	
 	}
 }
 
@@ -307,7 +307,7 @@ function cpv( $atts, $content = null ) {
 		$filtered_retval = apply_filters( 'cpvars_output', $prefilter_retval );
 		return $filtered_retval;
 	} elseif ( current_user_can( get_option( 'cpvars-whocanedit' ) ) ) {
-		$url = admin_url( 'tools.php?page=cpvars' );
+		$url = admin_url( 'tools.php?page=cpvars-options' );
 		/* translators: 1 is the var not defined. 2 is the url of the admin page */
 		return sprintf ( __('%1$s is not defined. Define it <a href="%2$s">here</a>. (only you can see this message)', 'cpvars'), $content, $url );
 	} else {
