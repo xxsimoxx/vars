@@ -1,6 +1,7 @@
 # Changelog
 ## [1.2.4] 
 ### Fixes
+- Longer preview in TinyMCE button
 
 
 ## [1.2.3] - 2019-10-13 v. 1.2.3

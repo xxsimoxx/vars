@@ -12,7 +12,7 @@ It **integrates into TinyMCE** by adding a menu.
 
 You can choose which users can manage vars.
 
-Looh at the [screenshots](#screenshots).
+Look at the [screenshots](#screenshots).
 
 ## Shortcodes everywhere
 There is also an option (that affects every shortcode in your site) to **display shortcodes in areas where normally they are not**.
