@@ -258,7 +258,6 @@ function cpvars_create_security_menu(){
 	if ( function_exists( '\add_security_page' ) ) {
 		add_security_page(
 			__('SECURITY_SETTINGS_PAGE_TITLE', 'cpvars'),
-
 			__('SECURITY_SETTINGS_PAGE_NAME', 'cpvars'), 
 			dirname( plugin_basename( __FILE__ ) ),
 			'cpvars_security_page'
