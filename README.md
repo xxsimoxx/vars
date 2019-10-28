@@ -1,4 +1,4 @@
-# cpvars
+# vars
 
 ## With vars you can define name-value associations from the admin.
 

@@ -1,6 +1,8 @@
 # Changelog
-## [2.0.0] 
+## [1.3.0] 
 ### Plugin renamed from cpvars to vars
+- Renamed everything
+- Compatibility with older version settings
 
 ## [1.2.4] 
 ### Fixes
