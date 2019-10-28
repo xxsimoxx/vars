@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
  * Author URI: https://www.gieffeedizioni.it/classicpress
- * Text Domain: cpvars
+ * Text Domain: vars
  * GitHub Plugin URI: xxsimoxx/vars
 */
 
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')){
 // Load text domain
 add_action( 'plugins_loaded', 'vars_load_textdomain' );
 function vars_load_textdomain() {
-	load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
+	load_plugin_textdomain( 'vars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 
 /**
@@ -54,7 +54,7 @@ function xsx_update_link(){
 	};
 	if ( version_compare( $plugin_current_version, $plugin_installed_version , '>' ) ){
 		/*Translators: %s is the new version available */
-		$messagestring =  sprintf( __( "NEW v%s", "cpvars" ), $plugin_current_version );
+		$messagestring =  sprintf( __( "NEW v%s", "vars" ), $plugin_current_version );
 		return '<a target="_blank" href="https://www.github.com/' . $git_repo . '/releases/latest">' . $messagestring . '</a>';
 	} else {
 		return false;
@@ -121,7 +121,7 @@ function vars_save_security_settings( $admin_referer ){
 			
 			} else {
 				/*Translators: %s is the capability */
-				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'cpvars' ), $_POST["whocanedit"] ) . '</span>';
+				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), $_POST["whocanedit"] ) . '</span>';
 			}; 
 		};
 	};
@@ -130,10 +130,10 @@ function vars_save_security_settings( $admin_referer ){
 
 function vars_render_security_settings( $errors ){ ?>
 	<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'vars-doeverywhere' ) ){echo "checked='checked'";};?>> 
-	<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
+	<?php _e( 'Do shortcodes anywhere.', 'vars' )?> </input><br>
 	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'vars-cleanup' ) ){echo "checked='checked'";}; ?> >
-	<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input><br>
-	<?php _e( 'User capability requested to edit vars:', 'cpvars' )?>
+	<?php _e( 'Delete plugin data at uninstall.', 'vars' )?></input><br>
+	<?php _e( 'User capability requested to edit vars:', 'vars' )?>
 	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'vars-whocanedit' ) ; ?>">
 	<?php  
 		echo $errors;
@@ -150,7 +150,7 @@ function vars_render_security_settings( $errors ){ ?>
 		}
 		echo "<p>";
 		/* translators: 1 is the number of user. 2 is the list of users */
-		printf(_n('%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'cpvars'), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit' ) );
+		printf(_n('%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'vars'), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit' ) );
 		echo "</p><hr>";
 };
 
@@ -166,9 +166,9 @@ function vars_admin_script( ) {
 		wp_enqueue_script( 'vars_admin', plugins_url( 'js/vars-admin.js', __FILE__ ), array('jquery'), '1.0' );
 		wp_localize_script( 'vars_admin', 'objectL10n', 
 			array( 
-				'save'     => __( 'Save', 'cpvars' ),
-				'name'     => __( 'name', 'cpvars' ),
-				'content'  => __( 'content', 'cpvars' ),
+				'save'     => __( 'Save', 'vars' ),
+				'name'     => __( 'name', 'vars' ),
+				'content'  => __( 'content', 'vars' ),
 			) 
 		);
 	}
@@ -179,8 +179,8 @@ function vars_create_menu() {
 	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 	   	$page=add_submenu_page( 
 	   		'tools.php', 
-	   		__('SETTINGS_PAGE_TITLE', 'cpvars'), 
-	   		__('SETTINGS_PAGE_NAME', 'cpvars'), 
+	   		__('SETTINGS_PAGE_TITLE', 'vars'), 
+	   		__('SETTINGS_PAGE_NAME', 'vars'), 
 	   		get_option( 'vars-whocanedit' ),
 	   		'vars-options',
 	   		'vars_settings_page'
@@ -204,7 +204,7 @@ function vars_settings_page() {
 		parse_str( $coded_options, $testvars );
 	};
 	// text about plugin usage I prefer storing in the translations
-	$header = __("HEADERTEXT" , 'cpvars' );
+	$header = __("HEADERTEXT" , 'vars' );
 	?>
 	<style>
 		.form-table {
@@ -228,8 +228,8 @@ function vars_settings_page() {
 			vars_render_security_settings( $cap_error );
 		};
 	if ( current_user_can('manage_options') && function_exists( '\add_security_page' ) ) {
-		$security_link = '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . __( 'Security settings', 'cpvars' ) . '"><i class="dashicons-before dashicons-shield">';
-		echo $security_link . __( "Edit security settings",'cpvars') . '</i></a><hr>';
+		$security_link = '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . __( 'Security settings', 'vars' ) . '"><i class="dashicons-before dashicons-shield">';
+		echo $security_link . __( "Edit security settings",'vars') . '</i></a><hr>';
 	};
 	?>
 		<table class="form-table">
@@ -240,9 +240,9 @@ function vars_settings_page() {
 	}
 	?>
 		</table>
-	<button type="button" class="button button-large button-primary vars-add"><?php _e( 'Add', 'cpvars' ) ?></button>
+	<button type="button" class="button button-large button-primary vars-add"><?php _e( 'Add', 'vars' ) ?></button>
 		<?php wp_nonce_field( 'vars-admin' ); ?>
-		<input type="submit" value="<?php _e( 'Saved', 'cpvars' ) ?>" id="vars-submit" class="button button-primary button-large" disabled>
+		<input type="submit" value="<?php _e( 'Saved', 'vars' ) ?>" id="vars-submit" class="button button-primary button-large" disabled>
 	</form>
 	</div>
 	<?php 
@@ -257,8 +257,8 @@ add_action( 'admin_menu', 'vars_create_security_menu' );
 function vars_create_security_menu(){
 	if ( function_exists( '\add_security_page' ) ) {
 		add_security_page(
-			__('SECURITY_SETTINGS_PAGE_TITLE', 'cpvars'),
-			__('SECURITY_SETTINGS_PAGE_NAME', 'cpvars'), 
+			__('SECURITY_SETTINGS_PAGE_TITLE', 'vars'),
+			__('SECURITY_SETTINGS_PAGE_NAME', 'vars'), 
 			dirname( plugin_basename( __FILE__ ) ),
 			'vars_security_page'
 		);
@@ -281,13 +281,13 @@ function vars_security_page() {
 			padding: 0 5px 0 0;
 		}
 	</style>
-	<h3><?php _e( 'Security settings.', 'cpvars' ); ?></h3>
+	<h3><?php _e( 'Security settings.', 'vars' ); ?></h3>
 	<hr>
-	<form method="POST" id="cpvars-security"  >
+	<form method="POST" id="vars-security"  >
 	<?php
 		vars_render_security_settings( $cap_error );
 		wp_nonce_field( 'vars-security' ); ?>
-		<input type="submit" value="<?php _e( 'Save', 'cpvars' ) ?>" >
+		<input type="submit" value="<?php _e( 'Save', 'vars' ) ?>" >
 	</form>
 	</div>
 	<?php
@@ -310,9 +310,9 @@ function cpv( $atts, $content = null ) {
 		$filtered_retval = apply_filters( 'vars_output', apply_filters( 'cpvars_output', $prefilter_retval ) );
 		return $filtered_retval;
 	} elseif ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
-		$url = admin_url( 'tools.php?page=cpvars-options' );
+		$url = admin_url( 'tools.php?page=vars-options' );
 		/* translators: 1 is the var not defined. 2 is the url of the admin page */
-		return sprintf ( __('%1$s is not defined. Define it <a href="%2$s">here</a>. (only you can see this message)', 'cpvars'), $content, $url );
+		return sprintf ( __('%1$s is not defined. Define it <a href="%2$s">here</a>. (only you can see this message)', 'vars'), $content, $url );
 	} else {
 		return "";
 	}
@@ -359,7 +359,7 @@ foreach ( array('post.php','post-new.php') as $hook ) {
 function vars_admin_head() {
 	$coded_options = get_option( 'vars-vars' );
 	parse_str( $coded_options, $testvars );
-	$cpvars_dynamic_mce = "";
+	$vars_dynamic_mce = "";
 	foreach ( $testvars as $var => $value){
 		if ( strlen( $value ) <= 10 ){
 			$example_data = $value;
@@ -367,13 +367,13 @@ function vars_admin_head() {
 			$example_data = substr( $value, 0, 12) . "..." ;
 		};
 		$example_data = ' (' . $example_data . ')';
-		$cpvars_dynamic_mce .= 
+		$vars_dynamic_mce .= 
 			'{text: "' . $var . $example_data . '",onclick: function() {tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
 	};
-	$cpvars_dynamic_mce = '$cpvars_dynmenu=[' . $cpvars_dynamic_mce . ']';
+	$vars_dynamic_mce = '$vars_dynmenu=[' . $vars_dynamic_mce . ']';
 	?>
 	<script type='text/javascript'>
-		<?php echo $cpvars_dynamic_mce ?>
+		<?php echo $vars_dynamic_mce ?>
 	</script>
 	<?php
 }                 

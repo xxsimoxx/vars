@@ -1,9 +1,9 @@
 # cpvars
 
-## With cpvars you can define name-value associations from the admin.
+## With vars you can define name-value associations from the admin.
 
 Then, in your content you can insert
-`[cpvars]name[/cpvars]`
+`[vars]name[/vars]`
 and get _value_ displayed.
 
 Useful if you have a value (a phone number, number of employees) in several pages that can change, so you can change this once from the admin.
@@ -36,29 +36,29 @@ and you'll need to install the new version manually.
 If running ClassicPress 1.1.0 or newer those settings are moved to the Security menu: choose which users can manage vars, what to do with vars when uninstalling and apply shortcodes everywhere
 ### Functions
 If you would like to **use in your theme/plugin**
-`cpv_do(name)`
+`vars_do('name')`
 and get _value_ displayed.
 ### Filters
-There is a **filter** called *cpvars_output*
+There is a **filter** called *vars_output*
 
 An example to capitalize the output.
 ```php
-function cpvars_output_upper( $string ) {
+function vars_output_upper( $string ) {
     return strtoupper( $string );
 }
-add_filter( 'cpvars_output', 'cpvars_output_upper' );
+add_filter( 'vars_output', 'vars_output_upper' );
 ```
 An example to use it to **exec PHP code**. **Dangerous**, don't do it.
 You have to open and close php tags in your string.
 ```php
-function cpvars_output_exec_php( $string ) {
+function vars_output_exec_php( $string ) {
     ob_start();
     eval( "?>" . $string ."<?php" );
     $evalContent = ob_get_contents();
     ob_end_clean();
     return $evalContent;
 }
-add_filter( 'cpvars_output', 'cpvars_output_exec_php' );
+add_filter( 'vars_output', 'vars_output_exec_php' );
 ```
 
 <a name="screenshots"></a>

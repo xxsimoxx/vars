@@ -4,7 +4,7 @@
                  text: 'vars',
                  icon: 'code',
                  type: 'menubutton',
-                 menu: $cpvars_dynmenu
+                 menu: $vars_dynmenu
               });
         });
 })();

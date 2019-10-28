@@ -77,19 +77,19 @@ msgstr "NUOVA v%s"
 
 #: cpvars.php:262
 msgid "SECURITY_SETTINGS_PAGE_NAME"
-msgstr "cpvars"
+msgstr "vars"
 
 #: cpvars.php:260
 msgid "SECURITY_SETTINGS_PAGE_TITLE"
-msgstr "cpvars - impostazioni di sicurezza"
+msgstr "vars - impostazioni di sicurezza"
 
 #: cpvars.php:183
 msgid "SETTINGS_PAGE_NAME"
-msgstr "cpvars"
+msgstr "vars"
 
 #: cpvars.php:182
 msgid "SETTINGS_PAGE_TITLE"
-msgstr "cpvars - impostazioni"
+msgstr "vars - impostazioni"
 
 #: cpvars.php:169 cpvars.php:291
 msgid "Save"
