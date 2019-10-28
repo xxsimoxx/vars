@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: cpvars
- * Plugin URI: https://github.com/xxsimoxx/cpvars
+ * Plugin Name: vars
+ * Plugin URI: https://github.com/xxsimoxx/vars
  * Description: Vars in shortcodes 
  * Version: 2.0.0
  * License: GPL2
@@ -9,7 +9,7 @@
  * Author: Gieffe edizioni srl
  * Author URI: https://www.gieffeedizioni.it/classicpress
  * Text Domain: cpvars
- * GitHub Plugin URI: xxsimoxx/cpvars
+ * GitHub Plugin URI: xxsimoxx/vars
 */
 
 if (!defined('ABSPATH')){
@@ -17,8 +17,8 @@ if (!defined('ABSPATH')){
 };
 
 // Load text domain
-add_action( 'plugins_loaded', 'cpvars_load_textdomain' );
-function cpvars_load_textdomain() {
+add_action( 'plugins_loaded', 'vars_load_textdomain' );
+function vars_load_textdomain() {
 	load_plugin_textdomain( 'cpvars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 
@@ -67,10 +67,10 @@ function xsx_update_link(){
  * And an update available notice
  *
  */
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'cpvars_pal' );
-function cpvars_pal( $links ) {
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'vars_pal' );
+function vars_pal( $links ) {
 	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
-		$link = '<a href="' . admin_url( 'tools.php?page=cpvars-options' ) . '" title="' . __( 'Settings', 'cpvars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
+		$link = '<a href="' . admin_url( 'tools.php?page=vars-options' ) . '" title="' . __( 'Settings', 'vars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
 		array_unshift( $links, $link );
 		// add an update link if available
 		$update_link = xsx_update_link();
@@ -101,7 +101,7 @@ function vars_admin_style( $hook ){
  * Functions to handle and render options
  * 
  */
-function cpvars_save_security_settings( $admin_referer ){
+function vars_save_security_settings( $admin_referer ){
 	$error_string = "";
 	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( $admin_referer );
@@ -128,7 +128,7 @@ function cpvars_save_security_settings( $admin_referer ){
 	return $error_string;
 };
 
-function cpvars_render_security_settings( $errors ){ ?>
+function vars_render_security_settings( $errors ){ ?>
 	<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'vars-doeverywhere' ) ){echo "checked='checked'";};?>> 
 	<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
 	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'vars-cleanup' ) ){echo "checked='checked'";}; ?> >
@@ -162,7 +162,7 @@ function cpvars_render_security_settings( $errors ){ ?>
 add_action( 'admin_footer', 'vars_admin_script' );
 function vars_admin_script( ) {
 	$screen = get_current_screen(); 
-	if ( 'tools_page_cpvars-options' == $screen->id ){
+	if ( 'tools_page_vars-options' == $screen->id ){
 		wp_enqueue_script( 'vars_admin', plugins_url( 'js/vars-admin.js', __FILE__ ), array('jquery'), '1.0' );
 		wp_localize_script( 'vars_admin', 'objectL10n', 
 			array( 
@@ -174,30 +174,30 @@ function vars_admin_script( ) {
 	}
 }
 
-add_action( 'admin_menu', 'cpvars_create_menu' );
-function cpvars_create_menu() {
+add_action( 'admin_menu', 'vars_create_menu' );
+function vars_create_menu() {
 	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 	   	$page=add_submenu_page( 
 	   		'tools.php', 
 	   		__('SETTINGS_PAGE_TITLE', 'cpvars'), 
 	   		__('SETTINGS_PAGE_NAME', 'cpvars'), 
 	   		get_option( 'vars-whocanedit' ),
-	   		'cpvars-options',
-	   		'cpvars_settings_page'
+	   		'vars-options',
+	   		'vars_settings_page'
 	   	);	
 	}
 }
 
-function cpvars_settings_page() {
+function vars_settings_page() {
 	if ( ! current_user_can( get_option( 'vars-whocanedit' ) ) || false ) {
 		exit;
 	}
 	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
-		check_admin_referer( 'cpvars-admin' );
+		check_admin_referer( 'vars-admin' );
 		parse_str( $_POST["allvars"], $testvars );
 		update_option( 'vars-vars', $_POST["allvars"] );
-		if ( current_user_can('manage_options') ) {
-			$cap_error = cpvars_save_security_settings( 'cpvars-admin' );
+		if ( current_user_can( 'manage_options' ) ) {
+			$cap_error = vars_save_security_settings( 'vars-admin' );
 		};
 	} else {
 		$coded_options = get_option( 'vars-vars' );
@@ -225,10 +225,10 @@ function cpvars_settings_page() {
 	<form method="POST" id="vars-form"  >
 	<?php 
 		if ( current_user_can('manage_options') && ! function_exists( '\add_security_page' ) ){
-			cpvars_render_security_settings( $cap_error );
+			vars_render_security_settings( $cap_error );
 		};
 	if ( current_user_can('manage_options') && function_exists( '\add_security_page' ) ) {
-		$security_link = '<a href="' . admin_url( 'security.php?page=cpvars' ) . '" title="' . __( 'Security settings', 'cpvars' ) . '"><i class="dashicons-before dashicons-shield">';
+		$security_link = '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . __( 'Security settings', 'cpvars' ) . '"><i class="dashicons-before dashicons-shield">';
 		echo $security_link . __( "Edit security settings",'cpvars') . '</i></a><hr>';
 	};
 	?>
@@ -241,7 +241,7 @@ function cpvars_settings_page() {
 	?>
 		</table>
 	<button type="button" class="button button-large button-primary vars-add"><?php _e( 'Add', 'cpvars' ) ?></button>
-		<?php wp_nonce_field( 'cpvars-admin' ); ?>
+		<?php wp_nonce_field( 'vars-admin' ); ?>
 		<input type="submit" value="<?php _e( 'Saved', 'cpvars' ) ?>" id="vars-submit" class="button button-primary button-large" disabled>
 	</form>
 	</div>
@@ -253,27 +253,27 @@ function cpvars_settings_page() {
  * Admin section: add security page
  *
  */
-add_action( 'admin_menu', 'cpvars_create_security_menu' );
-function cpvars_create_security_menu(){
+add_action( 'admin_menu', 'vars_create_security_menu' );
+function vars_create_security_menu(){
 	if ( function_exists( '\add_security_page' ) ) {
 		add_security_page(
 			__('SECURITY_SETTINGS_PAGE_TITLE', 'cpvars'),
 			__('SECURITY_SETTINGS_PAGE_NAME', 'cpvars'), 
 			dirname( plugin_basename( __FILE__ ) ),
-			'cpvars_security_page'
+			'vars_security_page'
 		);
 	};
 };
 
-function cpvars_security_page() {
+function vars_security_page() {
 	$cap_error = "";
 	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
-		check_admin_referer( 'cpvars-security' );
-		$cap_error = cpvars_save_security_settings( 'cpvars-security' );		
+		check_admin_referer( 'vars-security' );
+		$cap_error = vars_save_security_settings( 'vars-security' );		
 	};
 	?>
 	<div class="wrap">
-	<h2>cpvars</h2>
+	<h2>vars</h2>
 	
 	<style>
 		h2::before {
@@ -285,8 +285,8 @@ function cpvars_security_page() {
 	<hr>
 	<form method="POST" id="cpvars-security"  >
 	<?php
-		cpvars_render_security_settings( $cap_error );
-		wp_nonce_field( 'cpvars-security' ); ?>
+		vars_render_security_settings( $cap_error );
+		wp_nonce_field( 'vars-security' ); ?>
 		<input type="submit" value="<?php _e( 'Save', 'cpvars' ) ?>" >
 	</form>
 	</div>
@@ -308,6 +308,7 @@ function cpv( $atts, $content = null ) {
 	if ( isset( $testvars[$content] ) ){
 		$prefilter_retval = $testvars[$content];
 		$filtered_retval = apply_filters( 'cpvars_output', $prefilter_retval );
+		$filtered_retval = apply_filters( 'vars_output', $prefilter_retval );
 		return $filtered_retval;
 	} elseif ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		$url = admin_url( 'tools.php?page=cpvars-options' );
@@ -333,7 +334,7 @@ function vars_do ( $var ){
  *
  */
 if ( 1 == get_option( 'vars-doeverywhere' ) ){
-	$cpvars_shortcodeseverywhere_pryority = 10;
+	$vars_shortcodeseverywhere_pryority = 10;
 	$tags = [
 		'single_post_title',
 		'the_title',
@@ -343,7 +344,7 @@ if ( 1 == get_option( 'vars-doeverywhere' ) ){
 		'get_post_metadata'
 	];
 	foreach ( $tags as $tag ){
-		add_filter( $tag, 'do_shortcode', $cpvars_shortcodeseverywhere_pryority );
+		add_filter( $tag, 'do_shortcode', $vars_shortcodeseverywhere_pryority );
 	}
 }
 
@@ -353,10 +354,10 @@ if ( 1 == get_option( 'vars-doeverywhere' ) ){
  *
  */
 foreach ( array('post.php','post-new.php') as $hook ) {
-	add_action( "admin_head-$hook", 'cpvars_admin_head' );
+	add_action( "admin_head-$hook", 'vars_admin_head' );
 }
 
-function cpvars_admin_head() {
+function vars_admin_head() {
 	$coded_options = get_option( 'vars-vars' );
 	parse_str( $coded_options, $testvars );
 	$cpvars_dynamic_mce = "";
@@ -404,8 +405,8 @@ function vars_add_tinymce_plugin( $plugin_array ) {
  * activation and uninstall hooks
  *
  */
-register_uninstall_hook( __FILE__, 'cpvars_cleanup' );
-function cpvars_cleanup (){
+register_uninstall_hook( __FILE__, 'vars_cleanup' );
+function vars_cleanup (){
 	if ( 1 == get_option( 'vars-cleanup' ) ){
 		delete_option( 'vars-cleanup' );
 		delete_option( 'vars-doeverywhere' );
@@ -414,8 +415,8 @@ function cpvars_cleanup (){
 	}
 }
 
-register_activation_hook( __FILE__, 'cpvars_activate' );
-function cpvars_activate() {
+register_activation_hook( __FILE__, 'vars_activate' );
+function vars_activate() {
 	# Migrate options from old name
     if ( get_option( 'cpvars-whocanedit' ) ){
     	update_option( 'vars-whocanedit', get_option( 'cpvars-whocanedit' ) );
