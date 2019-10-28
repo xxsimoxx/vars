@@ -87,11 +87,11 @@ function cpvars_pal( $links ) {
  * This is for backward compatibility.
  *
  */
-add_action('admin_enqueue_scripts', 'cpvars_admin_style');
-function cpvars_admin_style( $hook ){
+add_action('admin_enqueue_scripts', 'vars_admin_style');
+function vars_admin_style( $hook ){
 	if ( ! function_exists( 'classicpress_version' ) || version_compare( '1.1.0', classicpress_version() , '>' )  ){
 	if ( 'plugins.php' == $hook ){
-			wp_enqueue_style( 'cpvars_compatibility_css', plugins_url( 'css/cpvars-compatibility.css', __FILE__ ) );
+			wp_enqueue_style( 'vars_compatibility_css', plugins_url( 'css/vars-compatibility.css', __FILE__ ) );
 		}
 	}
 }
@@ -159,12 +159,12 @@ function cpvars_render_security_settings( $errors ){ ?>
  * Admin section: add a sumbenu to the tools menu
  * 
  */
-add_action( 'admin_footer', 'cpvars_admin_script' );
-function cpvars_admin_script( ) {
+add_action( 'admin_footer', 'vars_admin_script' );
+function vars_admin_script( ) {
 	$screen = get_current_screen(); 
 	if ( 'tools_page_cpvars-options' == $screen->id ){
-		wp_enqueue_script( 'cpvars_admin', plugins_url( 'js/cpvars-admin.js', __FILE__ ), array('jquery'), '1.0' );
-		wp_localize_script( 'cpvars_admin', 'objectL10n', 
+		wp_enqueue_script( 'vars_admin', plugins_url( 'js/vars-admin.js', __FILE__ ), array('jquery'), '1.0' );
+		wp_localize_script( 'vars_admin', 'objectL10n', 
 			array( 
 				'save'     => __( 'Save', 'cpvars' ),
 				'name'     => __( 'name', 'cpvars' ),
@@ -222,7 +222,7 @@ function cpvars_settings_page() {
 	<div class="wrap">
 	<?php echo $header ; ?>
 	<hr>
-	<form method="POST" id="cpvars-form"  >
+	<form method="POST" id="vars-form"  >
 	<?php 
 		if ( current_user_can('manage_options') && ! function_exists( '\add_security_page' ) ){
 			cpvars_render_security_settings( $cap_error );
@@ -235,14 +235,14 @@ function cpvars_settings_page() {
 		<table class="form-table">
 	<?php
 	foreach ( $testvars as $key => $value ){
-		echo '<tr valign="top" class="cpvars-keyvalue"><td ><input type="text" size="20" class="cpvars-key" value="' . $key . '" /></td>';
-		echo '<td ><input type="text" size="100" class="cpvars-value" value="' . htmlspecialchars( $value ) . '" /></td><td><a class="dashicons dashicons-trash cpvars-delete"></a></td></tr>'; 
+		echo '<tr valign="top" class="vars-keyvalue"><td ><input type="text" size="20" class="vars-key" value="' . $key . '" /></td>';
+		echo '<td ><input type="text" size="100" class="vars-value" value="' . htmlspecialchars( $value ) . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>'; 
 	}
 	?>
 		</table>
-	<button type="button" class="button button-large button-primary  cpvars-add"><?php _e( 'Add', 'cpvars' ) ?></button>
+	<button type="button" class="button button-large button-primary vars-add"><?php _e( 'Add', 'cpvars' ) ?></button>
 		<?php wp_nonce_field( 'cpvars-admin' ); ?>
-		<input type="submit" value="<?php _e( 'Saved', 'cpvars' ) ?>" id="cpvars-submit" class="button button-primary button-large" disabled>
+		<input type="submit" value="<?php _e( 'Saved', 'cpvars' ) ?>" id="vars-submit" class="button button-primary button-large" disabled>
 	</form>
 	</div>
 	<?php 
@@ -298,7 +298,10 @@ function cpvars_security_page() {
  * shortcode section
  *
  */
+ # left for compatibility
 add_shortcode('cpv', 'cpv');
+
+add_shortcode('vars', 'cpv');
 function cpv( $atts, $content = null ) {
 	$coded_options = get_option( 'vars-vars' );
 	parse_str( $coded_options, $testvars );
@@ -315,7 +318,12 @@ function cpv( $atts, $content = null ) {
 	}
 }
 
+# left for compatibility
 function cpv_do ( $var ){
+	return cpv( '', $var );
+};
+
+function vars_do ( $var ){
 	return cpv( '', $var );
 };
 
@@ -360,7 +368,7 @@ function cpvars_admin_head() {
 		};
 		$example_data = ' (' . $example_data . ')';
 		$cpvars_dynamic_mce .= 
-			'{text: "' . $var . $example_data . '",onclick: function() {tinymce.activeEditor.insertContent("[cpv]' . $var . '[/cpv]"); }},';
+			'{text: "' . $var . $example_data . '",onclick: function() {tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
 	};
 	$cpvars_dynamic_mce = '$cpvars_dynmenu=[' . $cpvars_dynamic_mce . ']';
 	?>
@@ -370,24 +378,24 @@ function cpvars_admin_head() {
 	<?php
 }                 
 
-add_action('admin_head', 'cpvars_add_mce_menu');
-function cpvars_add_mce_menu() {
+add_action('admin_head', 'vars_add_mce_menu');
+function vars_add_mce_menu() {
 	if ( !current_user_can( 'edit_posts' ) &&  !current_user_can( 'edit_pages' ) ) {
 		return;
 	}
 	if ( 'true' == get_user_option( 'rich_editing' ) ) {
-		add_filter( 'mce_external_plugins', 'cpvars_add_tinymce_plugin' );
-		add_filter( 'mce_buttons', 'cpvars_register_mce_menu' );
+		add_filter( 'mce_external_plugins', 'vars_add_tinymce_plugin' );
+		add_filter( 'mce_buttons', 'vars_register_mce_menu' );
 	}
 }
 
-function cpvars_register_mce_menu( $buttons ) {
-	array_push( $buttons, 'cpvars_mce_menu' );
+function vars_register_mce_menu( $buttons ) {
+	array_push( $buttons, 'vars_mce_menu' );
 	return $buttons;
 }
 
-function cpvars_add_tinymce_plugin( $plugin_array ) {
-	$plugin_array['cpvars_mce_menu'] = plugins_url( 'js/cpvars-mce-menu.js', __FILE__ );
+function vars_add_tinymce_plugin( $plugin_array ) {
+	$plugin_array['vars_mce_menu'] = plugins_url( 'js/vars-mce-menu.js', __FILE__ );
 	return $plugin_array;
 }
 

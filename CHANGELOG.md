@@ -1,6 +1,6 @@
 # Changelog
 ## [2.0.0] 
-### Fixes
+### Plugin renamed from cpvars to vars
 - Longer preview in TinyMCE button
 - Fixed tools menu slug
 
