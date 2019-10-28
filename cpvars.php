@@ -70,7 +70,7 @@ function xsx_update_link(){
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'cpvars_pal' );
 function cpvars_pal( $links ) {
 	if ( current_user_can( get_option( 'cpvars-whocanedit' ) ) ) {
-		$link = '<a href="' . admin_url( 'tools.php?page=cpvars' ) . '" title="' . __( 'Settings', 'cpvars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
+		$link = '<a href="' . admin_url( 'tools.php?page=cpvars-options' ) . '" title="' . __( 'Settings', 'cpvars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
 		array_unshift( $links, $link );
 		// add an update link if available
 		$update_link = xsx_update_link();
