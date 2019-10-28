@@ -3,7 +3,7 @@
  * Plugin Name: cpvars
  * Plugin URI: https://github.com/xxsimoxx/cpvars
  * Description: Vars in shortcodes 
- * Version: 1.2.4
+ * Version: 2.0.0
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -69,7 +69,7 @@ function xsx_update_link(){
  */
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'cpvars_pal' );
 function cpvars_pal( $links ) {
-	if ( current_user_can( get_option( 'cpvars-whocanedit' ) ) ) {
+	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		$link = '<a href="' . admin_url( 'tools.php?page=cpvars-options' ) . '" title="' . __( 'Settings', 'cpvars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
 		array_unshift( $links, $link );
 		// add an update link if available
@@ -77,8 +77,8 @@ function cpvars_pal( $links ) {
 		if ( $update_link ){
 			array_push( $links, $update_link );
 		};
-		return $links;
 	}
+	return $links;
 }
 
 /*
@@ -106,18 +106,18 @@ function cpvars_save_security_settings( $admin_referer ){
 	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( $admin_referer );
 		if ( isset( $_POST["doeverywhere"] )  ){
-			update_option( 'cpvars-doeverywhere', 1 );
+			update_option( 'vars-doeverywhere', 1 );
 		} else {
-			update_option( 'cpvars-doeverywhere', 0 );
+			update_option( 'vars-doeverywhere', 0 );
 		};
 		if ( isset( $_POST["cleanup"] )  ){
-			update_option( 'cpvars-cleanup', 1 );
+			update_option( 'vars-cleanup', 1 );
 		} else {
-			update_option( 'cpvars-cleanup', 0 );
+			update_option( 'vars-cleanup', 0 );
 		};
 		if ( isset( $_POST["whocanedit"] )  ){
 			if ( current_user_can( $_POST["whocanedit"] ) ) {
-				update_option( 'cpvars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST["whocanedit"] ) );
+				update_option( 'vars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST["whocanedit"] ) );
 			
 			} else {
 				/*Translators: %s is the capability */
@@ -129,12 +129,12 @@ function cpvars_save_security_settings( $admin_referer ){
 };
 
 function cpvars_render_security_settings( $errors ){ ?>
-	<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'cpvars-doeverywhere' ) ){echo "checked='checked'";};?>> 
+	<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'vars-doeverywhere' ) ){echo "checked='checked'";};?>> 
 	<?php _e( 'Do shortcodes anywhere.', 'cpvars' )?> </input><br>
-	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'cpvars-cleanup' ) ){echo "checked='checked'";}; ?> >
+	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'vars-cleanup' ) ){echo "checked='checked'";}; ?> >
 	<?php _e( 'Delete plugin data at uninstall.', 'cpvars' )?></input><br>
 	<?php _e( 'User capability requested to edit vars:', 'cpvars' )?>
-	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'cpvars-whocanedit' ) ; ?>">
+	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'vars-whocanedit' ) ; ?>">
 	<?php  
 		echo $errors;
 		// let's see who can change the vars
@@ -143,14 +143,14 @@ function cpvars_render_security_settings( $errors ){ ?>
 		$userlist = "";
 		foreach($users as $user_id) {
 			$meta = get_user_meta ( $user_id->ID );
-			if ( user_can( $user_id->ID, get_option( 'cpvars-whocanedit' ) ) ) {
+			if ( user_can( $user_id->ID, get_option( 'vars-whocanedit' ) ) ) {
 				$count++;
 				$userlist .= $meta['nickname'][0] . ", ";
 			};
 		}
 		echo "<p>";
 		/* translators: 1 is the number of user. 2 is the list of users */
-		printf(_n('%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'cpvars'), $count, rtrim( $userlist, ', ' ), get_option( 'cpvars-whocanedit' ) );
+		printf(_n('%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'cpvars'), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit' ) );
 		echo "</p><hr>";
 };
 
@@ -176,12 +176,12 @@ function cpvars_admin_script( ) {
 
 add_action( 'admin_menu', 'cpvars_create_menu' );
 function cpvars_create_menu() {
-	if ( current_user_can( get_option( 'cpvars-whocanedit' ) ) ) {
+	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 	   	$page=add_submenu_page( 
 	   		'tools.php', 
 	   		__('SETTINGS_PAGE_TITLE', 'cpvars'), 
 	   		__('SETTINGS_PAGE_NAME', 'cpvars'), 
-	   		get_option( 'cpvars-whocanedit' ),
+	   		get_option( 'vars-whocanedit' ),
 	   		'cpvars-options',
 	   		'cpvars_settings_page'
 	   	);	
@@ -189,18 +189,18 @@ function cpvars_create_menu() {
 }
 
 function cpvars_settings_page() {
-	if ( ! current_user_can( get_option( 'cpvars-whocanedit' ) ) || false ) {
+	if ( ! current_user_can( get_option( 'vars-whocanedit' ) ) || false ) {
 		exit;
 	}
 	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
 		check_admin_referer( 'cpvars-admin' );
 		parse_str( $_POST["allvars"], $testvars );
-		update_option( 'cpvars-vars', $_POST["allvars"] );
+		update_option( 'vars-vars', $_POST["allvars"] );
 		if ( current_user_can('manage_options') ) {
 			$cap_error = cpvars_save_security_settings( 'cpvars-admin' );
 		};
 	} else {
-		$coded_options = get_option( 'cpvars-vars' );
+		$coded_options = get_option( 'vars-vars' );
 		parse_str( $coded_options, $testvars );
 	};
 	// text about plugin usage I prefer storing in the translations
@@ -300,13 +300,13 @@ function cpvars_security_page() {
  */
 add_shortcode('cpv', 'cpv');
 function cpv( $atts, $content = null ) {
-	$coded_options = get_option( 'cpvars-vars' );
+	$coded_options = get_option( 'vars-vars' );
 	parse_str( $coded_options, $testvars );
 	if ( isset( $testvars[$content] ) ){
 		$prefilter_retval = $testvars[$content];
 		$filtered_retval = apply_filters( 'cpvars_output', $prefilter_retval );
 		return $filtered_retval;
-	} elseif ( current_user_can( get_option( 'cpvars-whocanedit' ) ) ) {
+	} elseif ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		$url = admin_url( 'tools.php?page=cpvars-options' );
 		/* translators: 1 is the var not defined. 2 is the url of the admin page */
 		return sprintf ( __('%1$s is not defined. Define it <a href="%2$s">here</a>. (only you can see this message)', 'cpvars'), $content, $url );
@@ -324,7 +324,7 @@ function cpv_do ( $var ){
  * do shortcodes everywhere section
  *
  */
-if ( 1 == get_option( 'cpvars-doeverywhere' ) ){
+if ( 1 == get_option( 'vars-doeverywhere' ) ){
 	$cpvars_shortcodeseverywhere_pryority = 10;
 	$tags = [
 		'single_post_title',
@@ -349,7 +349,7 @@ foreach ( array('post.php','post-new.php') as $hook ) {
 }
 
 function cpvars_admin_head() {
-	$coded_options = get_option( 'cpvars-vars' );
+	$coded_options = get_option( 'vars-vars' );
 	parse_str( $coded_options, $testvars );
 	$cpvars_dynamic_mce = "";
 	foreach ( $testvars as $var => $value){
@@ -398,18 +398,30 @@ function cpvars_add_tinymce_plugin( $plugin_array ) {
  */
 register_uninstall_hook( __FILE__, 'cpvars_cleanup' );
 function cpvars_cleanup (){
-	if ( 1 == get_option( 'cpvars-cleanup' ) ){
-		delete_option( 'cpvars-cleanup' );
-		delete_option( 'cpvars-doeverywhere' );
-		delete_option( 'cpvars-vars' );
-		delete_option( 'cpvars-whocanedit' );
+	if ( 1 == get_option( 'vars-cleanup' ) ){
+		delete_option( 'vars-cleanup' );
+		delete_option( 'vars-doeverywhere' );
+		delete_option( 'vars-vars' );
+		delete_option( 'vars-whocanedit' );
 	}
 }
 
 register_activation_hook( __FILE__, 'cpvars_activate' );
 function cpvars_activate() {
-    if ( !get_option( 'cpvars-whocanedit' ) || true){
-    	update_option ( 'cpvars-whocanedit', 'manage_options');
+	# Migrate options from old name
+    if ( get_option( 'cpvars-whocanedit' ) ){
+    	update_option( 'vars-whocanedit', get_option( 'cpvars-whocanedit' ) );
+    	update_option( 'vars-cleanup', get_option( 'cpvars-cleanup' ) );
+    	update_option( 'vars-doeverywhere', get_option( 'cpvars-doeverywhere' ) );
+    	update_option( 'vars-vars', get_option( 'cpvars-vars' ) );
+		delete_option( 'cpvars-cleanup' );
+		delete_option( 'cpvars-doeverywhere' );
+		delete_option( 'cpvars-vars' );
+		delete_option( 'cpvars-whocanedit' );
+    };
+    
+    if ( ! get_option( 'vars-whocanedit' ) ){
+    	update_option ( 'vars-whocanedit', 'manage_options');
     };
 }
 

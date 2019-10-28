@@ -1,8 +1,13 @@
 # Changelog
+## [2.0.0] 
+### Fixes
+- Longer preview in TinyMCE button
+- Fixed tools menu slug
+
 ## [1.2.4] 
 ### Fixes
 - Longer preview in TinyMCE button
-- fixed tools menu slug
+- Fixed tools menu slug
 
 
 ## [1.2.3] - 2019-10-13 v. 1.2.3
