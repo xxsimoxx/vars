@@ -1,0 +1,143 @@
+# Copyright (C) 2019 Gieffe edizioni srl
+# This file is distributed under the same license as the cpvars plugin.
+msgid ""
+msgstr ""
+"Last-Translator: root <simone@gieffeedizioni.it>\n"
+"Language-Team: Italian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2019-10-12T14:05:22+02:00\n"
+"PO-Revision-Date: 2019-10-28 17:18+0100\n"
+"X-Generator: WP-CLI 2.3.0\n"
+"X-Domain: vars\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+msgid "vars"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/xxsimoxx/vars"
+msgstr ""
+
+#. Description of the plugin
+msgid "Vars in shortcodes"
+msgstr "Shortcodes con variabili"
+
+#. Author of the plugin
+msgid "Gieffe edizioni srl"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.gieffeedizioni.it/classicpress"
+msgstr ""
+
+#. Translators: %s is the new version available
+#: cpvars.php:57
+msgid "NEW v%s"
+msgstr "NUOVA v%s"
+
+#: cpvars.php:73
+msgid "Settings"
+msgstr "Impostazioni"
+
+#. Translators: %s is the capability
+#: cpvars.php:124
+msgid "You don't have <b>%s</b> capability."
+msgstr "Non hai la capacit&agrave; <b>%s</b>."
+
+#: cpvars.php:133
+msgid "Do shortcodes anywhere."
+msgstr "Attiva shortcodes ovunque."
+
+#: cpvars.php:135
+msgid "Delete plugin data at uninstall."
+msgstr "Cancella i dati se il plugin viene disinstallato."
+
+#: cpvars.php:136
+msgid "User capability requested to edit vars:"
+msgstr "Capacit&agrave; richiesta per modificare le variabili:"
+
+#. translators: 1 is the number of user. 2 is the list of users
+#: cpvars.php:153
+msgid "%1$d user has <i>%3$s</i> capability and so can change vars: %2$s."
+msgid_plural ""
+"%1$d users have <i>%3$s</i> capability and so can change vars: %2$s."
+msgstr[0] ""
+"%1$d utente ha la capacit&agrave; <i>%3$s</i> e quindi pu&ograve; cambiare "
+"le variabili: %2$s."
+msgstr[1] ""
+"%1$d utenti hanno la capacit&agrave; <i>%3$s</i> e quindi possono cambiare "
+"le variabili: %2$s."
+
+#: cpvars.php:169 cpvars.php:291
+msgid "Save"
+msgstr "Salva"
+
+#: cpvars.php:170
+msgid "name"
+msgstr "nome"
+
+#: cpvars.php:171
+msgid "content"
+msgstr "contenuto"
+
+#: cpvars.php:182
+msgid "SETTINGS_PAGE_TITLE"
+msgstr "vars - impostazioni"
+
+#: cpvars.php:183
+msgid "SETTINGS_PAGE_NAME"
+msgstr "Vars"
+
+#: cpvars.php:207
+msgid "HEADERTEXT"
+msgstr ""
+"<h2>cpvars</h2><h3>Con cpvars definisci associazioni nome-"
+"contenuto</h3><p>Crea qui i campi con le associazioni (il contenuto può "
+"anche essere HTML). Poi, nelle tue pagine o articoli puoi inserire shortcode "
+"del tipo <span class='code'>[cpvars]nome[/cpvars]</span> che mostreranno il "
+"contenuto.</p> <p>Utile se avete dei valori che possono cambiare (un numero "
+"di telefono, il numero di dipendenti) in molte pagine, così da cambiarli una "
+"sola volta da questa pagina.</p><p>C'è anche un opzione per poter utilizzare "
+"gli shortcode anche in aree in cui normalmente non vengono interpretati.</"
+"p><p>Si integra con TinyMCE che avrà un menu apposito.</p>"
+
+#: cpvars.php:231
+msgid "Security settings"
+msgstr "Impostazioni di sicurezza"
+
+#: cpvars.php:232
+msgid "Edit security settings"
+msgstr "Cambia impostazioni di sicurezza"
+
+#: cpvars.php:243
+msgid "Add"
+msgstr "Aggiungi"
+
+#: cpvars.php:245
+msgid "Saved"
+msgstr "Salvato"
+
+#: cpvars.php:260
+msgid "SECURITY_SETTINGS_PAGE_TITLE"
+msgstr "vars - impostazioni di sicurezza"
+
+#: cpvars.php:262
+msgid "SECURITY_SETTINGS_PAGE_NAME"
+msgstr "Vars"
+
+#: cpvars.php:285
+msgid "Security settings."
+msgstr "Impostazioni di sicurezza."
+
+#. translators: 1 is the var not defined. 2 is the url of the admin page
+#: cpvars.php:313
+msgid ""
+"%1$s is not defined. Define it <a href=\"%2$s\">here</a>. (only you can see "
+"this message)"
+msgstr ""
+"%1$s non &egrave; definito. Definiscilo <a href=\"%2$s\">qui</a>. (solo gli "
+"amministratori vedono questo messaggio)"
