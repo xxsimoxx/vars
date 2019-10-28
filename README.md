@@ -12,6 +12,8 @@ It **integrates into TinyMCE** by adding a menu.
 
 You can choose which users can manage vars.
 
+Look at the [screenshots](#screenshots).
+
 ## Shortcodes everywhere
 There is also an option (that affects every shortcode in your site) to **display shortcodes in areas where normally they are not**.
 
@@ -59,5 +61,11 @@ function cpvars_output_exec_php( $string ) {
 add_filter( 'cpvars_output', 'cpvars_output_exec_php' );
 ```
 
+<a name="screenshots"></a>
+## Screenshots
+![Editing vars](img/edit-vars.jpg)
 
+![TinyMCE buttons](img/tinymce.jpg)
+
+![Security settings](img/security-settings.jpg)
 
