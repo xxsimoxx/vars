@@ -307,8 +307,7 @@ function cpv( $atts, $content = null ) {
 	parse_str( $coded_options, $testvars );
 	if ( isset( $testvars[$content] ) ){
 		$prefilter_retval = $testvars[$content];
-		$filtered_retval = apply_filters( 'cpvars_output', $prefilter_retval );
-		$filtered_retval = apply_filters( 'vars_output', $prefilter_retval );
+		$filtered_retval = apply_filters( 'vars_output', apply_filters( 'cpvars_output', $prefilter_retval ) );
 		return $filtered_retval;
 	} elseif ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		$url = admin_url( 'tools.php?page=cpvars-options' );
