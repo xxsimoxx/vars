@@ -3,7 +3,7 @@
  * Plugin Name: vars
  * Plugin URI: https://github.com/xxsimoxx/vars
  * Description: Vars in shortcodes 
- * Version: 1.3.0
+ * Version: 1.3.0-alpha.1
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -246,6 +246,8 @@ function vars_settings_page() {
 	</form>
 	</div>
 	<?php 
+	
+	echo dirname( plugin_basename( __FILE__ ) );
 } 
 
 /**
