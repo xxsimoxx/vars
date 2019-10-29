@@ -3,7 +3,7 @@
  * Plugin Name: vars
  * Plugin URI: https://github.com/xxsimoxx/vars
  * Description: Vars in shortcodes 
- * Version: 1.3.0-alpha.1
+ * Version: 1.3.0
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -417,7 +417,7 @@ function vars_cleanup (){
 register_activation_hook( __FILE__, 'vars_activate' );
 function vars_activate() {
 	# Migrate options from old name
-    if ( get_option( 'cpvars-whocanedit' ) ){
+    if ( get_option( 'cpvars-whocanedit' ) && ! get_option( 'vars-whocanedit' )){
     	update_option( 'vars-whocanedit', get_option( 'cpvars-whocanedit' ) );
     	update_option( 'vars-cleanup', get_option( 'cpvars-cleanup' ) );
     	update_option( 'vars-doeverywhere', get_option( 'cpvars-doeverywhere' ) );
@@ -427,7 +427,7 @@ function vars_activate() {
 		delete_option( 'cpvars-vars' );
 		delete_option( 'cpvars-whocanedit' );
     };
-    if ( ! get_option( 'vars-whocanedit' ) ){
+    if ( FALSE === get_option( 'vars-whocanedit' ) ){
     	update_option ( 'vars-whocanedit', 'manage_options');
     };
 }
