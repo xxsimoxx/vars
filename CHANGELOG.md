@@ -1,14 +1,12 @@
 # Changelog
-## [1.3.0] 
+## [1.3.0] - 2019-10-29 v. 1.3.0
 ### Plugin renamed from cpvars to vars
+When you upgrade from a previous version to 1.3.0, please deactivate and reactivate the plugin to be sure that the migration is complete.
 - Renamed everything
 - Compatibility with older version settings
-
-## [1.2.4] 
 ### Fixes
 - Longer preview in TinyMCE button
 - Fixed tools menu slug
-
 
 ## [1.2.3] - 2019-10-13 v. 1.2.3
 ### Fixes
