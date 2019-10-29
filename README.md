@@ -29,6 +29,8 @@ This plugin supports [GitHub Updater](https://github.com/afragen/github-updater)
 This allows to upgrade to the latest code.
 If not installed, you will be noticed about new releases on the plugin page,
 and you'll need to install the new version manually.
+### Updating to 1.3.0
+In some conditions you may have to deactivate-reactivate the plugin two times for thing to work best.
 
 
 ## Integration
