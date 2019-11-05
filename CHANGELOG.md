@@ -1,4 +1,7 @@
 # Changelog
+## [1.3.0] - ??? v. 1.3.1
+### Fixes
+- Ugly row meta when GitHub Updater is active
 ## [1.3.0] - 2019-10-29 v. 1.3.0
 ### Plugin renamed from cpvars to vars
 When you upgrade from a previous version to 1.3.0, please deactivate and reactivate the plugin to be sure that the migration is complete.

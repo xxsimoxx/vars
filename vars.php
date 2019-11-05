@@ -3,14 +3,14 @@
  * Plugin Name: vars
  * Plugin URI: https://github.com/xxsimoxx/vars
  * Description: Vars in shortcodes 
- * Version: 1.3.0
+ * Version: 1.3.1
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
  * Author URI: https://www.gieffeedizioni.it/classicpress
  * Text Domain: vars
  * GitHub Plugin URI: xxsimoxx/vars
-*/
+ */
 
 if (!defined('ABSPATH')){
 	die('-1');
@@ -79,6 +79,21 @@ function vars_pal( $links ) {
 		};
 	}
 	return $links;
+}
+
+/*
+ *
+ * Remove "view details" until it get interesting with CP 2 plugin directory
+ *
+ */
+ 
+add_filter( 'plugin_row_meta', 'vars_hide_view_details', 10, 4 );
+function vars_hide_view_details( $plugin_meta, $plugin_file, $plugin_data, $status ){
+	if($plugin_data['Name'] == 'vars'){
+		array_push( $plugin_meta, $plugin_meta[2] );
+		unset($plugin_meta[2]);
+	}
+	return $plugin_meta;
 }
 
 /*
