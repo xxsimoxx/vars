@@ -66,9 +66,9 @@ add_filter( 'vars_output', 'vars_output_exec_php' );
 
 <a name="screenshots"></a>
 ## Screenshots
-![Editing vars](img/edit-vars.jpg)
+![Editing vars](assets/edit-vars.jpg)
 
-![TinyMCE buttons](img/tinymce.jpg)
+![TinyMCE buttons](assets/tinymce.jpg)
 
-![Security settings](img/security-settings.jpg)
+![Security settings](assets/security-settings.jpg)
 
