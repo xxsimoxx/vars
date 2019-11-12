@@ -1,5 +1,8 @@
 # Changelog
-## [1.3.0] - ??? v. 1.3.1
+## [1.3.1] - ??? v. 1.3.1
+### Deprecated
+- `function cpv_do ( $var )` better use `vars_do`
+- `[cpv]` better use `[vars]`
 ### Fixes
 - Ugly row meta when GitHub Updater is active
 ## [1.3.0] - 2019-10-29 v. 1.3.0
