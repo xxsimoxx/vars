@@ -377,9 +377,9 @@ function vars_admin_head() {
 	$vars_dynamic_mce = "";
 	foreach ( $testvars as $var => $value){
 		if ( strlen( $value ) <= 10 ){
-			$example_data = $value;
+			$example_data = wp_strip_all_tags( $value );
 		} else {
-			$example_data = substr( $value, 0, 12) . "..." ;
+			$example_data = substr( wp_strip_all_tags( $value ), 0, 12) . "..." ;
 		};
 		$example_data = ' (' . $example_data . ')';
 		$vars_dynamic_mce .= 
