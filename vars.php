@@ -3,7 +3,7 @@
  * Plugin Name: vars
  * Plugin URI: https://software.gieffeedizioni.it
  * Description: Vars in shortcodes 
- * Version: 1.3.1-dev1
+ * Version: 1.4.0
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -22,6 +22,7 @@ function vars_load_textdomain() {
 	load_plugin_textdomain( 'vars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 
+// Add auto updater
 // https://codepotent.com/classicpress/plugins/update-manager/
 require_once( 'classes/UpdateClient.class.php' );
 

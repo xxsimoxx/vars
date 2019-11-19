@@ -1,7 +1,7 @@
 === vars ===
 Plugin Name: vars
 Description: Vars in shortcodes
-Version:           1.3.1
+Version:           1.4.0
 Text Domain:       vars
 Domain Path:       /languages
 Requires PHP:      5.6
@@ -10,7 +10,7 @@ Tested:            4.9.99
 Author:            Gieffe edizioni
 Author URI:        https://www.gieffeedizioni.it
 Plugin URI:        https://software.gieffeedizioni.it
-Download link:     https://github.com/xxsimoxx/vars/releases/download/v1.3.1-dev1/vars.zip
+Download link:     https://github.com/xxsimoxx/vars/releases/download/v1.4.0/vars.zip
 License:           GPLv2
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,9 +37,67 @@ You can choose which users can manage vars.
 
 == Changelog ==
 
-* **[1.0.0](https://)** — 00-00-0000
- — Initial release 
- — Fix 
- — Add 
- — Remove 
- — Replace 
+# Changelog
+## [1.4.0] - ??? v. 1.4.0
+### Added
+- Auto update plugin
+- Screenshot and many plugin information
+### Deprecated
+- `function cpv_do ( $var )` better use `vars_do`
+- `[cpv]` better use `[vars]`
+### Fixes
+- Ugly row meta when GitHub Updater is active
+- Fixed bug with MCE button with html code in var
+## [1.3.0] - 2019-10-29 v. 1.3.0
+### Plugin renamed from cpvars to vars
+When you upgrade from a previous version to 1.3.0, please deactivate and reactivate the plugin to be sure that the migration is complete.
+- Renamed everything
+- Compatibility with older version settings
+### Fixes
+- Longer preview in TinyMCE button
+- Fixed tools menu slug
+## [1.2.3] - 2019-10-13 v. 1.2.3
+### Fixes
+- All occurrencies of CPvars replaced with cpvars
+- PHP 7.4 compatibility
+## [1.2.2] - 2019-10-11 v. 1.2.2
+### Added
+- Icon on TinyMCE menu and setting page
+### Bugfix
+- Transient for updates
+- Correct the slug for security menu
+## [1.2.1] - 2019-09-25 v. 1.2.1
+### Added
+- Support for GitHub Updater (https://github.com/afragen/github-updater)
+- Self-checking for new releases
+### Changed
+- Links in plugins page now have just an icon
+## [1.2.0] - 2019-09-23 v. 1.2.0
+### Added
+- Now admin can choose who can add/change vars based on capability
+- Added a check for new version in GitHub
+- Security menu page
+### Changed
+- Links in plugins page now have just an icon
+## [1.1.2] - 2019-08-30 v. 1.1.2
+### Fixed
+- Fixed a warn in certain conditions
+## [1.1.1] - 2019-08-29 v. 1.1.1
+### Added
+- Settings in plugin page
+### Fixed
+- Code and translations cleaning
+## [1.1.0] - 2019-08-26 v. 1.1.0
+### Added
+- Filters to output
+- cpv_do() function
+### Removed
+- Option to exec PHP code.
+### Other
+- Started using SEMVer
+## [1.0.1] - 2019-07-30 v. 1.0.1
+### Added
+- Option to exec PHP code.
+- CHANGELOG.md
+### Removed
+- Old debug code
