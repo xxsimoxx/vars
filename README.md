@@ -24,11 +24,6 @@ There is also an option (that affects every shortcode in your site) to **display
 - bloginfo
 - get\_post\_metadata
 
-## Updating
-This plugin supports [GitHub Updater](https://github.com/afragen/github-updater).
-This allows to upgrade to the latest code.
-If not installed, you will be noticed about new releases on the plugin page,
-and you'll need to install the new version manually.
 
 ### Updating to 1.3.0
 When you upgrade from a previous version to 1.3.0, please deactivate and reactivate the plugin to be sure that the migration is complete.
@@ -66,9 +61,9 @@ add_filter( 'vars_output', 'vars_output_exec_php' );
 
 <a name="screenshots"></a>
 ## Screenshots
-![Editing vars](assets/edit-vars.jpg)
+![Editing vars](images/screenshot-1.jpg)
 
-![TinyMCE buttons](assets/tinymce.jpg)
+![TinyMCE button](images/screenshot-3.jpg)
 
-![Security settings](assets/security-settings.jpg)
+![Security settings](images/screenshot-2.jpg)
 

@@ -1,13 +1,13 @@
 === vars ===
 Plugin Name: vars
 Description: Vars in shortcodes
-Version:           1.3.5
+Version:           1.3.1
 Text Domain:       vars
 Domain Path:       /languages
 Requires PHP:      5.6
 Requires:          1.0.0
 Tested:            4.9.99
-Author:            Code Potent
+Author:            Gieffe edizioni
 Author URI:        https://www.gieffeedizioni.it
 Plugin URI:        https://software.gieffeedizioni.it
 Download link:     https://github.com/xxsimoxx/vars/releases/download/v1.3.1-dev1/vars.zip
@@ -28,3 +28,18 @@ Useful if you have a value (a phone number, number of employees) in several page
 It **integrates into TinyMCE** by adding a menu.
 
 You can choose which users can manage vars.
+
+== Screenshots ==
+
+1. Editing vars in backend
+2. Security settings
+3. TinyMCE button
+
+== Changelog ==
+
+* **[1.0.0](https://)** — 00-00-0000
+ — Initial release 
+ — Fix 
+ — Add 
+ — Remove 
+ — Replace 
