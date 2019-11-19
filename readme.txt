@@ -1,18 +1,18 @@
 === vars ===
-Plugin Name: vars
-Description: Vars in shortcodes
-Version:           1.4.0
-Text Domain:       vars
-Domain Path:       /languages
-Requires PHP:      5.6
-Requires:          1.0.0
-Tested:            4.9.99
-Author:            Gieffe edizioni
-Author URI:        https://www.gieffeedizioni.it
-Plugin URI:        https://software.gieffeedizioni.it
-Download link:     https://github.com/xxsimoxx/vars/releases/download/v1.4.0/vars.zip
-License:           GPLv2
-License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Plugin Name:        vars
+Description:        Vars in shortcodes
+Version:            1.3.2
+Text Domain:        vars
+Domain Path:        /languages
+Requires PHP:       5.6
+Requires:           1.0.0
+Tested:             4.9.99
+Author:             Gieffe edizioni
+Author URI:         https://www.gieffeedizioni.it
+Plugin URI:         https://software.gieffeedizioni.it
+Download link:      https://github.com/xxsimoxx/vars/releases/download/v1.3.2/vars.zip
+License:            GPLv2
+License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
 With vars you can define name-value associations from the admin.
 == Description ==
@@ -37,8 +37,7 @@ You can choose which users can manage vars.
 
 == Changelog ==
 
-# Changelog
-## [1.4.0] - ??? v. 1.4.0
+## [1.3.2] - 2019-11-20 v. 1.3.2
 ### Added
 - Auto update plugin
 - Screenshot and many plugin information
@@ -46,7 +45,6 @@ You can choose which users can manage vars.
 - `function cpv_do ( $var )` better use `vars_do`
 - `[cpv]` better use `[vars]`
 ### Fixes
-- Ugly row meta when GitHub Updater is active
 - Fixed bug with MCE button with html code in var
 ## [1.3.0] - 2019-10-29 v. 1.3.0
 ### Plugin renamed from cpvars to vars

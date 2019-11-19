@@ -3,7 +3,7 @@
  * Plugin Name: vars
  * Plugin URI: https://software.gieffeedizioni.it
  * Description: Vars in shortcodes 
- * Version: 1.4.0
+ * Version: 1.3.2
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
