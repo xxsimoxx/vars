@@ -3,14 +3,14 @@
  * Plugin Name: vars
  * Plugin URI: https://github.com/xxsimoxx/vars
  * Description: Vars in shortcodes 
- * Version: 1.3.0
+ * Version: 1.3.1
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
  * Author URI: https://www.gieffeedizioni.it/classicpress
  * Text Domain: vars
  * GitHub Plugin URI: xxsimoxx/vars
-*/
+ */
 
 if (!defined('ABSPATH')){
 	die('-1');
@@ -22,49 +22,12 @@ function vars_load_textdomain() {
 	load_plugin_textdomain( 'vars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 
-/**
- *
- * xsx_update_link()
- * Return false if this version is the latest Release
- * otherwise a link to GitHub latest.
- *
- */
-function xsx_update_link(){
-	if ( is_plugin_active("github-updater/github-updater.php") ){
-		// let's github-updater handle this for us!
-		return false;
-	};
-	// be careful to change text domain in other plugins
-	$slug = dirname( plugin_basename( __FILE__ ) );
-	$plugin_info = get_plugin_data(__FILE__);
-	$plugin_installed_version = $plugin_info['Version'];
-	$git_repo = "xxsimoxx/" . $slug;
-	if ( false === ( $plugin_current_version = get_transient( $slug . 'lastversion' ) ) ) {
-		$response = wp_remote_get( 'https://api.github.com/repos/' . $git_repo . '/releases/latest' , array( 'redirection' => 5 ) );
-		if ( 200 === $response['response']['code'] ){
-			$git_data = json_decode ( $response['body'], true );
-			$plugin_current_version = ltrim ( $git_data['tag_name'], 'v');
-		} else
-		{
-			$plugin_current_version = null;
-		};
-		if ( ! is_null( $plugin_current_version ) ) {
-			set_transient( $slug . 'lastversion', $plugin_current_version, DAY_IN_SECONDS );
-		};
-	};
-	if ( version_compare( $plugin_current_version, $plugin_installed_version , '>' ) ){
-		/*Translators: %s is the new version available */
-		$messagestring =  sprintf( __( "NEW v%s", "vars" ), $plugin_current_version );
-		return '<a target="_blank" href="https://www.github.com/' . $git_repo . '/releases/latest">' . $messagestring . '</a>';
-	} else {
-		return false;
-	}
-};
+require 'update.php';
+
 
 /*
  *
  * Add a settings link in plugins page
- * And an update available notice
  *
  */
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'vars_pal' );
@@ -72,11 +35,6 @@ function vars_pal( $links ) {
 	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		$link = '<a href="' . admin_url( 'tools.php?page=vars-options' ) . '" title="' . __( 'Settings', 'vars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
 		array_unshift( $links, $link );
-		// add an update link if available
-		$update_link = xsx_update_link();
-		if ( $update_link ){
-			array_push( $links, $update_link );
-		};
 	}
 	return $links;
 }
@@ -298,7 +256,7 @@ function vars_security_page() {
  * shortcode section
  *
  */
- # left for compatibility
+// left for compatibility
 add_shortcode('cpv', 'cpv');
 
 add_shortcode('vars', 'cpv');
@@ -318,7 +276,7 @@ function cpv( $atts, $content = null ) {
 	}
 }
 
-# left for compatibility
+// left for compatibility
 function cpv_do ( $var ){
 	return cpv( '', $var );
 };
@@ -362,9 +320,9 @@ function vars_admin_head() {
 	$vars_dynamic_mce = "";
 	foreach ( $testvars as $var => $value){
 		if ( strlen( $value ) <= 10 ){
-			$example_data = $value;
+			$example_data = wp_strip_all_tags( $value );
 		} else {
-			$example_data = substr( $value, 0, 12) . "..." ;
+			$example_data = substr( wp_strip_all_tags( $value ), 0, 12) . "..." ;
 		};
 		$example_data = ' (' . $example_data . ')';
 		$vars_dynamic_mce .= 
@@ -416,7 +374,7 @@ function vars_cleanup (){
 
 register_activation_hook( __FILE__, 'vars_activate' );
 function vars_activate() {
-	# Migrate options from old name
+	// Migrate options from old name and delete
     if ( get_option( 'cpvars-whocanedit' ) && ! get_option( 'vars-whocanedit' )){
     	update_option( 'vars-whocanedit', get_option( 'cpvars-whocanedit' ) );
     	update_option( 'vars-cleanup', get_option( 'cpvars-cleanup' ) );
@@ -427,11 +385,13 @@ function vars_activate() {
 		delete_option( 'cpvars-vars' );
 		delete_option( 'cpvars-whocanedit' );
     };
+    // If permission options not set, let admin make changes
     if ( FALSE === get_option( 'vars-whocanedit' ) ){
     	update_option ( 'vars-whocanedit', 'manage_options');
     };
 }
 
+// on deactivation rename the old folder
 register_deactivation_hook( __FILE__, 'vars_deactivate' );
 function vars_deactivate() {
 	if ( "cpvars" == dirname( plugin_basename( __FILE__ ) ) ){
