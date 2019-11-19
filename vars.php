@@ -22,49 +22,12 @@ function vars_load_textdomain() {
 	load_plugin_textdomain( 'vars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 
-/**
- *
- * xsx_update_link()
- * Return false if this version is the latest Release
- * otherwise a link to GitHub latest.
- *
- */
-function xsx_update_link(){
-	if ( is_plugin_active("github-updater/github-updater.php") ){
-		// let's github-updater handle this for us!
-		return false;
-	};
-	// be careful to change text domain in other plugins
-	$slug = dirname( plugin_basename( __FILE__ ) );
-	$plugin_info = get_plugin_data(__FILE__);
-	$plugin_installed_version = $plugin_info['Version'];
-	$git_repo = "xxsimoxx/" . $slug;
-	if ( false === ( $plugin_current_version = get_transient( $slug . 'lastversion' ) ) ) {
-		$response = wp_remote_get( 'https://api.github.com/repos/' . $git_repo . '/releases/latest' , array( 'redirection' => 5 ) );
-		if ( 200 === $response['response']['code'] ){
-			$git_data = json_decode ( $response['body'], true );
-			$plugin_current_version = ltrim ( $git_data['tag_name'], 'v');
-		} else
-		{
-			$plugin_current_version = null;
-		};
-		if ( ! is_null( $plugin_current_version ) ) {
-			set_transient( $slug . 'lastversion', $plugin_current_version, DAY_IN_SECONDS );
-		};
-	};
-	if ( version_compare( $plugin_current_version, $plugin_installed_version , '>' ) ){
-		/*Translators: %s is the new version available */
-		$messagestring =  sprintf( __( "NEW v%s", "vars" ), $plugin_current_version );
-		return '<a target="_blank" href="https://www.github.com/' . $git_repo . '/releases/latest">' . $messagestring . '</a>';
-	} else {
-		return false;
-	}
-};
+require 'update.php';
+
 
 /*
  *
  * Add a settings link in plugins page
- * And an update available notice
  *
  */
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'vars_pal' );
@@ -72,28 +35,8 @@ function vars_pal( $links ) {
 	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		$link = '<a href="' . admin_url( 'tools.php?page=vars-options' ) . '" title="' . __( 'Settings', 'vars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
 		array_unshift( $links, $link );
-		// add an update link if available
-		$update_link = xsx_update_link();
-		if ( $update_link ){
-			array_push( $links, $update_link );
-		};
 	}
 	return $links;
-}
-
-/*
- *
- * Remove "view details" until it get interesting with CP 2 plugin directory
- *
- */
- 
-add_filter( 'plugin_row_meta', 'vars_hide_view_details', 10, 4 );
-function vars_hide_view_details( $plugin_meta, $plugin_file, $plugin_data, $status ){
-	if($plugin_data['Name'] == 'vars'){
-		array_push( $plugin_meta, $plugin_meta[2] );
-		unset($plugin_meta[2]);
-	}
-	return $plugin_meta;
 }
 
 /*
