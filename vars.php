@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: vars
- * Plugin URI: https://github.com/xxsimoxx/vars
+ * Plugin URI: https://software.gieffeedizioni.it
  * Description: Vars in shortcodes 
  * Version: 1.3.1-dev1
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
- * Author URI: https://www.gieffeedizioni.it/classicpress
+ * Author URI: https://www.gieffeedizioni.it
  * Text Domain: vars
  * GitHub Plugin URI: xxsimoxx/vars
  */
@@ -22,8 +22,8 @@ function vars_load_textdomain() {
 	load_plugin_textdomain( 'vars', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 
-require 'update.php';
-
+// https://codepotent.com/classicpress/plugins/update-manager/
+require_once( 'classes/UpdateClient.class.php' );
 
 /*
  *
