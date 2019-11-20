@@ -3,13 +3,12 @@
  * Plugin Name: vars
  * Plugin URI: https://software.gieffeedizioni.it
  * Description: Vars in shortcodes 
- * Version: 1.3.2
+ * Version: 1.3.3
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
  * Author URI: https://www.gieffeedizioni.it
  * Text Domain: vars
- * GitHub Plugin URI: xxsimoxx/vars
  */
 
 if (!defined('ABSPATH')){
