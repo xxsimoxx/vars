@@ -37,6 +37,8 @@ You can choose which users can manage vars.
 
 == Changelog ==
 = 1.3.3 =
+Updated
+* Update Manager
 Removed
 * GitHub updater support
 
