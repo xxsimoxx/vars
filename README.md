@@ -24,18 +24,17 @@ There is also an option (that affects every shortcode in your site) to **display
 - bloginfo
 - get\_post\_metadata
 
-
-### Updating to 1.3.0
-When you upgrade from a previous version to 1.3.0, please deactivate and reactivate the plugin to be sure that the migration is complete.
-
-
 ## Integration
+
 ### Security menu
+
 If running ClassicPress 1.1.0 or newer those settings are moved to the Security menu: choose which users can manage vars, what to do with vars when uninstalling and apply shortcodes everywhere
+
 ### Functions
 If you would like to **use in your theme/plugin**
 `vars_do('name')`
 and get _value_ displayed.
+
 ### Filters
 There is a **filter** called *vars_output*
 
@@ -60,10 +59,16 @@ add_filter( 'vars_output', 'vars_output_exec_php' );
 ```
 
 <a name="screenshots"></a>
+
 ## Screenshots
 ![Editing vars](images/screenshot-1.jpg)
 
 ![TinyMCE button](images/screenshot-3.jpg)
 
 ![Security settings](images/screenshot-2.jpg)
+
+## Privacy
+
+**To help us know the number of active installations of this plugin, we collect and store anonymized data when the plugin check in for updates. The date and unique plugin identifier are stored as plain text and the requesting URL is stored as a non-reversible hashed value. This data is stored for up to 28 days.**
+
 

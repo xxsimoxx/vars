@@ -3,7 +3,7 @@
  * Plugin Name: vars
  * Plugin URI: https://software.gieffeedizioni.it
  * Description: Vars in shortcodes 
- * Version: 1.3.4
+ * Version: 2.0.0
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -256,9 +256,6 @@ function vars_security_page() {
  * shortcode section
  *
  */
-// left for compatibility
-add_shortcode('cpv', 'cpv');
-
 add_shortcode('vars', 'cpv');
 function cpv( $atts, $content = null ) {
 	$coded_options = get_option( 'vars-vars' );
@@ -275,11 +272,6 @@ function cpv( $atts, $content = null ) {
 		return "";
 	}
 }
-
-// left for compatibility
-function cpv_do ( $var ){
-	return cpv( '', $var );
-};
 
 function vars_do ( $var ){
 	return cpv( '', $var );
@@ -374,31 +366,10 @@ function vars_cleanup (){
 
 register_activation_hook( __FILE__, 'vars_activate' );
 function vars_activate() {
-	// Migrate options from old name and delete
-    if ( get_option( 'cpvars-whocanedit' ) && ! get_option( 'vars-whocanedit' )){
-    	update_option( 'vars-whocanedit', get_option( 'cpvars-whocanedit' ) );
-    	update_option( 'vars-cleanup', get_option( 'cpvars-cleanup' ) );
-    	update_option( 'vars-doeverywhere', get_option( 'cpvars-doeverywhere' ) );
-    	update_option( 'vars-vars', get_option( 'cpvars-vars' ) );
-		delete_option( 'cpvars-cleanup' );
-		delete_option( 'cpvars-doeverywhere' );
-		delete_option( 'cpvars-vars' );
-		delete_option( 'cpvars-whocanedit' );
-    };
     // If permission options not set, let admin make changes
     if ( FALSE === get_option( 'vars-whocanedit' ) ){
     	update_option ( 'vars-whocanedit', 'manage_options');
     };
 }
-
-// on deactivation rename the old folder
-register_deactivation_hook( __FILE__, 'vars_deactivate' );
-function vars_deactivate() {
-	if ( "cpvars" == dirname( plugin_basename( __FILE__ ) ) ){
-		$name = plugin_dir_path( __FILE__ );
-		$rename = preg_replace('/cpvars\/$/',"vars/", $name);
-		rename( $name, $rename );
-	};
-};
 
 ?>

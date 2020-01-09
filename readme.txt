@@ -1,7 +1,7 @@
 === vars ===
 Plugin Name:        vars
 Description:        Vars in shortcodes
-Version:            1.3.4
+Version:            2.0.0
 Text Domain:        vars
 Domain Path:        /languages
 Requires PHP:       5.6
@@ -10,7 +10,7 @@ Tested:             4.9.99
 Author:             Gieffe edizioni
 Author URI:         https://www.gieffeedizioni.it
 Plugin URI:         https://software.gieffeedizioni.it
-Download link:      https://github.com/xxsimoxx/vars/releases/download/v1.3.4/vars.zip
+Download link:      https://github.com/xxsimoxx/vars/releases/download/v2.0.0/vars.zip
 License:            GPLv2
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,8 @@ It **integrates into TinyMCE** by adding a menu.
 
 You can choose which users can manage vars.
 
+*To help us know the number of active installations of this plugin, we collect and store anonymized data when the plugin check in for updates. The date and unique plugin identifier are stored as plain text and the requesting URL is stored as a non-reversible hashed value. This data is stored for up to 28 days.*
+
 == Screenshots ==
 
 1. Editing vars in backend
@@ -36,7 +38,11 @@ You can choose which users can manage vars.
 3. TinyMCE button
 
 == Changelog ==
-= 1.3.3 =
+= 2.0.0 =
+* Removed deprecated functions
+* Updated Update Manager client
+
+= 1.3.4 =
 Updated
 * CSS tweaks
 
