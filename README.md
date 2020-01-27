@@ -50,7 +50,7 @@ You have to open and close php tags in your string.
 ```php
 function vars_output_exec_php( $string ) {
     ob_start();
-    eval( "?>" . $string ."<?php" );
+    eval( "?>" . $string ." " );
     $evalContent = ob_get_contents();
     ob_end_clean();
     return $evalContent;

@@ -3,7 +3,7 @@
  * Plugin Name: vars
  * Plugin URI: https://software.gieffeedizioni.it
  * Description: Vars in shortcodes 
- * Version: 2.0.0
+ * Version: 2.0.1
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -147,7 +147,7 @@ function vars_create_menu() {
 }
 
 function vars_settings_page() {
-	if ( ! current_user_can( get_option( 'vars-whocanedit' ) ) || false ) {
+	if ( ! current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		exit;
 	}
 	if ( isset( $_POST["allvars"] ) || isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
@@ -262,7 +262,7 @@ function cpv( $atts, $content = null ) {
 	parse_str( $coded_options, $testvars );
 	if ( isset( $testvars[$content] ) ){
 		$prefilter_retval = $testvars[$content];
-		$filtered_retval = apply_filters( 'vars_output', apply_filters( 'cpvars_output', $prefilter_retval ) );
+		$filtered_retval = apply_filters( 'vars_output', $prefilter_retval );
 		return $filtered_retval;
 	} elseif ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		$url = admin_url( 'tools.php?page=vars-options' );
