@@ -16,7 +16,7 @@ jQuery('#vars-form').submit( function( ) {
 		vars[key] = value;
 	});
 	jQuery(this).append('<input type="hidden" name="allvars" value=" ' + jQuery.param(vars) + '">');
-}); 
+});
 
 jQuery('.vars-delete').click(function(){
 	jQuery(this).closest("tr").hide('slow', function(){ jQuery(this).closest("tr").remove(); });
