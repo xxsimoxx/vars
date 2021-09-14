@@ -1,7 +1,7 @@
 === vars ===
 Plugin Name:        vars
 Description:        Vars in shortcodes
-Version:            2.0.3
+Version:            2.1.0
 Text Domain:        vars
 Domain Path:        /languages
 Requires PHP:       5.6
@@ -10,7 +10,7 @@ Tested:             4.9.99
 Author:             Gieffe edizioni
 Author URI:         https://www.gieffeedizioni.it
 Plugin URI:         https://software.gieffeedizioni.it
-Download link:      https://github.com/xxsimoxx/vars/releases/download/v2.0.3/vars.zip
+Download link:      https://github.com/xxsimoxx/vars/releases/download/v2.1.0/vars-2.1.0.zip
 License:            GPLv2
 License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
