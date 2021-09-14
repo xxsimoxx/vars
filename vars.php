@@ -311,6 +311,7 @@ function vars_admin_head() {
 	$coded_options = get_option( 'vars-vars' );
 	parse_str( $coded_options, $testvars );
 	$vars_dynamic_mce = "";
+	$vars_dynamic_mce5 = "";
 	foreach ( $testvars as $var => $value){
 		if ( strlen( $value ) <= 10 ){
 			$example_data = wp_strip_all_tags( $value );
@@ -320,13 +321,15 @@ function vars_admin_head() {
 		$example_data = ' (' . $example_data . ')';
 		$vars_dynamic_mce .=
 			'{text: "' . $var . $example_data . '",onclick: function() {tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
+		$vars_dynamic_mce5 .=
+			'{type:"menuitem", text: "' . $var . $example_data . '",onAction: function() {console.log("bip");tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
+
 	};
 	$vars_dynamic_mce = '$vars_dynmenu=[' . $vars_dynamic_mce . ']';
-	?>
-	<script type='text/javascript'>
-		<?php echo $vars_dynamic_mce; ?>
-	</script>
-	<?php
+	$vars_dynamic_mce5 = '$vars_dynmenu=[' . $vars_dynamic_mce5 . ']';
+	echo '<script type="text/javascript">';
+	echo vars_is_mce_5() ? $vars_dynamic_mce5 : $vars_dynamic_mce;
+	echo '</script>';
 }
 
 add_action('admin_head', 'vars_add_mce_menu');
@@ -334,20 +337,15 @@ function vars_add_mce_menu() {
 	if ( !current_user_can( 'edit_posts' ) &&  !current_user_can( 'edit_pages' ) ) {
 		return;
 	}
-	//if ( 'true' == get_user_option( 'rich_editing' ) ) { //ToDo: CHECK
+	if ( 'true' == get_user_option( 'rich_editing' ) ) {
 		add_filter( 'mce_external_plugins', 'vars_add_tinymce_plugin' );
 		add_filter( 'mce_buttons', 'vars_register_mce_menu' );
-	// }
+	}
 }
 
 
 function vars_register_mce_menu( $buttons ) {
-	//trigger_error(print_r($buttons, true), E_USER_WARNING); //ToDo: REMOVE
-	
-	//$buttons[] = 'vars_mce_menu';
-
 	array_push( $buttons, 'vars_mce_menu' );
-	//array_push( $buttons, 'vars_simo' ); //ToDo: REMOVE vars_simo
 	return $buttons;
 }
 
@@ -357,7 +355,6 @@ function vars_is_mce_5() {
 }
 
 function vars_add_tinymce_plugin( $plugin_array ) {
-	//trigger_error(print_r($plugin_array, true), E_USER_WARNING); //ToDo: REMOVE
 	$js = vars_is_mce_5() ? 'js/vars-mce-menu-5.js' : 'js/vars-mce-menu.js';
 	$plugin_array['vars_mce_menu'] = plugins_url( $js, __FILE__ );
 	return $plugin_array;
