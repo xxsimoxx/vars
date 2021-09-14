@@ -322,7 +322,7 @@ function vars_admin_head() {
 		$vars_dynamic_mce .=
 			'{text: "' . $var . $example_data . '",onclick: function() {tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
 		$vars_dynamic_mce5 .=
-			'{type:"menuitem", text: "' . $var . $example_data . '",onAction: function() {console.log("bip");tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
+			'{type:"menuitem", text: "' . $var . $example_data . '",onAction: function() {tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
 
 	};
 	$vars_dynamic_mce = '$vars_dynmenu=[' . $vars_dynamic_mce . ']';
