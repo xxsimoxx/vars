@@ -334,24 +334,30 @@ function vars_add_mce_menu() {
 	if ( !current_user_can( 'edit_posts' ) &&  !current_user_can( 'edit_pages' ) ) {
 		return;
 	}
-	if ( 'true' == get_user_option( 'rich_editing' ) ) {
+	//if ( 'true' == get_user_option( 'rich_editing' ) ) { //ToDo: CHECK
 		add_filter( 'mce_external_plugins', 'vars_add_tinymce_plugin' );
 		add_filter( 'mce_buttons', 'vars_register_mce_menu' );
-	}
+	// }
 }
 
+
 function vars_register_mce_menu( $buttons ) {
-	// trigger_error('mce_buttons', E_USER_WARNING); //ToDo: REMOVE
-	array_push( $buttons, 'vars_mce_menu', 'vars_simo' ); //ToDo: REMOVE vars_simo
+	//trigger_error(print_r($buttons, true), E_USER_WARNING); //ToDo: REMOVE
+	
+	//$buttons[] = 'vars_mce_menu';
+
+	array_push( $buttons, 'vars_mce_menu' );
+	//array_push( $buttons, 'vars_simo' ); //ToDo: REMOVE vars_simo
 	return $buttons;
 }
 
-function vars_is_mce_5() { //ToDo: Complete function
-	return true;
+function vars_is_mce_5() {
+	global $tinymce_version;
+	return isset($tinymce_version) && substr($tinymce_version, 0, 1) === '5';
 }
 
 function vars_add_tinymce_plugin( $plugin_array ) {
-	// trigger_error('mce_external_plugins', E_USER_WARNING); //ToDo: REMOVE
+	//trigger_error(print_r($plugin_array, true), E_USER_WARNING); //ToDo: REMOVE
 	$js = vars_is_mce_5() ? 'js/vars-mce-menu-5.js' : 'js/vars-mce-menu.js';
 	$plugin_array['vars_mce_menu'] = plugins_url( $js, __FILE__ );
 	return $plugin_array;
