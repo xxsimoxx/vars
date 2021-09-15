@@ -246,7 +246,7 @@ function vars_security_page() {
 	vars_render_security_settings( $cap_error );
 	wp_nonce_field( 'vars-security' );
 	?>
-		<input type="submit" value="<?php _e( 'Save', 'vars' ); ?>" >
+		<input type="submit" class="button button-primary button-large" value="<?php _e( 'Save', 'vars' ); ?>" >
 	</form>
 	</div>
 	<?php
