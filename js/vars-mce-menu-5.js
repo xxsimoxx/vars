@@ -1,6 +1,6 @@
 (function() {
 
-tinymce.PluginManager.add('vars_mce_menu', function( editor, url ) {
+tinymce.PluginManager.add('vars_mce_menu', function( editor ) {
 
 	editor.ui.registry.addMenuButton( 'vars_mce_menu', {
 		text:  'vars',
