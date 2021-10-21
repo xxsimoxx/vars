@@ -232,7 +232,6 @@ function vars_security_page() {
 	?>
 	<div class="wrap">
 	<h2>vars</h2>
-	
 	<style>
 		h2::before {
 			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ ); ?>");
@@ -383,4 +382,3 @@ function vars_activate() {
 	};
 }
 
-?>
