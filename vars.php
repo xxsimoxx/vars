@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 };
 
-// Load text domain
+// Load text domain.
 add_action( 'plugins_loaded', 'vars_load_textdomain' );
 function vars_load_textdomain() {
 	load_plugin_textdomain( 'vars', false, basename( dirname( __FILE__ ) ) . '/languages' );
@@ -47,12 +47,12 @@ add_action( 'admin_enqueue_scripts', 'vars_admin_style' );
 function vars_admin_style( $hook ) {
 	if ( ! function_exists( 'classicpress_version' ) || version_compare( '1.1.0', classicpress_version(), '>' ) ) {
 		if ( 'plugins.php' === $hook ) {
-				wp_enqueue_style( 'vars_compatibility_css', plugins_url( 'css/vars-compatibility.css', __FILE__ ) );
+				wp_enqueue_style( 'vars_compatibility_css', plugins_url( 'css/vars-compatibility.css', __FILE__ ), array(), '2.1.0' );
 		}
 	}
 }
 
-/*
+/**
  *
  * Functions to handle and render options
  */
@@ -71,11 +71,11 @@ function vars_save_security_settings( $admin_referer ) {
 			update_option( 'vars-cleanup', '0' );
 		};
 		if ( isset( $_POST['whocanedit'] ) ) {
-			if ( current_user_can( $_POST['whocanedit'] ) ) {
-				update_option( 'vars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST['whocanedit'] ) );
+			if ( current_user_can( wp_unslash( $_POST['whocanedit'] ) ) ) { // phpcs:ignore
+				update_option( 'vars-whocanedit', preg_replace( '/[^a-z_]/', '', wp_unslash( $_POST['whocanedit'] ) ) ); // phpcs:ignore
 			} else {
 				/* translators: %s is the capability */
-				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), $_POST['whocanedit'] ) . '</span>';
+				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), wp_unslash( $_POST['whocanedit'] ) ) . '</span>'; // phpcs:ignore 
 			};
 		};
 	};
@@ -89,9 +89,9 @@ function vars_render_security_settings( $errors ) {
 	<input type="checkbox" name="cleanup" value="1" class="cleanup" <?php checked( get_option( 'vars-cleanup', '0' ), '1' ); ?>>
 	<?php esc_html_e( 'Delete plugin data at uninstall.', 'vars' ); ?></input><br>
 	<?php esc_html_e( 'User capability requested to edit vars:', 'vars' ); ?>
-	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'vars-whocanedit', 'manage_options' ); ?>">
+	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo esc_html( get_option( 'vars-whocanedit', 'manage_options' ) ); ?>">
 	<?php
-	echo $errors;
+	echo $errors; // phpcs:ignore
 	$users    = get_users( array( 'fields' => array( 'ID' ) ) );
 	$count    = 0;
 	$userlist = '';
@@ -104,7 +104,7 @@ function vars_render_security_settings( $errors ) {
 	}
 	echo '<p>';
 	/* translators: 1 is the number of user. 2 is the list of users */
-	printf( _n( '%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'vars' ), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit', 'manage_options' ) );
+	printf( _n( '%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'vars' ), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit', 'manage_options' ) ); // phpcs:ignore
 	echo '</p><hr>';
 };
 
@@ -150,7 +150,7 @@ function vars_settings_page() {
 	}
 	if ( isset( $_POST['allvars'] ) || isset( $_POST['doeverywhere'] ) || isset( $_POST['cleanup'] ) || isset( $_POST['whocanedit'] ) ) {
 		check_admin_referer( 'vars-admin' );
-		parse_str( wp_unslash( $_POST['allvars'] ), $testvars );
+		parse_str( wp_unslash( $_POST['allvars'] ), $testvars ); // phpcs:ignore
 		update_option( 'vars-vars', $testvars );
 		if ( current_user_can( 'manage_options' ) ) {
 			$cap_error = vars_save_security_settings( 'vars-admin' );
@@ -170,12 +170,12 @@ function vars_settings_page() {
 			font-family: "Courier New", Courier, mono;
 		}
 		h2::before {
-			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ ); ?>");
+			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ ); // phpcs:ignore ?>");
 			padding: 0 5px 0 0;
 		}
 	</style>
 	<div class="wrap">
-	<?php echo $header; ?>
+	<?php echo $header; // phpcs:ignore ?>
 	<hr>
 	<form method="POST" id="vars-form"  >
 	<?php
@@ -183,14 +183,14 @@ function vars_settings_page() {
 		vars_render_security_settings( $cap_error );
 	};
 	if ( current_user_can( 'manage_options' ) && function_exists( '\add_security_page' ) ) {
-		echo '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . esc_html__( 'Security settings', 'vars' ) . '"><i class="dashicons-before dashicons-shield">' . esc_html__( 'Edit security settings', 'vars' ) . '</i></a><hr>';
+		echo '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . esc_html__( 'Security settings', 'vars' ) . '"><i class="dashicons-before dashicons-shield">' . esc_html__( 'Edit security settings', 'vars' ) . '</i></a><hr>'; // phpcs:ignore
 	};
 	?>
 		<table class="form-table">
 	<?php
 	foreach ( $testvars as $key => $value ) {
-		echo '<tr valign="top" class="vars-keyvalue"><td ><input type="text" size="20" class="vars-key" value="' . $key . '" /></td>';
-		echo '<td ><input type="text" size="100" class="vars-value" value="' . $value . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>';
+		echo '<tr valign="top" class="vars-keyvalue"><td ><input type="text" size="20" class="vars-key" value="' . $key . '" /></td>'; // phpcs:ignore
+		echo '<td ><input type="text" size="100" class="vars-value" value="' . $value . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>'; // phpcs:ignore
 	}
 	?>
 		</table>
