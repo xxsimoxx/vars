@@ -25,7 +25,7 @@ and get _value_ displayed.
 
 Useful if you have a value (a phone number, number of employees) in several pages that can change, so you can change this once from the admin.
 
-It **integrates into TinyMCE** by adding a menu.
+It **integrates into TinyMCE** by adding a menu (compatible also with TinyMCE v.5).
 
 You can choose which users can manage vars.
 
@@ -38,6 +38,9 @@ You can choose which users can manage vars.
 3. TinyMCE button
 
 == Changelog ==
+= 2.1.0 =
+* Added TinyMCE v.5 compatibility
+
 = 2.0.3 =
 * Updated Update Manager client
 
