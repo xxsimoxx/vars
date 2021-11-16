@@ -11,8 +11,8 @@
  * Text Domain: vars
  */
 
-if (!defined('ABSPATH')){
-	die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
 };
 
 // Load text domain
@@ -23,14 +23,14 @@ function vars_load_textdomain() {
 
 // Add auto updater
 // https://codepotent.com/classicpress/plugins/update-manager/
-require_once( 'classes/UpdateClient.class.php' );
+require_once 'classes/UpdateClient.class.php';
 
 /*
  *
  * Add a settings link in plugins page
  *
  */
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'vars_pal' );
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'vars_pal' );
 function vars_pal( $links ) {
 	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
 		$link = '<a href="' . admin_url( 'tools.php?page=vars-options' ) . '" title="' . __( 'Settings', 'vars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
@@ -45,10 +45,10 @@ function vars_pal( $links ) {
  * This is for backward compatibility.
  *
  */
-add_action('admin_enqueue_scripts', 'vars_admin_style');
+add_action( 'admin_enqueue_scripts', 'vars_admin_style' );
 function vars_admin_style( $hook ) {
-	if ( ! function_exists( 'classicpress_version' ) || version_compare( '1.1.0', classicpress_version() , '>' )  ){
-		if ( 'plugins.php' == $hook ) {
+	if ( ! function_exists( 'classicpress_version' ) || version_compare( '1.1.0', classicpress_version(), '>' ) ) {
+		if ( 'plugins.php' === $hook ) {
 				wp_enqueue_style( 'vars_compatibility_css', plugins_url( 'css/vars-compatibility.css', __FILE__ ) );
 		}
 	}
@@ -60,25 +60,25 @@ function vars_admin_style( $hook ) {
  *
  */
 function vars_save_security_settings( $admin_referer ) {
-	$error_string = "";
-	if ( isset( $_POST["doeverywhere"] ) || isset( $_POST["cleanup"] ) || isset( $_POST["whocanedit"] )){
+	$error_string = '';
+	if ( isset( $_POST['doeverywhere'] ) || isset( $_POST['cleanup'] ) || isset( $_POST['whocanedit'] ) ) {
 		check_admin_referer( $admin_referer );
-		if ( isset( $_POST["doeverywhere"] )  ){
+		if ( isset( $_POST['doeverywhere'] ) ) {
 			update_option( 'vars-doeverywhere', 1 );
 		} else {
 			update_option( 'vars-doeverywhere', 0 );
 		};
-		if ( isset( $_POST["cleanup"] )  ){
+		if ( isset( $_POST['cleanup'] ) ) {
 			update_option( 'vars-cleanup', 1 );
 		} else {
 			update_option( 'vars-cleanup', 0 );
 		};
-		if ( isset( $_POST["whocanedit"] )  ){
-			if ( current_user_can( $_POST["whocanedit"] ) ) {
-				update_option( 'vars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST["whocanedit"] ) );
+		if ( isset( $_POST['whocanedit'] ) ) {
+			if ( current_user_can( $_POST['whocanedit'] ) ) {
+				update_option( 'vars-whocanedit', preg_replace( '/[^a-z_]/', '', $_POST['whocanedit'] ) );
 			} else {
-				/*Translators: %s is the capability */
-				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), $_POST["whocanedit"] ) . '</span>';
+				/* translators: %s is the capability */
+				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), $_POST['whocanedit'] ) . '</span>';
 			};
 		};
 	};
@@ -87,23 +87,35 @@ function vars_save_security_settings( $admin_referer ) {
 
 function vars_render_security_settings( $errors ) {
 ?>
-	<input type="checkbox" name="doeverywhere" class="doeverywhere" <?php if ( 1 == get_option( 'vars-doeverywhere' ) ) echo "checked='checked'"; ?>>
+	<input type="checkbox" name="doeverywhere" class="doeverywhere"
+	<?php
+	if ( 1 === get_option( 'vars-doeverywhere' ) ) {
+		echo "checked='checked'";
+	}
+	?>
+	>
 	<?php _e( 'Do shortcodes anywhere.', 'vars' ); ?> </input><br>
-	<input type="checkbox" name="cleanup" class="cleanup" <?php if ( 1 == get_option( 'vars-cleanup' ) ) echo "checked='checked'"; ?> >
+	<input type="checkbox" name="cleanup" class="cleanup"
+	<?php
+	if ( 1 === get_option( 'vars-cleanup' ) ) {
+		echo "checked='checked'";
+	}
+	?>
+	>
 	<?php _e( 'Delete plugin data at uninstall.', 'vars' ); ?></input><br>
 	<?php _e( 'User capability requested to edit vars:', 'vars' ); ?>
 	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'vars-whocanedit' ); ?>">
 	<?php
 	echo $errors;
 	// let's see who can change the vars
-	$users = get_users( array( 'fields' => array( 'ID' ) ) );
-	$count = 0;
-	$userlist = "";
-	foreach($users as $user_id) {
-		$meta = get_user_meta ( $user_id->ID );
+	$users    = get_users( array( 'fields' => array( 'ID' ) ) );
+	$count    = 0;
+	$userlist = '';
+	foreach ( $users as $user_id ) {
+		$meta = get_user_meta( $user_id->ID );
 		if ( user_can( $user_id->ID, get_option( 'vars-whocanedit' ) ) ) {
 			$count++;
-			$userlist .= $meta['nickname'][0] . ", ";
+			$userlist            .= $meta['nickname'][0] . ', '';
 		};
 	}
 	echo "<p>";
@@ -120,7 +132,7 @@ function vars_render_security_settings( $errors ) {
 add_action( 'admin_footer', 'vars_admin_script' );
 function vars_admin_script( ) {
 	$screen = get_current_screen();
-	if ( 'tools_page_vars-options' == $screen->id ){
+	if ( 'tools_page_vars-options' === $screen->id ){
 		wp_enqueue_script( 'vars_admin', plugins_url( 'js/vars-admin.js', __FILE__ ), array('jquery'), '1.0' );
 		wp_localize_script( 'vars_admin', 'objectL10n',
 			array(
@@ -218,7 +230,7 @@ function vars_create_security_menu() {
 			__('SECURITY_SETTINGS_PAGE_TITLE', 'vars'),
 			__('SECURITY_SETTINGS_PAGE_NAME', 'vars'),
 			dirname( plugin_basename( __FILE__ ) ),
-			'vars_security_page'
+			'vars'
 		);
 	};
 };
@@ -381,4 +393,3 @@ function vars_activate() {
 		update_option ( 'vars-whocanedit', 'manage_options');
 	};
 }
-
