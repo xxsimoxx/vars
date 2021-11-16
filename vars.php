@@ -21,13 +21,12 @@ function vars_load_textdomain() {
 	load_plugin_textdomain( 'vars', false, basename( dirname( __FILE__ ) ) . '/languages' );
 }
 
-// Add auto updater
-// https://codepotent.com/classicpress/plugins/update-manager/
+// Add auto updater.
 require_once 'classes/UpdateClient.class.php';
 
 /*
  *
- * Add a settings link in plugins page
+ * Add a settings link in plugins page.
  *
  */
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'vars_pal' );
@@ -43,7 +42,6 @@ function vars_pal( $links ) {
  *
  * ClassicPress PR #484 added this CSS in v. 1.1.0
  * This is for backward compatibility.
- *
  */
 add_action( 'admin_enqueue_scripts', 'vars_admin_style' );
 function vars_admin_style( $hook ) {
@@ -57,7 +55,6 @@ function vars_admin_style( $hook ) {
 /*
  *
  * Functions to handle and render options
- *
  */
 function vars_save_security_settings( $admin_referer ) {
 	$error_string = '';
@@ -88,14 +85,13 @@ function vars_save_security_settings( $admin_referer ) {
 function vars_render_security_settings( $errors ) {
 	?>
 	<input type="checkbox" name="doeverywhere" value="1" class="doeverywhere" <?php checked( get_option( 'vars-doeverywhere', '0' ), '1' ); ?>>
-	<?php _e( 'Do shortcodes anywhere.', 'vars' ); ?> </input><br>
+	<?php esc_html_e( 'Do shortcodes anywhere.', 'vars' ); ?> </input><br>
 	<input type="checkbox" name="cleanup" value="1" class="cleanup" <?php checked( get_option( 'vars-cleanup', '0' ), '1' ); ?>>
-	<?php _e( 'Delete plugin data at uninstall.', 'vars' ); ?></input><br>
-	<?php _e( 'User capability requested to edit vars:', 'vars' ); ?>
+	<?php esc_html_e( 'Delete plugin data at uninstall.', 'vars' ); ?></input><br>
+	<?php esc_html_e( 'User capability requested to edit vars:', 'vars' ); ?>
 	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'vars-whocanedit', 'manage_options' ); ?>">
 	<?php
 	echo $errors;
-	// let's see who can change the vars
 	$users    = get_users( array( 'fields' => array( 'ID' ) ) );
 	$count    = 0;
 	$userlist = '';
@@ -121,7 +117,7 @@ add_action( 'admin_footer', 'vars_admin_script' );
 function vars_admin_script() {
 	$screen = get_current_screen();
 	if ( 'tools_page_vars-options' === $screen->id ) {
-		wp_enqueue_script( 'vars_admin', plugins_url( 'js/vars-admin.js', __FILE__ ), array( 'jquery' ), '1.0' );
+		wp_enqueue_script( 'vars_admin', plugins_url( 'js/vars-admin.js', __FILE__ ), array( 'jquery' ), '1.0', true );
 		wp_localize_script(
 			'vars_admin',
 			'objectL10n',
@@ -154,16 +150,15 @@ function vars_settings_page() {
 	}
 	if ( isset( $_POST['allvars'] ) || isset( $_POST['doeverywhere'] ) || isset( $_POST['cleanup'] ) || isset( $_POST['whocanedit'] ) ) {
 		check_admin_referer( 'vars-admin' );
-		parse_str( $_POST['allvars'], $testvars );
+		parse_str( wp_unslash( $_POST['allvars'] ), $testvars );
 		update_option( 'vars-vars', $testvars );
 		if ( current_user_can( 'manage_options' ) ) {
 			$cap_error = vars_save_security_settings( 'vars-admin' );
 		};
 	} else {
-		$coded_options = get_option( 'vars-vars' );
-		parse_str( $coded_options, $testvars );
+		$testvars = get_option( 'vars-vars', array() );
 	};
-	// text about plugin usage I prefer storing in the translations
+	// Text about plugin usage I prefer storing in the translations.
 	$header = __( 'HEADERTEXT', 'vars' );
 	?>
 	<style>
@@ -188,15 +183,14 @@ function vars_settings_page() {
 		vars_render_security_settings( $cap_error );
 	};
 	if ( current_user_can( 'manage_options' ) && function_exists( '\add_security_page' ) ) {
-		$security_link = '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . __( 'Security settings', 'vars' ) . '"><i class="dashicons-before dashicons-shield">';
-		echo $security_link . __( 'Edit security settings', 'vars' ) . '</i></a><hr>';
+		echo '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . esc_html__( 'Security settings', 'vars' ) . '"><i class="dashicons-before dashicons-shield">' . esc_html__( 'Edit security settings', 'vars' ) . '</i></a><hr>';
 	};
 	?>
 		<table class="form-table">
 	<?php
 	foreach ( $testvars as $key => $value ) {
 		echo '<tr valign="top" class="vars-keyvalue"><td ><input type="text" size="20" class="vars-key" value="' . $key . '" /></td>';
-		echo '<td ><input type="text" size="100" class="vars-value" value="' . htmlspecialchars( $value ) . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>';
+		echo '<td ><input type="text" size="100" class="vars-value" value="' . $value . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>';
 	}
 	?>
 		</table>
@@ -258,8 +252,7 @@ function vars_security_page() {
  */
 add_shortcode( 'vars', 'cpv' );
 function cpv( $atts, $content = null ) {
-	$coded_options = get_option( 'vars-vars' );
-	parse_str( $coded_options, $testvars );
+	$testvars = get_option( 'vars-vars', array() );
 	if ( isset( $testvars[ $content ] ) ) {
 		$prefilter_retval = $testvars[ $content ];
 		$filtered_retval  = apply_filters( 'vars_output', $prefilter_retval );
@@ -304,8 +297,7 @@ foreach ( array( 'post.php', 'post-new.php' ) as $hook ) {
 }
 
 function vars_admin_head() {
-	$coded_options = get_option( 'vars-vars' );
-	parse_str( $coded_options, $testvars );
+	$testvars          = get_option( 'vars-vars', array() );
 	$vars_dynamic_mce  = '';
 	$vars_dynamic_mce5 = '';
 	foreach ( $testvars as $var => $value ) {
