@@ -8,7 +8,7 @@ and get _value_ displayed.
 
 Useful if you have a value (a phone number, number of employees) in several pages that can change, so you can change this once from the admin.
 
-It **integrates into TinyMCE** by adding a menu.
+It **integrates into TinyMCE** by adding a menu (compatible also with TinyMCE v.5).
 
 You can choose which users can manage vars.
 
@@ -70,5 +70,3 @@ add_filter( 'vars_output', 'vars_output_exec_php' );
 ## Privacy
 
 **To help us know the number of active installations of this plugin, we collect and store anonymized data when the plugin check in for updates. The date and unique plugin identifier are stored as plain text and the requesting URL is stored as a non-reversible hashed value. This data is stored for up to 28 days.**
-
-

@@ -3,7 +3,7 @@
  * Plugin Name: vars
  * Plugin URI: https://software.gieffeedizioni.it
  * Description: Vars in shortcodes
- * Version: 2.0.3
+ * Version: 2.1.0
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Gieffe edizioni srl
@@ -232,7 +232,6 @@ function vars_security_page() {
 	?>
 	<div class="wrap">
 	<h2>vars</h2>
-	
 	<style>
 		h2::before {
 			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ ); ?>");
@@ -246,7 +245,7 @@ function vars_security_page() {
 	vars_render_security_settings( $cap_error );
 	wp_nonce_field( 'vars-security' );
 	?>
-		<input type="submit" value="<?php _e( 'Save', 'vars' ); ?>" >
+		<input type="submit" class="button button-primary button-large" value="<?php _e( 'Save', 'vars' ); ?>" >
 	</form>
 	</div>
 	<?php
@@ -311,6 +310,7 @@ function vars_admin_head() {
 	$coded_options = get_option( 'vars-vars' );
 	parse_str( $coded_options, $testvars );
 	$vars_dynamic_mce = "";
+	$vars_dynamic_mce5 = "";
 	foreach ( $testvars as $var => $value){
 		if ( strlen( $value ) <= 10 ){
 			$example_data = wp_strip_all_tags( $value );
@@ -320,13 +320,15 @@ function vars_admin_head() {
 		$example_data = ' (' . $example_data . ')';
 		$vars_dynamic_mce .=
 			'{text: "' . $var . $example_data . '",onclick: function() {tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
+		$vars_dynamic_mce5 .=
+			'{type:"menuitem", text: "' . $var . $example_data . '",onAction: function() {tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
+
 	};
 	$vars_dynamic_mce = '$vars_dynmenu=[' . $vars_dynamic_mce . ']';
-	?>
-	<script type='text/javascript'>
-		<?php echo $vars_dynamic_mce; ?>
-	</script>
-	<?php
+	$vars_dynamic_mce5 = '$vars_dynmenu=[' . $vars_dynamic_mce5 . ']';
+	echo '<script type="text/javascript">';
+	echo vars_is_mce_5() ? $vars_dynamic_mce5 : $vars_dynamic_mce;
+	echo '</script>';
 }
 
 add_action('admin_head', 'vars_add_mce_menu');
@@ -340,13 +342,20 @@ function vars_add_mce_menu() {
 	}
 }
 
+
 function vars_register_mce_menu( $buttons ) {
 	array_push( $buttons, 'vars_mce_menu' );
 	return $buttons;
 }
 
+function vars_is_mce_5() {
+	global $tinymce_version;
+	return isset($tinymce_version) && substr($tinymce_version, 0, 1) === '5';
+}
+
 function vars_add_tinymce_plugin( $plugin_array ) {
-	$plugin_array['vars_mce_menu'] = plugins_url( 'js/vars-mce-menu.js', __FILE__ );
+	$js = vars_is_mce_5() ? 'js/vars-mce-menu-5.js' : 'js/vars-mce-menu.js';
+	$plugin_array['vars_mce_menu'] = plugins_url( $js, __FILE__ );
 	return $plugin_array;
 }
 
@@ -373,4 +382,3 @@ function vars_activate() {
 	};
 }
 
-?>
