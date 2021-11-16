@@ -95,7 +95,7 @@ msgstr "Vars"
 #: cpvars.php:207
 msgid "HEADERTEXT"
 msgstr ""
-"<h2>cpvars</h2><h3>Con cpvars definisci associazioni nome-"
+"<h2>cpvars</h2><h3>Con vars definisci associazioni nome-"
 "contenuto</h3><p>Crea qui i campi con le associazioni (il contenuto può "
 "anche essere HTML). Poi, nelle tue pagine o articoli puoi inserire shortcode "
 "del tipo <span class='code'>[vars]nome[/vars]</span> che mostreranno il "
