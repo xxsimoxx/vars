@@ -5,9 +5,9 @@ set -e
 slug='vars'
 name='Vars'
 
-# Check for required programs COMPLETE IT
+# Check for required programs
 all_found=Y
-for prog in git ; do
+for prog in git hub; do
 	if ! [ -x "$(command -v $prog)" ]; then
 		echo "Error: required program '$prog' is not installed." >&2
 		all_found=N
@@ -21,7 +21,7 @@ phpfile="${slug}.php"
 
 git status
 
-# version=$(wp --allow-root eval '$v = get_plugin_data( "'${phpfile}'" ); echo $v["Version"];') UNCOMMENT
+version=$(wp --allow-root eval '$v = get_plugin_data( "'${phpfile}'" ); echo $v["Version"];')
 
 echo "Going to release      : v${version}"
 
@@ -31,6 +31,6 @@ echo
 
 git archive -o "../${slug}-${version}.zip" --prefix ${slug}/ HEAD
 
-# hub release create -d -a "../${slug}-${version}.zip" -m "${name} ${version}" "${version}" UNCOMMENT
+hub release create -d -a "../${slug}-${version}.zip" -m "${name} ${version}" "${version}"
 
-# "../${slug}-${version}.zip" UNCOMMENT
+rm -fr "../${slug}-${version}.zip" UNCOMMENT
