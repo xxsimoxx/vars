@@ -32,7 +32,7 @@ require_once 'classes/UpdateClient.class.php';
  */
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'vars_pal' );
 function vars_pal( $links ) {
-	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
+	if ( current_user_can( get_option( 'vars-whocanedit', 'manage_options' ) ) ) {
 		$link = '<a href="' . admin_url( 'tools.php?page=vars-options' ) . '" title="' . __( 'Settings', 'vars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
 		array_unshift( $links, $link );
 	}
@@ -92,7 +92,7 @@ function vars_render_security_settings( $errors ) {
 	<input type="checkbox" name="cleanup" value="1" class="cleanup" <?php checked( get_option( 'vars-cleanup', '0' ), '1' ); ?>>
 	<?php _e( 'Delete plugin data at uninstall.', 'vars' ); ?></input><br>
 	<?php _e( 'User capability requested to edit vars:', 'vars' ); ?>
-	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'vars-whocanedit' ); ?>">
+	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo get_option( 'vars-whocanedit', 'manage_options' ); ?>">
 	<?php
 	echo $errors;
 	// let's see who can change the vars
@@ -101,14 +101,14 @@ function vars_render_security_settings( $errors ) {
 	$userlist = '';
 	foreach ( $users as $user_id ) {
 		$meta = get_user_meta( $user_id->ID );
-		if ( user_can( $user_id->ID, get_option( 'vars-whocanedit' ) ) ) {
+		if ( user_can( $user_id->ID, get_option( 'vars-whocanedit', 'manage_options' ) ) ) {
 			$count++;
 			$userlist .= $meta['nickname'][0] . ', ';
 		}
 	}
 	echo '<p>';
 	/* translators: 1 is the number of user. 2 is the list of users */
-	printf( _n( '%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'vars' ), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit' ) );
+	printf( _n( '%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'vars' ), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit', 'manage_options' ) );
 	echo '</p><hr>';
 };
 
@@ -136,7 +136,7 @@ function vars_admin_script() {
 
 add_action( 'admin_menu', 'vars_create_menu' );
 function vars_create_menu() {
-	if ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
+	if ( current_user_can( get_option( 'vars-whocanedit', 'manage_options' ) ) ) {
 		$page = add_submenu_page(
 			'tools.php',
 			__( 'SETTINGS_PAGE_TITLE', 'vars' ),
@@ -149,13 +149,13 @@ function vars_create_menu() {
 }
 
 function vars_settings_page() {
-	if ( ! current_user_can( get_option( 'vars-whocanedit' ) ) ) {
+	if ( ! current_user_can( get_option( 'vars-whocanedit', 'manage_options' ) ) ) {
 		exit;
 	}
 	if ( isset( $_POST['allvars'] ) || isset( $_POST['doeverywhere'] ) || isset( $_POST['cleanup'] ) || isset( $_POST['whocanedit'] ) ) {
 		check_admin_referer( 'vars-admin' );
 		parse_str( $_POST['allvars'], $testvars );
-		update_option( 'vars-vars', $_POST['allvars'] );
+		update_option( 'vars-vars', $testvars );
 		if ( current_user_can( 'manage_options' ) ) {
 			$cap_error = vars_save_security_settings( 'vars-admin' );
 		};
@@ -200,9 +200,9 @@ function vars_settings_page() {
 	}
 	?>
 		</table>
-	<button type="button" class="button button-large button-primary vars-add"><?php _e( 'Add', 'vars' ); ?></button>
+	<button type="button" class="button button-large button-primary vars-add"><?php esc_html_e( 'Add', 'vars' ); ?></button>
 		<?php wp_nonce_field( 'vars-admin' ); ?>
-		<input type="submit" value="<?php _e( 'Saved', 'vars' ); ?>" id="vars-submit" class="button button-primary button-large" disabled>
+		<input type="submit" value="<?php esc_html_e( 'Saved', 'vars' ); ?>" id="vars-submit" class="button button-primary button-large" disabled>
 	</form>
 	</div>
 	<?php
@@ -211,7 +211,6 @@ function vars_settings_page() {
 /**
  *
  * Admin section: add security page
- *
  */
 add_action( 'admin_menu', 'vars_create_security_menu' );
 function vars_create_security_menu() {
@@ -236,18 +235,18 @@ function vars_security_page() {
 	<h2>vars</h2>
 	<style>
 		h2::before {
-			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ ); ?>");
+			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ ); // phpcs:ignore ?>");
 			padding: 0 5px 0 0;
 		}
 	</style>
-	<h3><?php _e( 'Security settings.', 'vars' ); ?></h3>
+	<h3><?php esc_html_e( 'Security settings.', 'vars' ); ?></h3>
 	<hr>
 	<form method="POST" id="vars-security"  >
 	<?php
 	vars_render_security_settings( $cap_error );
 	wp_nonce_field( 'vars-security' );
 	?>
-		<input type="submit" class="button button-primary button-large" value="<?php _e( 'Save', 'vars' ); ?>" >
+		<input type="submit" class="button button-primary button-large" value="<?php esc_html_e( 'Save', 'vars' ); ?>" >
 	</form>
 	</div>
 	<?php
@@ -255,8 +254,7 @@ function vars_security_page() {
 
 /**
  *
- * shortcode section
- *
+ * Shortcode section
  */
 add_shortcode( 'vars', 'cpv' );
 function cpv( $atts, $content = null ) {
@@ -266,7 +264,7 @@ function cpv( $atts, $content = null ) {
 		$prefilter_retval = $testvars[ $content ];
 		$filtered_retval  = apply_filters( 'vars_output', $prefilter_retval );
 		return $filtered_retval;
-	} elseif ( current_user_can( get_option( 'vars-whocanedit' ) ) ) {
+	} elseif ( current_user_can( get_option( 'vars-whocanedit', 'manage_options' ) ) ) {
 		$url = admin_url( 'tools.php?page=vars-options' );
 		/* translators: 1 is the var not defined. 2 is the url of the admin page */
 		return sprintf( __( '%1$s is not defined. Define it <a href="%2$s">here</a>. (only you can see this message)', 'vars' ), $content, $url );
@@ -281,8 +279,7 @@ function vars_do( $var ) {
 
 /**
  *
- * do shortcodes everywhere section
- *
+ * Do shortcodes everywhere section
  */
 if ( '1' === get_option( 'vars-doeverywhere', '0' ) ) {
 	$tags = array(
@@ -293,15 +290,14 @@ if ( '1' === get_option( 'vars-doeverywhere', '0' ) ) {
 		'bloginfo',
 		'get_post_metadata',
 	);
-	foreach ( $tags as $tag ) {
-		add_filter( $tag, 'do_shortcode', 10 );
+	foreach ( $tags as $single_tag ) {
+		add_filter( $single_tag, 'do_shortcode', 10 );
 	}
 }
 
 /**
  *
  * Add a menu to mce
- *
  */
 foreach ( array( 'post.php', 'post-new.php' ) as $hook ) {
 	add_action( "admin_head-$hook", 'vars_admin_head' );
@@ -328,7 +324,7 @@ function vars_admin_head() {
 	$vars_dynamic_mce  = '$vars_dynmenu=[' . $vars_dynamic_mce . ']';
 	$vars_dynamic_mce5 = '$vars_dynmenu=[' . $vars_dynamic_mce5 . ']';
 	echo '<script type="text/javascript">';
-	echo vars_is_mce_5() ? $vars_dynamic_mce5 : $vars_dynamic_mce;
+	echo vars_is_mce_5() ? $vars_dynamic_mce5 : $vars_dynamic_mce; // phpcs:ignore
 	echo '</script>';
 }
 
@@ -362,8 +358,7 @@ function vars_add_tinymce_plugin( $plugin_array ) {
 
 /**
  *
- * activation and uninstall hooks
- *
+ * Activation and uninstall hooks
  */
 register_uninstall_hook( __FILE__, 'vars_cleanup' );
 function vars_cleanup() {
@@ -377,7 +372,7 @@ function vars_cleanup() {
 
 register_activation_hook( __FILE__, 'vars_activate' );
 function vars_activate() {
-	// If permission options not set, let admin make changes
+	// If permission options not set, let only admin make changes.
 	if ( false === get_option( 'vars-whocanedit' ) ) {
 		update_option( 'vars-whocanedit', 'manage_options' );
 	}
