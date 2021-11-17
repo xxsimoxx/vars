@@ -393,6 +393,7 @@ function vars_cleanup() {
 		delete_option( 'vars-doeverywhere' );
 		delete_option( 'vars-vars' );
 		delete_option( 'vars-whocanedit' );
+		delete_option( 'vars-version' );
 	}
 }
 
