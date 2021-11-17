@@ -43,6 +43,7 @@ You can choose which users can manage vars.
 * Aligned to WPCS
 * Fixed some potential bug
 * Changed format for an option
+* Updated Update Manager client
 
 = 2.0.3 =
 * Updated Update Manager client
