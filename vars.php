@@ -15,6 +15,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 };
 
+define ( VARS_VERSION, '2.1.0' );
+
+
+function vars_handle_update() {
+	$current = get_option( 'vars-version', false );
+	if ( false !== $current ) {
+		return;
+	}
+	// Migrate to new format of vars-vars option introduced in 2.1.0.
+	$old_vars = get_option( 'vars-vars', '' );
+	if ( is_array( $old_vars ) ) {
+		// Seems already updated.
+		return;
+	}
+	parse_str( $old_vars, $testvars ); // phpcs:ignore
+	update_option( 'vars-vars', $testvars );
+}
+
 // Load text domain.
 add_action( 'plugins_loaded', 'vars_load_textdomain' );
 function vars_load_textdomain() {
@@ -75,7 +93,7 @@ function vars_save_security_settings( $admin_referer ) {
 				update_option( 'vars-whocanedit', preg_replace( '/[^a-z_]/', '', wp_unslash( $_POST['whocanedit'] ) ) ); // phpcs:ignore
 			} else {
 				/* translators: %s is the capability */
-				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), wp_unslash( $_POST['whocanedit'] ) ) . '</span>'; // phpcs:ignore 
+				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), wp_unslash( $_POST['whocanedit'] ) ) . '</span>'; // phpcs:ignore
 			};
 		};
 	};
@@ -83,7 +101,27 @@ function vars_save_security_settings( $admin_referer ) {
 };
 
 function vars_render_security_settings( $errors ) {
+
+	$current = get_option( 'vars-version', false );
+	if ( false !== $current ) {
+		return;
+	}
+	// Migrate to new format of vars-vars option introduced in 2.1.0.
+	$old_vars = get_option( 'vars-vars', '' );
+	if ( is_array( $old_vars ) ) {
+		// Seems already updated.
+		return;
+	}
+	parse_str( $old_vars, $testvars ); // phpcs:ignore
+	update_option( 'vars-vars', $testvars );
+
+
+
 	?>
+
+
+
+
 	<input type="checkbox" name="doeverywhere" value="1" class="doeverywhere" <?php checked( get_option( 'vars-doeverywhere', '0' ), '1' ); ?>>
 	<?php esc_html_e( 'Do shortcodes anywhere.', 'vars' ); ?> </input><br>
 	<input type="checkbox" name="cleanup" value="1" class="cleanup" <?php checked( get_option( 'vars-cleanup', '0' ), '1' ); ?>>
