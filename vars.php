@@ -92,21 +92,21 @@ function vars_save_security_settings( $admin_referer ) {
 			update_option( 'vars-doeverywhere', '1' );
 		} else {
 			update_option( 'vars-doeverywhere', '0' );
-		};
+		}
 		if ( isset( $_POST['cleanup'] ) ) {
 			update_option( 'vars-cleanup', '1' );
 		} else {
 			update_option( 'vars-cleanup', '0' );
-		};
+		}
 		if ( isset( $_POST['whocanedit'] ) ) {
 			if ( current_user_can( wp_unslash( $_POST['whocanedit'] ) ) ) { // phpcs:ignore
 				update_option( 'vars-whocanedit', preg_replace( '/[^a-z_]/', '', wp_unslash( $_POST['whocanedit'] ) ) ); // phpcs:ignore
 			} else {
 				/* translators: %s is the capability */
 				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), wp_unslash( $_POST['whocanedit'] ) ) . '</span>'; // phpcs:ignore
-			};
-		};
-	};
+			}
+		}
+	}
 	return $error_string;
 };
 
@@ -182,10 +182,10 @@ function vars_settings_page() {
 		update_option( 'vars-vars', $testvars );
 		if ( current_user_can( 'manage_options' ) ) {
 			$cap_error = vars_save_security_settings( 'vars-admin' );
-		};
+		}
 	} else {
 		$testvars = get_option( 'vars-vars', array() );
-	};
+	}
 	// Text about plugin usage I prefer storing in the translations.
 	$header = __( 'HEADERTEXT', 'vars' );
 	?>
@@ -209,10 +209,10 @@ function vars_settings_page() {
 	<?php
 	if ( current_user_can( 'manage_options' ) && ! function_exists( '\add_security_page' ) ) {
 		vars_render_security_settings( $cap_error );
-	};
+	}
 	if ( current_user_can( 'manage_options' ) && function_exists( '\add_security_page' ) ) {
 		echo '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . esc_html__( 'Security settings', 'vars' ) . '"><i class="dashicons-before dashicons-shield">' . esc_html__( 'Edit security settings', 'vars' ) . '</i></a><hr>'; // phpcs:ignore
-	};
+	}
 	?>
 		<table class="form-table">
 	<?php
@@ -251,7 +251,7 @@ function vars_security_page() {
 	if ( isset( $_POST['doeverywhere'] ) || isset( $_POST['cleanup'] ) || isset( $_POST['whocanedit'] ) ) {
 		check_admin_referer( 'vars-security' );
 		$cap_error = vars_save_security_settings( 'vars-security' );
-	};
+	}
 	?>
 	<div class="wrap">
 	<h2>vars</h2>
@@ -296,7 +296,7 @@ function cpv( $atts, $content = null ) {
 
 function vars_do( $var ) {
 	return cpv( '', $var );
-};
+}
 
 /**
  *
@@ -325,7 +325,10 @@ foreach ( array( 'post.php', 'post-new.php' ) as $hook ) {
 }
 
 function vars_admin_head() {
-	$testvars          = get_option( 'vars-vars', array() );
+	$testvars = get_option( 'vars-vars', array() );
+	if ( array() === $testvars ) {
+		return;
+	}
 	$vars_dynamic_mce  = '';
 	$vars_dynamic_mce5 = '';
 	foreach ( $testvars as $var => $value ) {
@@ -353,12 +356,15 @@ function vars_add_mce_menu() {
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 		return;
 	}
+	$testvars = get_option( 'vars-vars', array() );
+	if ( array() === $testvars ) {
+		return;
+	}
 	if ( 'true' === get_user_option( 'rich_editing' ) ) {
 		add_filter( 'mce_external_plugins', 'vars_add_tinymce_plugin' );
 		add_filter( 'mce_buttons', 'vars_register_mce_menu' );
 	}
 }
-
 
 function vars_register_mce_menu( $buttons ) {
 	array_push( $buttons, 'vars_mce_menu' );
