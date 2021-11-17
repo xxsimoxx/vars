@@ -40,6 +40,9 @@ You can choose which users can manage vars.
 == Changelog ==
 = 2.1.0 =
 * Added TinyMCE v.5 compatibility
+* Aligned to WPCS
+* Fixed some potential bug
+* Changed format for an option
 
 = 2.0.3 =
 * Updated Update Manager client
