@@ -7,7 +7,7 @@ name='Vars'
 
 # Check for required programs
 all_found=Y
-for prog in git hub; do
+for prog in wp git hub; do
 	if ! [ -x "$(command -v $prog)" ]; then
 		echo "Error: required program '$prog' is not installed." >&2
 		all_found=N
@@ -33,4 +33,4 @@ git archive -o "../${slug}-${version}.zip" --prefix ${slug}/ HEAD
 
 hub release create -d -a "../${slug}-${version}.zip" -m "${name} ${version}" "${version}"
 
-rm -fr "../${slug}-${version}.zip" UNCOMMENT
+rm -fr "../${slug}-${version}.zip"
