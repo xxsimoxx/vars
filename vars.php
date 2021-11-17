@@ -15,22 +15,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 };
 
-define ( VARS_VERSION, '2.1.0' );
+define( 'VARS_VERSION', '2.1.0' );
 
+vars_handle_update();
 
+/**
+ * Introduce vars_handle_update to handle format changes:
+ * 2.1.0 vars-vars option is now an array.
+ *
+ * @since 2.1.0
+ * @return null
+ */
 function vars_handle_update() {
 	$current = get_option( 'vars-version', false );
+	// In the future here compare version.
 	if ( false !== $current ) {
 		return;
 	}
-	// Migrate to new format of vars-vars option introduced in 2.1.0.
-	$old_vars = get_option( 'vars-vars', '' );
-	if ( is_array( $old_vars ) ) {
+	$oldvars = get_option( 'vars-vars', '' );
+	if ( is_array( $oldvars ) ) {
 		// Seems already updated.
 		return;
 	}
-	parse_str( $old_vars, $testvars ); // phpcs:ignore
-	update_option( 'vars-vars', $testvars );
+	// Migrate to new format of vars-vars option introduced in 2.1.0.
+	parse_str( $oldvars, $newvars );
+	update_option( 'vars-vars', $newvars );
+	update_option( 'vars-version', VARS_VERSION );
 }
 
 // Load text domain.
@@ -101,27 +111,7 @@ function vars_save_security_settings( $admin_referer ) {
 };
 
 function vars_render_security_settings( $errors ) {
-
-	$current = get_option( 'vars-version', false );
-	if ( false !== $current ) {
-		return;
-	}
-	// Migrate to new format of vars-vars option introduced in 2.1.0.
-	$old_vars = get_option( 'vars-vars', '' );
-	if ( is_array( $old_vars ) ) {
-		// Seems already updated.
-		return;
-	}
-	parse_str( $old_vars, $testvars ); // phpcs:ignore
-	update_option( 'vars-vars', $testvars );
-
-
-
 	?>
-
-
-
-
 	<input type="checkbox" name="doeverywhere" value="1" class="doeverywhere" <?php checked( get_option( 'vars-doeverywhere', '0' ), '1' ); ?>>
 	<?php esc_html_e( 'Do shortcodes anywhere.', 'vars' ); ?> </input><br>
 	<input type="checkbox" name="cleanup" value="1" class="cleanup" <?php checked( get_option( 'vars-cleanup', '0' ), '1' ); ?>>
