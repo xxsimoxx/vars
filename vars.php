@@ -99,11 +99,13 @@ function vars_save_security_settings( $admin_referer ) {
 			update_option( 'vars-cleanup', '0' );
 		}
 		if ( isset( $_POST['whocanedit'] ) ) {
-			if ( current_user_can( wp_unslash( $_POST['whocanedit'] ) ) ) { // phpcs:ignore
-				update_option( 'vars-whocanedit', preg_replace( '/[^a-z_]/', '', wp_unslash( $_POST['whocanedit'] ) ) ); // phpcs:ignore
+			// Hard sanitize $_POST element.
+			$whocanedit = preg_replace( '/[^a-z_]/', '', $_POST['whocanedit'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			if ( current_user_can( $whocanedit ) ) {
+				update_option( 'vars-whocanedit', $whocanedit );
 			} else {
-				/* translators: %s is the capability */
-				$error_string = '<span style="color:red;">' . sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), wp_unslash( $_POST['whocanedit'] ) ) . '</span>'; // phpcs:ignore
+				/* translators: %s is the capability. Only use the bold tag <b>. */
+				$error_string = '<span style="color:red;">' . wp_kses( sprintf( __( 'You don\'t have <b>%s</b> capability.', 'vars' ), $whocanedit ), array( 'b' => array() ) ) . '</span>';
 			}
 		}
 	}
@@ -119,7 +121,8 @@ function vars_render_security_settings( $errors ) {
 	<?php esc_html_e( 'User capability requested to edit vars:', 'vars' ); ?>
 	<input type="text" name="whocanedit" class="whocanedit" value="<?php echo esc_html( get_option( 'vars-whocanedit', 'manage_options' ) ); ?>">
 	<?php
-	echo $errors; // phpcs:ignore
+	// As long as $errors is passed from vars_save_security_settings is sanitized there.
+	echo $errors; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	$users    = get_users( array( 'fields' => array( 'ID' ) ) );
 	$count    = 0;
 	$userlist = '';
@@ -131,8 +134,9 @@ function vars_render_security_settings( $errors ) {
 		}
 	}
 	echo '<p>';
-	/* translators: 1 is the number of user. 2 is the list of users */
-	printf( _n( '%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'vars' ), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit', 'manage_options' ) ); // phpcs:ignore
+	/* translators: 1 is the number of user. 2 is the list of users. You can use only the <i> tag in translation */
+	$usermessage = sprintf( _n( '%1$d user has <i>%3$s</i> capability and so can change vars: %2$s.', '%1$d users have <i>%3$s</i> capability and so can change vars: %2$s.', $count, 'vars' ), $count, rtrim( $userlist, ', ' ), get_option( 'vars-whocanedit', 'manage_options' ) );
+	echo wp_kses( $usermessage, array( 'i' => array() ) );
 	echo '</p><hr>';
 };
 
@@ -178,7 +182,8 @@ function vars_settings_page() {
 	}
 	if ( isset( $_POST['allvars'] ) || isset( $_POST['doeverywhere'] ) || isset( $_POST['cleanup'] ) || isset( $_POST['whocanedit'] ) ) {
 		check_admin_referer( 'vars-admin' );
-		parse_str( wp_unslash( $_POST['allvars'] ), $testvars ); // phpcs:ignore
+		// Var can contain almost anything so here we trust our user (default capability to edit this is manage options).
+		parse_str( wp_unslash( $_POST['allvars'] ), $testvars ); //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		update_option( 'vars-vars', $testvars );
 		if ( current_user_can( 'manage_options' ) ) {
 			$cap_error = vars_save_security_settings( 'vars-admin' );
@@ -186,8 +191,6 @@ function vars_settings_page() {
 	} else {
 		$testvars = get_option( 'vars-vars', array() );
 	}
-	// Text about plugin usage I prefer storing in the translations.
-	$header = __( 'HEADERTEXT', 'vars' );
 	?>
 	<style>
 		.form-table {
@@ -198,12 +201,23 @@ function vars_settings_page() {
 			font-family: "Courier New", Courier, mono;
 		}
 		h2::before {
-			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ ); // phpcs:ignore ?>");
+			content:url("<?php echo esc_url( plugins_url( 'icon.svg', __FILE__ ) ); ?>");
 			padding: 0 5px 0 0;
 		}
 	</style>
 	<div class="wrap">
-	<?php echo $header; // phpcs:ignore ?>
+	<?php
+	// Text about plugin usage I prefer storing in the translations.
+	/* translators: only use <h2> <h2> <p> <pre> tags.*/
+	$header        = __( 'HEADERTEXT', 'vars' );
+	$allowedmarkup = array(
+		'h2'  => array(),
+		'h3'  => array(),
+		'p'   => array(),
+		'pre' => array(),
+	);
+	echo wp_kses( $header, $allowedmarkup );
+	?>
 	<hr>
 	<form method="POST" id="vars-form"  >
 	<?php
@@ -211,14 +225,15 @@ function vars_settings_page() {
 		vars_render_security_settings( $cap_error );
 	}
 	if ( current_user_can( 'manage_options' ) && function_exists( '\add_security_page' ) ) {
-		echo '<a href="' . admin_url( 'security.php?page=vars' ) . '" title="' . esc_html__( 'Security settings', 'vars' ) . '"><i class="dashicons-before dashicons-shield">' . esc_html__( 'Edit security settings', 'vars' ) . '</i></a><hr>'; // phpcs:ignore
+		echo '<a href="' . esc_url( admin_url( 'security.php?page=vars' ) ) . '" title="' . esc_html__( 'Security settings', 'vars' ) . '"><i class="dashicons-before dashicons-shield">' . esc_html__( 'Edit security settings', 'vars' ) . '</i></a><hr>';
 	}
 	?>
 		<table class="form-table">
 	<?php
 	foreach ( $testvars as $key => $value ) {
-		echo '<tr valign="top" class="vars-keyvalue"><td ><input type="text" size="20" class="vars-key" value="' . $key . '" /></td>'; // phpcs:ignore
-		echo '<td ><input type="text" size="100" class="vars-value" value="' . $value . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>'; // phpcs:ignore
+		// Var can contain almost anything so here we trust our user (default capability to edit this is manage options).
+		echo '<tr valign="top" class="vars-keyvalue"><td ><input type="text" size="20" class="vars-key" value="' . $key . '" /></td>'; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<td ><input type="text" size="100" class="vars-value" value="' . $value . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>'; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 	?>
 		</table>
@@ -257,7 +272,7 @@ function vars_security_page() {
 	<h2>vars</h2>
 	<style>
 		h2::before {
-			content:url("<?php echo plugins_url( 'icon.svg', __FILE__ ); // phpcs:ignore ?>");
+			content:url("<?php echo esc_url( plugins_url( 'icon.svg', __FILE__ ) ); ?>");
 			padding: 0 5px 0 0;
 		}
 	</style>
@@ -347,7 +362,8 @@ function vars_admin_head() {
 	$vars_dynamic_mce  = '$vars_dynmenu=[' . $vars_dynamic_mce . ']';
 	$vars_dynamic_mce5 = '$vars_dynmenu=[' . $vars_dynamic_mce5 . ']';
 	echo '<script type="text/javascript">';
-	echo vars_is_mce_5() ? $vars_dynamic_mce5 : $vars_dynamic_mce; // phpcs:ignore
+	// Var can contain almost anything so here we trust our user (default capability to edit this is manage options).
+	echo vars_is_mce_5() ? $vars_dynamic_mce5 : $vars_dynamic_mce; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo '</script>';
 }
 
