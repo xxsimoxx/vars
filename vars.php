@@ -183,13 +183,18 @@ function vars_settings_page() {
 	if ( isset( $_POST['allvars'] ) || isset( $_POST['doeverywhere'] ) || isset( $_POST['cleanup'] ) || isset( $_POST['whocanedit'] ) ) {
 		check_admin_referer( 'vars-admin' );
 		// Var can contain almost anything so here we trust our user (default capability to edit this is manage options).
+		// This is sanitized in the next lines.
 		parse_str( wp_unslash( $_POST['allvars'] ), $testvars ); //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		update_option( 'vars-vars', $testvars );
+		$sanitized_vars = array();
+		foreach ( $testvars as $key => $value ) {
+			$sanitized_vars[ preg_replace( '/[^A-Za-z_0-9]/', '_', $key ) ] = $value;
+		}
+		update_option( 'vars-vars', $sanitized_vars );
 		if ( current_user_can( 'manage_options' ) ) {
 			$cap_error = vars_save_security_settings( 'vars-admin' );
 		}
 	} else {
-		$testvars = get_option( 'vars-vars', array() );
+		$sanitized_vars = get_option( 'vars-vars', array() );
 	}
 	?>
 	<style>
@@ -230,10 +235,9 @@ function vars_settings_page() {
 	?>
 		<table class="form-table">
 	<?php
-	foreach ( $testvars as $key => $value ) {
-		// Var can contain almost anything so here we trust our user (default capability to edit this is manage options).
-		echo '<tr valign="top" class="vars-keyvalue"><td ><input type="text" size="20" class="vars-key" value="' . $key . '" /></td>'; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<td ><input type="text" size="100" class="vars-value" value="' . $value . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>'; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	foreach ( $sanitized_vars as $key => $value ) {
+		echo '<tr valign="top" class="vars-keyvalue"><td ><input type="text" size="20" class="vars-key" value="' . esc_html( $key ) . '" /></td>';
+		echo '<td ><input type="text" size="100" class="vars-value" value="' . esc_html( $value ) . '" /></td><td><a class="dashicons dashicons-trash vars-delete"></a></td></tr>';
 	}
 	?>
 		</table>
@@ -352,6 +356,7 @@ function vars_admin_head() {
 		} else {
 			$example_data = substr( wp_strip_all_tags( $value ), 0, 12 ) . '...';
 		}
+		$example_data       = addslashes( $example_data );
 		$example_data       = ' (' . $example_data . ')';
 		$vars_dynamic_mce  .=
 			'{text: "' . $var . $example_data . '",onclick: function() {tinymce.activeEditor.insertContent("[vars]' . $var . '[/vars]"); }},';
