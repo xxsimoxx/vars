@@ -3,7 +3,7 @@
  * Plugin Name: vars
  * Plugin URI: https://software.gieffeedizioni.it
  * Description: Vars in shortcodes
- * Version: 2.1.1
+ * Version: 2.1.2
  * Requires CP: 1.1
  * Requires PHP: 5.6
  * License: GPL2
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 };
 
-define( 'VARS_VERSION', '2.1.0' );
+define( 'VARS_VERSION', '2.1.2' );
 
 vars_handle_update();
 
@@ -62,24 +62,10 @@ require_once 'classes/UpdateClient.class.php';
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'vars_pal' );
 function vars_pal( $links ) {
 	if ( current_user_can( get_option( 'vars-whocanedit', 'manage_options' ) ) ) {
-		$link = '<a href="' . admin_url( 'tools.php?page=vars-options' ) . '" title="' . __( 'Settings', 'vars' ) . '"><i class="dashicon dashicons-admin-generic"></i></a>';
+		$link = '<a href="' . admin_url( 'tools.php?page=vars-options' ) . '" title="' . __( 'Settings', 'vars' ) . '"><i class="dashicon dashicons-admin-generic" style="font: 16px dashicons;vertical-align: text-bottom;"></i></a>';
 		array_unshift( $links, $link );
 	}
 	return $links;
-}
-
-/*
- *
- * ClassicPress PR #484 added this CSS in v. 1.1.0
- * This is for backward compatibility.
- */
-add_action( 'admin_enqueue_scripts', 'vars_admin_style' );
-function vars_admin_style( $hook ) {
-	if ( ! function_exists( 'classicpress_version' ) || version_compare( '1.1.0', classicpress_version(), '>' ) ) {
-		if ( 'plugins.php' === $hook ) {
-				wp_enqueue_style( 'vars_compatibility_css', plugins_url( 'css/vars-compatibility.css', __FILE__ ), array(), '2.1.0' );
-		}
-	}
 }
 
 /**
@@ -179,6 +165,7 @@ function vars_create_menu() {
 }
 
 function vars_settings_page() {
+	$cap_error = '';
 	if ( ! current_user_can( get_option( 'vars-whocanedit', 'manage_options' ) ) ) {
 		exit;
 	}
